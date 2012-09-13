@@ -15,7 +15,7 @@ if(is_file('site/config.inc.php')){
     include 'site/config.inc.php';
 }
 
-include 'system/syste.config.php';
+include 'system/system.config.php';
 
 
 /*
