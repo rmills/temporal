@@ -1,0 +1,35 @@
+body{
+    background-color: #f7f7f9;
+    font-family: verdana;
+}
+label{
+    font-weight: bold;
+}
+
+
+#admin-content{
+    padding: 20px;
+    margin: 70px 40px;
+    display:-moz-inline-stack;
+    display:inline-block;
+    zoom:1;
+    *display:inline;
+    max-width: 1024px;
+    border: 2px solid #F5F5F5;
+    background-color: #fff;
+}
+
+#admin-nav .divider-vertical{
+    margin: 0;
+}
+
+.help-block{
+    font-style:italic;
+    margin-left: 15px;
+    font-size: 80%;
+    line-height: 80%;
+}
+
+.error{
+    color: #ff0000;
+}

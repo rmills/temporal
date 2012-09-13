@@ -1,0 +1,89 @@
+<script type="text/x-jquery-tmpl" id="zoneTemplate">
+    <div id="edit-${Zone}" contenteditable="true">{{html ZoneData}}</div>
+    <p><button class="btn btn-warning" id="zoneupdate_${Zone}">Update Zone</button></p>
+</script>
+
+<script type="text/javascript">
+    var zones = ["z1", "z2", "z3", "z4", "z5", "z6", "z7", "z8", "z9", "z10", "z11", "z12"];
+    var raw_editor_open = false;
+    var blank_zone = "Enter New Content";
+    
+    function editor_pushUpdate(zone, content){
+        console.log(content);
+        $.jGrowl("updating content, please wait", { life: 3000, speed:  'slow' });
+        var post_data = {zone_data: content};
+        var post_url = "http://{domain}{root_doc}update_zone/"+zone+"/{pid}";
+        jQuery.ajax({
+        type: "POST",
+        url: post_url,
+        dataType: "json",
+        data: post_data,
+        cache: false
+        }).done(function( responce ) {
+            if(responce.status == 'ok'){
+                $.jGrowl("Zone update sucess", { life: 3000, speed:  'slow' });
+            }
+        });
+    }
+    
+    function editor_toggleEditor (zone, mode){
+        if(!mode){
+            if(document.getElementById(zone)){
+                var content = window['editor_'+zone].getData();
+                if(content == blank_zone){
+                    content = '';
+                }
+                $("#"+zone).html( content );
+            }
+        }else{
+            var content = $("#"+zone).html();
+            if(content == ''){
+                content = blank_zone;
+            }
+            var contentData = {
+                Zone: zone,
+                ZoneData: content
+            };
+        
+            //$.template( "zoneTemplate", contentData );
+            
+            //$.tmpl( "movieTemplate", movies ).appendTo( "#movieList" );
+            $( "#"+zone ).html($.tmpl( zoneTemplate, contentData ));
+            
+            //$("#"+zone).html( $.template );
+            
+            //CKEDITOR.disableAutoInline = true;
+            if(document.getElementById(zone)){
+                window['editor_'+zone] = CKEDITOR.inline( document.getElementById( "edit-"+zone ) );
+            }
+            CKFinder.setupCKEditor( window['editor_'+zone], { basePath : '/system/modules/media/assets/', skin : 'v1' }) ;
+            $("#zoneupdate_"+zone).click(function() {
+                editor_pushUpdate(zone, window['editor_'+zone].getData() );
+            });
+        }
+    }
+    
+    function editor_EnableEditorZones(){
+        
+        
+        if(raw_editor_open){
+            $('#editor-edit-button').html("Enable Editor");
+            raw_editor_open = false;
+        }else{
+            $('#editor-edit-button').html("Disable Editor");
+            raw_editor_open = true;
+        }
+        
+        for (x in zones){
+            editor_toggleEditor(zones[x], raw_editor_open);
+        }
+    }
+    
+    
+    
+    $(document).ready(function() {
+        $("#editor-edit-button").click(function() {
+            editor_EnableEditorZones();
+        });
+    });
+</script>

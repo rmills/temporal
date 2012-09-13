@@ -1,0 +1,27 @@
+#meganav1{
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #E5E5E5;
+    padding: 10px;
+    border-radius: 3px 3px 3px 3px;
+}
+
+#meganav1 li{
+    display: inline-block;
+    vertical-align: top;
+    padding: 0 10px;
+}
+
+#meganav1 li div{
+    display: none;
+}
+
+#meganav1 li:hover div{
+    display: block;
+    position: relative;
+}
+
+#meganav1 li ul li{
+    padding: 0;
+    display: block;
+    padding-left: 20px;
+}

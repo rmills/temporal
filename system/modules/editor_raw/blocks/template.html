@@ -1,0 +1,71 @@
+<script type="text/x-tmpl" id="tmpl-form">
+    <h3>Zone:{%=o.zone%}</h3>
+    <form action="" method="post">
+        <textarea name="{%=o.zone%}" id="editor-{%=o.zone%}">{%=o.zone_data%}</textarea>
+    </form>
+    <button class="btn btn-warning" id="zoneupdate_{%=o.zone%}">Update Zone</button>
+</script>
+<script type="text/x-tmpl" id="tmpl-button">
+    <button class="btn btn-warning" id="zoneupdate_{%=o.zone%}">Raw HTML</button>
+</script>
+<script type="text/javascript">
+    var zones = ["z1", "z2", "z3", "z4", "z5", "z6", "z7", "z8", "z9", "z10", "z11", "z12"];
+    var raw_editor_open = false;
+    
+    function push_update(zone, content){
+        $.jGrowl("updating content, please wait", { life: 3000, speed:  'slow' });
+        var post_data = {zone_data: content};
+        var post_url = "http://{domain}{root_doc}update_zone/"+zone+"/{pid}";
+        jQuery.ajax({
+        type: "POST",
+        url: post_url,
+        dataType: "json",
+        data: post_data,
+        cache: false
+        }).done(function( responce ) {
+            if(responce.status == 'ok'){
+                $.jGrowl("Zone update sucess", { life: 3000, speed:  'slow' });
+            }
+        });
+    }
+    
+    function toggle_raw_editor (zone, mode){
+        if(mode){
+            $("#"+zone).html( $("#editor-"+zone).val() );
+        }else{
+            var content = $("#"+zone).html();
+            var data = {
+                "zone": zone,
+                "zone_data": content
+            }
+            var result = tmpl("tmpl-form", data);
+            $("#"+zone).html( result );
+            $("#editor-"+zone).width( $("#"+zone).parent().width() );
+            $("#editor-"+zone).height( 400 );
+            
+            $("#zoneupdate_"+zone).click(function() {
+                push_update(zone, $("#editor-"+zone).val() );
+            });
+        }
+    }
+    
+    function enable_raw_zones(){
+        for (x in zones){
+            toggle_raw_editor(zones[x], raw_editor_open);
+        }
+        if(raw_editor_open){
+            raw_editor_open = false;
+        }else{
+            raw_editor_open = true;
+        }
+    }
+    
+    
+    
+    $(document).ready(function() {
+        $("#raw-edit-button").click(function() {
+            enable_raw_zones();
+        });
+    });
+    
+</script>

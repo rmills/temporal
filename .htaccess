@@ -1,0 +1,12 @@
+RewriteEngine on
+RewriteBase /
+RewriteRule .*\.git/.* - [F]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d 
+RewriteRule  ^([a-zA-Z0-9\-\_]+)/([a-zA-Z0-9\-\_]+)/([a-zA-Z0-9\-\_]+)/([a-zA-Z0-9\-\_]+)/([a-zA-Z0-9\-\_]+)/([a-zA-Z0-9\-\_]+)/([a-zA-Z0-9\-\_]+)/?$    /?uvar1=$1&uvar2=$2&uvar3=$3&uvar4=$4&uvar5=$5&uvar6=$6&uvar7=$7 [L,QSA]
+RewriteRule  ^([a-zA-Z0-9\-\_]+)/([a-zA-Z0-9\-\_]+)/([a-zA-Z0-9\-\_]+)/([a-zA-Z0-9\-\_]+)/([a-zA-Z0-9\-\_]+)/([a-zA-Z0-9\-\_]+)/?$    /?uvar1=$1&uvar2=$2&uvar3=$3&uvar4=$4&uvar5=$5&uvar6=$6 [L,QSA]
+RewriteRule  ^([a-zA-Z0-9\-\_]+)/([a-zA-Z0-9\-\_]+)/([a-zA-Z0-9\-\_]+)/([a-zA-Z0-9\-\_]+)/([a-zA-Z0-9\-\_]+)/?$    /?uvar1=$1&uvar2=$2&uvar3=$3&uvar4=$4&uvar5=$5 [L,QSA]
+RewriteRule  ^([a-zA-Z0-9\-\_]+)/([a-zA-Z0-9\-\_]+)/([a-zA-Z0-9\-\_]+)/([a-zA-Z0-9\-\_]+)/?$    /?uvar1=$1&uvar2=$2&uvar3=$3&uvar4=$4 [L,QSA]
+RewriteRule  ^([a-zA-Z0-9\-\_]+)/([a-zA-Z0-9\-\_]+)/([a-zA-Z0-9\-\_]+)/?$    /?uvar1=$1&uvar2=$2&uvar3=$3 [L,QSA]
+RewriteRule  ^([a-zA-Z0-9\-\_]+)/([a-zA-Z0-9\-\_]+)/?$    /?uvar1=$1&uvar2=$2 [L,QSA]
+RewriteRule  ^([a-zA-Z0-9\-\_]+)/?$    /?uvar1=$1 [L,QSA]
