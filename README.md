@@ -1,4 +1,0 @@
-temporal
-========
-
-PHP development framework
