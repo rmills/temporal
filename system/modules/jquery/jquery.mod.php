@@ -8,6 +8,6 @@ class Jquery extends Module{
 	
 	public static function add_links(){
 		Html::set('{scripts}', '<script type="text/javascript" src="{root_doc}system/inc/js/jquery.js"></script>');
-		Html::set('{css}', '<link rel="stylesheet" href="{root_doc}system/inc/css/js-theme/jquery-ui-1.8.17.custom.css" type="text/css" media="screen, projection" />');
+		Html::set('{css}', '<link rel="stylesheet" href="{root_doc}system/inc/css/js-theme/jquery-ui-1.8.17.custom.css" type="text/css" media="screen, projection">');
 	}
 }
