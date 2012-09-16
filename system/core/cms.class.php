@@ -457,12 +457,12 @@ class CMS {
     public static function redirect($target){
         switch($target){
             case 'home':
-                header("Location: ".DEFAULT_PROTOCOL.self::$_config['domain'].PATH_BASE);
+                header("Location: ".DEFAULT_PROTOCOL.DOMAIN.PATH_BASE);
                 die();
                 break;
             
             case 'login':
-                header("Location: ".DEFAULT_PROTOCOL.self::$_config['domain'].PATH_BASE.'login');
+                header("Location: ".DEFAULT_PROTOCOL.DOMAIN.PATH_BASE.'login');
                 die();
                 break;
             
