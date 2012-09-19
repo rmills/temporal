@@ -3,7 +3,6 @@
  * This is the base configuration. You should not make changes in here
  * All changes should be added to the site/config.inc.php
  * 
- * See 
  */
 
 if(!defined('ENABLE_DEBUG')){
