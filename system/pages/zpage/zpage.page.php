@@ -85,11 +85,9 @@ class Zpage extends Module {
 	}
 	
 	public static function output(){
-        if(!HTML::$_hascontent && CMS::$_content_type == 'html'){
+        if(!HTML::$_hascontent && CMS::$_content_type == 'html' && $_page_type == 'zpage'){
             self::display_404();
         }
-		Html::finalize();
-        Html::output();
 	}
 	
 	private static function fetch_by_url($url){
