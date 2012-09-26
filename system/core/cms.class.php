@@ -322,10 +322,11 @@ class CMS {
 				}
 			}
 		}
-		
-		if($loop != 90){
+		if($loop < 80){
 			self::callstack_run($loop+1);
-		}
+		}else{
+            self::log('CMS', 'nest limit reached on loop '.$loop);
+        }
     }
     
     
