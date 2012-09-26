@@ -322,10 +322,11 @@ class CMS {
 				}
 			}
 		}
-		
-		if($loop != 90){
+		if($loop < 80){
 			self::callstack_run($loop+1);
-		}
+		}else{
+            self::log('CMS', 'nest limit reached on loop '.$loop);
+        }
     }
     
     
@@ -457,12 +458,12 @@ class CMS {
     public static function redirect($target){
         switch($target){
             case 'home':
-                header("Location: ".DEFAULT_PROTOCOL.self::$_config['domain'].PATH_BASE);
+                header("Location: ".DEFAULT_PROTOCOL.DOMAIN.PATH_BASE);
                 die();
                 break;
             
             case 'login':
-                header("Location: ".DEFAULT_PROTOCOL.self::$_config['domain'].PATH_BASE.'login');
+                header("Location: ".DEFAULT_PROTOCOL.DOMAIN.PATH_BASE.'login');
                 die();
                 break;
             

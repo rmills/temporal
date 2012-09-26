@@ -3,7 +3,6 @@
  * This is the base configuration. You should not make changes in here
  * All changes should be added to the site/config.inc.php
  * 
- * See 
  */
 
 if(!defined('ENABLE_DEBUG')){
@@ -142,15 +141,15 @@ if(!defined('DEFAULT_CALLBACK_SETUP')){
 }
 
 if(!defined('DEFAULT_CALLBACK_CREATE')){
-    define('DEFAULT_CALLBACK_CREATE', 30);
+    define('DEFAULT_CALLBACK_CREATE', 20);
 }
 
 if(!defined('DEFAULT_CALLBACK_PARSE')){
-    define('DEFAULT_CALLBACK_PARSE', 75);
+    define('DEFAULT_CALLBACK_PARSE', 30);
 }
 
 if(!defined('DEFAULT_CALLBACK_OUTPUT')){
-    define('DEFAULT_CALLBACK_OUTPUT', 90);
+    define('DEFAULT_CALLBACK_OUTPUT', 50);
 }
 
 
