@@ -124,6 +124,13 @@ if(!defined('DEFAULT_PAGE_GUEST')){
     define('DEFAULT_PAGE_GUEST', 'Zpage');
 }
 
+/**
+ * Only "admin" and "community" are supported
+ */
+if(!defined('USER_TYPE')){
+    define('USER_TYPE', 'admin');
+}
+
 if(!defined('DEFAULT_ZPAGE')){
     define('DEFAULT_ZPAGE', 1);
 }
@@ -150,6 +157,37 @@ if(!defined('DEFAULT_CALLBACK_PARSE')){
 
 if(!defined('DEFAULT_CALLBACK_OUTPUT')){
     define('DEFAULT_CALLBACK_OUTPUT', 50);
+}
+if(!defined('ENABLE_MAIL')){
+    define('ENABLE_MAIL',false);
+}
+
+if(!defined('MAIL_HOST')){
+    define('MAIL_HOST', false);
+}
+if(!defined('MAIL_SMTP_DEBUG')){
+    define('MAIL_SMTP_DEBUG', 0);
+}
+if(!defined('MAIL_SMTP_AUTH')){
+    define('MAIL_SMTP_AUTH', true);
+}
+if(!defined('MAIL_PORT')){
+    define('MAIL_PORT', 465);
+}
+if(!defined('MAIL_USERNAME')){
+    define('MAIL_USERNAME', false);
+}
+if(!defined('MAIL_PASSWORD')){
+    define('MAIL_PASSWORD', false);
+}
+if(!defined('MAIL_FROM_EMAIL')){
+    define('MAIL_FROM_EMAIL', false);
+}
+if(!defined('MAIL_FROM_NAME')){
+    define('MAIL_FROM_NAME', false);
+}
+if(!defined('MAIL_SECURE')){
+    define('MAIL_SECURE', 'ssl');
 }
 
 

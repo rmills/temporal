@@ -36,6 +36,10 @@ require 'system/core/module.class.php';
 require 'system/core/page.class.php';
 require 'system/core/user.class.php';
 
+if(ENABLE_MAIL){
+    require_once('system/core/phpmail/class.phpmailer.php');
+}
+
 
 /* Tip the first domino */
 CMS::init($config);
