@@ -422,7 +422,7 @@ class Pageadmin extends Module {
     
     public static function vailidate_url($url, $pid = 0){
         $sql = 'SELECT url, pid FROM `pages` WHERE `status` = \'active\'';
-		$list = DB::q($sql);
+	$list = DB::q($sql);
         foreach($list as $v){
             if($url == $v['url']){
                 if($v['pid'] != $pid){
