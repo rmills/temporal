@@ -1,6 +1,7 @@
 body{
     background-color: #f7f7f9;
     font-family: verdana;
+    margin-top: 40px;
 }
 label{
     font-weight: bold;
@@ -9,7 +10,7 @@ label{
 
 #admin-content{
     padding: 20px;
-    margin: 70px 40px;
+    margin: 30px 40px;
     display:-moz-inline-stack;
     display:inline-block;
     zoom:1;

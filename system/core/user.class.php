@@ -97,9 +97,8 @@ class User {
         }
     }
         
-    public function auth($user, $pass){
-        $hashed = md5(PASS_SALT.$pass.PASS_SALT);
-        $email = strtolower(stripslashes(trim($user)));
+    public function auth($email, $pass){
+        $email = strtolower(stripslashes(trim($email)));
         $email = substr($email, 0, 60);
         
         if(USER_TYPE == 'admin'){
@@ -111,8 +110,8 @@ class User {
         
         if(count($response)){
             $salt = $response[0]['salt'];
-            $password = md5($salt.trim($_POST['pass']).$salt);
-            if($password == $response[0]['password']){
+            $hashed = md5($salt.$pass.$salt);
+            if($hashed == $response[0]['password']){
                 if($response[0]['status'] == 'active'){
                     $this->load($response[0]['uid']);
                 }elseif($response[0]['status'] == 'new'){
