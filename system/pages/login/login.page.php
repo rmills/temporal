@@ -6,13 +6,13 @@
  */
 class Login extends Page {
 	
-	private static $_fail_strings = array(
-		'Fail! Are you sure you<br />belong here?',
-		'Nope, thats not vaild!',
-		'Oh noes, you failed!',
-		'Got fail? Yes you do.',
-		'Well thats not right...'
-	);
+    private static $_fail_strings = array(
+        'Fail! Are you sure you<br />belong here?',
+        'Nope, thats not vaild!',
+        'Oh noes, you failed!',
+        'Got fail? Yes you do.',
+        'Well thats not right...'
+    );
     
     public static function active(){
         if(CMS::allowed()){
@@ -24,7 +24,12 @@ class Login extends Page {
     public static function setup(){
         CMS::$_page_type = 'login';
         CMS::$_content_type = 'html';
-        Html::template( self::block('login.html') );
+        if(USER_TYPE == 'admin'){
+            Html::template( self::block('admin.html') );
+        }else{
+            Html::load();
+            Html::set('{content}', self::block('community.html') );
+        }
         Html::set('{login_error}');
     }
     
