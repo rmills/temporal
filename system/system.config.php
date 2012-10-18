@@ -92,6 +92,17 @@ if(!defined('PATH_MODULE_ROOT_ADDON')){
     define('PATH_MODULE_ROOT_ADDON', 'site/modules/');
 }
 
+if(!defined('PATH_USERMOD_ROOT')){
+    #Path to user module folder addon
+    define('PATH_USERMOD_ROOT', 'system/usermod/');
+}
+
+if(!defined('PATH_USERMOD_ROOT_ADDON')){
+    #Path to user module folder addon
+    define('PATH_USERMOD_ROOT_ADDON', 'site/usermod/');
+}
+
+
 if(!defined('PATH_PAGE_ROOT')){
     define('PATH_PAGE_ROOT', 'system/pages/');
 }
