@@ -8,10 +8,14 @@ class User_quickaccess extends Module{
     public static function parse(){
         if(USER_TYPE == 'community'){
             if(Html::find('{user_quickaccess}')){
-                if($_SESSION['user'] == DEFAULT_USER || $_SESSION['user'] == 0){
-                    self::build_guest();
+                if(isset($_SESSION['user'])){
+                    if($_SESSION['user'] == DEFAULT_USER || $_SESSION['user'] == 0){
+                        self::build_guest();
+                    }else{
+                        self::build_loggedin();
+                    }
                 }else{
-                    self::build_loggedin();
+                    self::build_guest();
                 }
             }
         }else{
