@@ -147,8 +147,12 @@ class Html {
     }
 
     public static function output() {
-        if (CMS::$_content_type == 'html') {
-            echo self::$_body;
+        if(!CMS::$_page_type){
+            self::error_404();
+        }else{
+            if (CMS::$_content_type == 'html') {
+                echo self::$_body;
+            }
         }
     }
 
@@ -186,6 +190,16 @@ class Html {
         } else {
             CMS::log('Body', 'Could not find template: ' . $path, 2);
             return false;
+        }
+    }
+    
+    public static function error_404(){
+        $path_custom = PATH_LAYOUT_ROOT.'404.html';
+        $path_system = PATH_LAYOUT_ROOT_DEFAULT.'404.html';
+        if(is_file($path_custom)){
+           echo $path_custom; 
+        }else{
+            echo file_get_contents($path_system);
         }
     }
 

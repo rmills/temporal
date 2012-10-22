@@ -1,58 +1,22 @@
-/* Global */
+/***************************/
+/*         Global          */
+/***************************/
 body{
-    font-family: 'Cabin', Helvetica, Arial, sans-serif;
-    color: #333333;
+    background-color: #f8f8f8;
     font-size: 1em;
+    font-family: 'Open Sans', sans-serif;
+    color: #303030;
     line-height: 1.3em;
     letter-spacing: 1px;
-    white-space: normal;
-    background-color: #f7f7f7;
-    background-image: url('../images/bg.png');
-}
-h1{
-    color: #000;
-    font-size: 2em;
-    font-weight: bold;
-    margin-bottom: 30px;
+    width: 100%;
+    padding: 0;
+    height: 100%;
 }
 
-h2{
-    color: #000;
-    font-size: 1.5em;
-    font-weight: bold;
-    margin-bottom: 30px;
+.main-content{
+    background-color: #fff;
 }
 
-#logo{
-    min-width: 600px;
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 40px 0 30px;
-    text-align: center;
+.well{
+    margin-top: 10px;
 }
-
-
-/* Nav */
-#nav{
-    min-width: 600px;
-    max-width: 1000px;
-    margin: 0 auto 20px;
-}
-
-
-#content{
-    min-width: 600px;
-    max-width: 1000px;
-    margin: 0 auto;
-    background: none repeat scroll 0 0 #FFFFFF;
-    border: 1px solid #E5E5E5;
-    font-weight: normal;
-    padding: 20px;
-    border-radius: 3px 3px 3px 3px;
-}
-
-#footer{
-    clear: both;
-}
-
-
