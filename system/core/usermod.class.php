@@ -47,5 +47,5 @@ interface iUserMod
 {
     public function update();
     public function edit_html();
-    public function display_html();
+    public function profile($type);
 }

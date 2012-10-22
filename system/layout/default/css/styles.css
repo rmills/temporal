@@ -1,22 +1,15 @@
-/***************************/
-/*         Global          */
-/***************************/
+/* Global */
 body{
-    background-color: #f8f8f8;
+    font-family: "Open Sans", sans;
+    color: #333333;
     font-size: 1em;
-    font-family: 'Open Sans', sans-serif;
-    color: #303030;
     line-height: 1.3em;
     letter-spacing: 1px;
-    width: 100%;
-    padding: 0;
-    height: 100%;
+    white-space: normal;
+    background-color: #f7f7f7;
 }
 
-.main-content{
+.container, .container-fluid{
     background-color: #fff;
 }
 
-.well{
-    margin-top: 10px;
-}
