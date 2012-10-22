@@ -334,6 +334,9 @@ class CMS {
         } else {
             if (is_numeric($_SESSION['user']) && $_SESSION['user'] > 0) {
                 self::$_user = new User($_SESSION['user']);
+                if(self::$_user->_error){
+                    self::$_user = new User(DEFAULT_USER);
+                }
             } else {
                 self::$_user = new User(DEFAULT_USER);
             }

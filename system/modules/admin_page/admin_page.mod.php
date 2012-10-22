@@ -1,5 +1,5 @@
 <?php
-class Pageadmin extends Module {
+class Admin_page extends Module {
     
     private static $_pagemode = false;
     private static $_status = false;

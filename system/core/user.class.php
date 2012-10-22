@@ -15,6 +15,8 @@ class User {
         $response = DB::q($sql);
         if(count($response)){
                 $this->build($response[0]);
+        }else{
+            $this->_error = true;
         }
         if($this->_internal){
             CMS::log('User', 'User Loaded:'.$id);

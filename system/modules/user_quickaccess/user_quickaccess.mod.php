@@ -2,16 +2,20 @@
 
 class User_quickaccess extends Module{
     public static function __registar_callback() {
-        CMS::callstack_add('create', DEFAULT_CALLBACK_PARSE);
+        CMS::callstack_add('parse', DEFAULT_CALLBACK_PARSE+1);
     }
     
-    public static function create(){
-        if(Html::find('{user_quickaccess}')){
-            if($_SESSION['user'] == DEFAULT_USER){
-                self::build_guest();
-            }else{
-                self::build_loggedin();
+    public static function parse(){
+        if(USER_TYPE == 'community'){
+            if(Html::find('{user_quickaccess}')){
+                if($_SESSION['user'] == DEFAULT_USER || $_SESSION['user'] == 0){
+                    self::build_guest();
+                }else{
+                    self::build_loggedin();
+                }
             }
+        }else{
+            Html::set('{user_quickaccess}');
         }
     }
     
