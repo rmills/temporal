@@ -37,7 +37,7 @@ class CMS {
         self::init_modules();
         self::init_usermod();
 
-        DB::init();
+        \DB::init();
         self::init_user();
 
         self::init_modules_callbacks();
@@ -259,13 +259,12 @@ class CMS {
 
     public static function init_active_page() {
         if (self::$_vars[0]) {
-            if (class_exists(ucfirst(self::$_vars[0]))) {
-                call_user_func(array(ucfirst(self::$_vars[0]), 'active'));
+            if (!call_user_func(array('\Page\\'.ucfirst(self::$_vars[0]), 'active'))) {
             } else {
-                call_user_func(array(ucfirst(DEFAULT_PAGE_GUEST), 'active'));
+                call_user_func(array('\Page\\'.ucfirst(DEFAULT_PAGE_GUEST), 'active'));
             }
         } else {
-            call_user_func(array(ucfirst(DEFAULT_PAGE_GUEST), 'active'));
+            call_user_func(array('\Page\\'.ucfirst(DEFAULT_PAGE_GUEST), 'active'));
         }
     }
 
@@ -344,11 +343,8 @@ class CMS {
         foreach (self::$__pages as $v) {
             include($v[0]);
             $page = ucwords($v[1]);
-            $try = method_exists($page, '__registar_callback');
-            if ($try) {
-                /** NOTE: format changes in PHP 5.2.3 * */
-                call_user_func(array($page, '__registar_callback'));
-            }
+            $name = '\Page\\'.$page;
+            $try = call_user_func(array($name, '__registar_callback'));
         }
     }
 

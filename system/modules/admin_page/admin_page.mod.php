@@ -21,11 +21,11 @@ class Admin_page extends Module {
     }
 
     public static function create() {
-        \Admin::$_subpage = true;
+        \Page\Admin::$_subpage = true;
     }
 
     public static function set_nav() {
-        \Admin::add_link('
+        \Page\Admin::add_link('
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Pages<b class="caret"></b></a>
                 <ul class="dropdown-menu">
@@ -177,17 +177,17 @@ class Admin_page extends Module {
                 `parent`,
                 `published`
             ) VALUES (
-                \'' . DB::clean($title) . '\',
-                \'' . DB::clean($url) . '\',
-                \'' . DB::clean($template) . '\',
-                \'' . DB::clean($weight) . '\',
-                \'' . DB::clean($menu_title) . '\',
-                \'' . DB::clean($parent) . '\',
-                \'' . DB::clean($publish) . '\'
+                \'' . \DB::clean($title) . '\',
+                \'' . \DB::clean($url) . '\',
+                \'' . \DB::clean($template) . '\',
+                \'' . \DB::clean($weight) . '\',
+                \'' . \DB::clean($menu_title) . '\',
+                \'' . \DB::clean($parent) . '\',
+                \'' . \DB::clean($publish) . '\'
                 
 		)';
-        DB::q($sql);
-        $new_page_id = DB::$_lastid;
+        \DB::q($sql);
+        $new_page_id = \DB::$_lastid;
 
         $i = 1;
         while ($i <= MAX_ZONES) {
@@ -272,19 +272,19 @@ class Admin_page extends Module {
 
 
         $sql = 'UPDATE `pages` SET 
-		`title` = \'' . DB::clean($title) . '\',
-		`url` = \'' . DB::clean($url) . '\',
-		`template` = \'' . DB::clean($template) . '\',
-		`meta_description` = \'' . DB::clean($description) . '\',
-		`meta_keywords` = \'' . DB::clean($keywords) . '\',
-        `weight` = \'' . DB::clean($weight) . '\',
-        `menu_title` = \'' . DB::clean($menu_title) . '\',
-        `parent` = \'' . DB::clean($parent) . '\',
-        `published` = \'' . DB::clean($publish) . '\'
+		`title` = \'' . \DB::clean($title) . '\',
+		`url` = \'' . \DB::clean($url) . '\',
+		`template` = \'' . \DB::clean($template) . '\',
+		`meta_description` = \'' . \DB::clean($description) . '\',
+		`meta_keywords` = \'' . \DB::clean($keywords) . '\',
+        `weight` = \'' . \DB::clean($weight) . '\',
+        `menu_title` = \'' . \DB::clean($menu_title) . '\',
+        `parent` = \'' . \DB::clean($parent) . '\',
+        `published` = \'' . \DB::clean($publish) . '\'
 		
-		WHERE `pid` = \'' . DB::clean($pid) . '\' LIMIT 1';
+		WHERE `pid` = \'' . \DB::clean($pid) . '\' LIMIT 1';
 
-        DB::q($sql);
+        \DB::q($sql);
         self::$_status = '<p class="alert alert-success"><i class="icon icon-ok"></i> Page Updated</p><p><a class="btn btn-info" href="{root_doc}' . $url . '">View Page</a></p>';
     }
 
@@ -307,8 +307,8 @@ class Admin_page extends Module {
     public static function delete_page() {
         $pid = \CMS::$_vars[3];
         if ($pid !== '1') {
-            $sql = 'UPDATE `pages` SET `status` = \'deleted\' WHERE `pid` = \'' . DB::clean($pid) . '\' LIMIT 1';
-            DB::q($sql);
+            $sql = 'UPDATE `pages` SET `status` = \'deleted\' WHERE `pid` = \'' . \DB::clean($pid) . '\' LIMIT 1';
+            \DB::q($sql);
             $html = '<h4>Pages</h4><hr /><p class="alert alert-success">Success: Page Deleted</p><div class="form-actions"><a class="btn btn-info" href="{root_doc}admin/page/list/">Return</a></div>';
             \Html::set('{admin_content}', $html);
         } else {
@@ -320,8 +320,8 @@ class Admin_page extends Module {
     public static function permanently_remove_page() {
         $pid = \CMS::$_vars[3];
         if ($pid !== '1') {
-            $sql = 'DELETE FROM `pages` WHERE `pid` = \'' . DB::clean($pid) . '\' LIMIT 1';
-            DB::q($sql);
+            $sql = 'DELETE FROM `pages` WHERE `pid` = \'' . \DB::clean($pid) . '\' LIMIT 1';
+            \DB::q($sql);
             $html = '<h4>Pages</h4><hr /><p class="alert alert-success">Success: Page Permanently Deleted</p><div class="form-actions"><a class="btn btn-info" href="{root_doc}admin/page/list/">Return</a></div>';
             \Html::set('{admin_content}', $html);
         } else {
@@ -334,8 +334,8 @@ class Admin_page extends Module {
         $pid = \CMS::$_vars[3];
         $zdata = Zpage::fetch_by_id($pid, true);
 
-        $sql = 'UPDATE `pages` SET `status` = \'active\' WHERE `pid` = \'' . DB::clean($pid) . '\' LIMIT 1';
-        DB::q($sql);
+        $sql = 'UPDATE `pages` SET `status` = \'active\' WHERE `pid` = \'' . \DB::clean($pid) . '\' LIMIT 1';
+        \DB::q($sql);
         $html = '<h4>Success</h4><hr /><p>Page "' . $zdata['title'] . '" restored.</p><div class="form-actions"><a class="btn btn-info" href="{root_doc}admin/page/list/">Return</a></div>';
 
         \Html::set('{admin_content}', $html);
@@ -372,7 +372,7 @@ class Admin_page extends Module {
         }
         $html[] = '<option value="0">Root</option>';
         $sql = 'SELECT * FROM `pages` WHERE `status` = \'active\' ORDER BY `title` ASC';
-        $response = DB::q($sql);
+        $response = \DB::q($sql);
         foreach ($response as $item) {
             if ($ignore_id != $item['pid']) {
                 $html[] = '<option value="' . $item['pid'] . '">' . $item['title'] . '</option>';
@@ -389,24 +389,24 @@ class Admin_page extends Module {
 			`z_data`,
 			`z_creation`
 		) VALUES (
-			\'' . DB::clean($zdata) . '\',
+			\'' . \DB::clean($zdata) . '\',
 			\'' . $zdate . '\'
 		)';
-        DB::q($sql);
+        \DB::q($sql);
 
         $sql = '
 			UPDATE `pages` SET 
-				`' . DB::clean($zid) . '` = \'' . DB::clean(DB::$_lastid) . '\'
+				`' . \DB::clean($zid) . '` = \'' . \DB::clean(\DB::$_lastid) . '\'
 			WHERE 
-				`pid` = \'' . DB::clean($pid) . '\' 
+				`pid` = \'' . \DB::clean($pid) . '\' 
 			LIMIT 1
 		';
-        DB::q($sql);
+        \DB::q($sql);
     }
 
     public static function vailidate_url($url, $pid = 0) {
         $sql = 'SELECT url, pid FROM `pages` WHERE `status` = \'active\'';
-        $list = DB::q($sql);
+        $list = \DB::q($sql);
         foreach ($list as $v) {
             if ($url == $v['url']) {
                 if ($v['pid'] != $pid) {
@@ -428,7 +428,7 @@ class Admin_page extends Module {
         $html = self::block('list.html');
         $users = array();
         $sql = 'SELECT * FROM `pages`';
-        $list = DB::q($sql);
+        $list = \DB::q($sql);
         foreach ($list as $v) {
 
             if ($v['status'] != 'active') {

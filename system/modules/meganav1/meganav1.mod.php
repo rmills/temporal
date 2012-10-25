@@ -23,7 +23,7 @@ class Meganav1 extends Module {
 
     public static function load_pages() {
         $sql = 'SELECT * FROM `pages` WHERE `status` = \'active\' AND `published` = \'yes\' ORDER BY `weight` ASC';
-        $list = DB::q($sql);
+        $list = \DB::q($sql);
         foreach ($list as $item) {
             self::$pages[] = $item;
         }

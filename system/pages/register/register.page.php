@@ -1,5 +1,5 @@
 <?php
-
+namespace Page;
 if (!defined('REGISTER_SITENAME')) {
     define('REGISTER_SITENAME', 'Temporal Site');
 }
@@ -14,41 +14,41 @@ class Register extends Page {
 
     public static function active() {
         if (USER_TYPE == 'community') {
-            CMS::callstack_add('setup', DEFAULT_CALLBACK_SETUP);
-            CMS::callstack_add('parse', DEFAULT_CALLBACK_PARSE);
+            \CMS::callstack_add('setup', DEFAULT_CALLBACK_SETUP);
+            \CMS::callstack_add('parse', DEFAULT_CALLBACK_PARSE);
         }
     }
 
     public static function setup() {
-        CMS::$_page_type = 'register';
-        CMS::$_content_type = 'html';
+        \CMS::$_page_type = 'register';
+        \CMS::$_content_type = 'html';
 
-        Html::load();
+        \Html::load();
 
-        if (CMS::$_vars[1] == 'submit') {
+        if (\CMS::$_vars[1] == 'submit') {
             $vaild = self::create_account();
             if ($vaild) {
                 $html = self::block('mailsent.html');
                 $html = str_replace('{emailfrom}', MAIL_FROM_EMAIL, $html);
-                Html::set('{content}', $html);
+                \Html::set('{content}', $html);
             } else {
-                Html::set('{content}', self::block('register.html'));
-                Html::set('{email}', $_POST['email']);
-                Html::set('{user}', $_POST['user']);
-                Html::set('{error}', self::$_error);
+                \Html::set('{content}', self::block('register.html'));
+                \Html::set('{email}', $_POST['email']);
+                \Html::set('{user}', $_POST['user']);
+                \Html::set('{error}', self::$_error);
             }
-        } elseif (CMS::$_vars[1] == 'complete') {
+        } elseif (\CMS::$_vars[1] == 'complete') {
             if (isset($_POST['key'])) {
                 $key = $_POST['key'];
             } else {
-                $key = CMS::$_vars[2];
+                $key = \CMS::$_vars[2];
             }
             if (is_numeric($key)) {
-                $try = self::check_key(CMS::$_vars[2]);
+                $try = self::check_key(\CMS::$_vars[2]);
                 if ($try) {
-                    Html::set('{content}', self::block('key_valid.html'));
+                    \Html::set('{content}', self::block('key_valid.html'));
                 } else {
-                    Html::set('{content}', self::block('key_fail.html'));
+                    \Html::set('{content}', self::block('key_fail.html'));
                 }
             } else {
                 $html = self::block('key_form.html');
@@ -57,13 +57,13 @@ class Register extends Page {
                 } else {
                     $html = str_replace('{error}', '', $html);
                 }
-                Html::set('{content}', $html);
+                \Html::set('{content}', $html);
             }
         } else {
-            Html::set('{content}', self::block('register.html'));
-            Html::set('{email}');
-            Html::set('{user}');
-            Html::set('{error}');
+            \Html::set('{content}', self::block('register.html'));
+            \Html::set('{email}');
+            \Html::set('{user}');
+            \Html::set('{error}');
         }
     }
 
@@ -87,7 +87,7 @@ class Register extends Page {
 
     private static function check_key($key) {
         $sql = 'SELECT * FROM `users` WHERE `status` = \'new\'';
-        $list = DB::q($sql);
+        $list = \DB::q($sql);
         if (is_array($list)) {
             foreach ($list as $v) {
                 if ($key == $v['confirm_key']) {
@@ -131,19 +131,19 @@ class Register extends Page {
                 `date_create`,
                 `last_ip`
             ) VALUES (
-                \'' . DB::clean($email) . '\',
-                \'' . DB::clean($name) . '\',
-                \'' . DB::clean($password) . '\',
-                \'' . DB::clean($salt) . '\',
+                \'' . \DB::clean($email) . '\',
+                \'' . \DB::clean($name) . '\',
+                \'' . \DB::clean($password) . '\',
+                \'' . \DB::clean($salt) . '\',
                 \'' . REGISTER_DEFAULT_GROUPS . '\',
-                \'' . DB::clean($key) . '\',
+                \'' . \DB::clean($key) . '\',
                 \'new\',
                 \'no\',
                 \'' . date("Ymd") . '\',
                 \'' . $_SERVER['REMOTE_ADDR'] . '\'
             )';
-        DB::q($sql);
-        echo DB::$_lasterror;
+        \DB::q($sql);
+        echo \DB::$_lasterror;
         return true;
     }
 
@@ -163,7 +163,7 @@ class Register extends Page {
 
     public static function dup_email_check($email) {
         $sql = 'SELECT * FROM `users` WHERE `email` = \'' . $email . '\'';
-        $list = DB::q($sql);
+        $list = \DB::q($sql);
         if (is_array($list)) {
             foreach ($list as $v) {
                 self::$_error .= '<div class="alert alert-error">Email already in use</div>';
@@ -175,7 +175,7 @@ class Register extends Page {
 
     public static function dup_user_check($name) {
         $sql = 'SELECT * FROM `users`';
-        $list = DB::q($sql);
+        $list = \DB::q($sql);
         if (is_array($list)) {
             foreach ($list as $v) {
                 if (strtolower($name) == strtolower($v['name'])) {
@@ -190,8 +190,8 @@ class Register extends Page {
     public static function activate_account($uid) {
         $sql = 'UPDATE `users` SET 
             `status` = \'active\'
-            WHERE `uid` = \'' . DB::clean($uid) . '\' LIMIT 1';
-        DB::q($sql);
+            WHERE `uid` = \'' . \DB::clean($uid) . '\' LIMIT 1';
+        \DB::q($sql);
     }
 
 }

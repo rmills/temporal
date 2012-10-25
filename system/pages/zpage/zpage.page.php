@@ -1,5 +1,5 @@
 <?php
-
+namespace Page;
 class Zpage extends Page {
 
     static public $_data;
@@ -12,29 +12,29 @@ class Zpage extends Page {
 
     public static function __registar_callback() {
 
-        if (CMS::allowed()) {
-            CMS::callstack_add('check_url', 10);
-            if (CMS::$_vars[0] == 'update_zone' && isset($_POST['zone_data'])) {
-                CMS::$_content_type = 'json';
-                CMS::$_page_type = 'zpage';
-                CMS::callstack_add('update', DEFAULT_CALLBACK_PARSE);
+        if (\CMS::allowed()) {
+            \CMS::callstack_add('check_url', 10);
+            if (\CMS::$_vars[0] == 'update_zone' && isset($_POST['zone_data'])) {
+                \CMS::$_content_type = 'json';
+                \CMS::$_page_type = 'zpage';
+                \CMS::callstack_add('update', DEFAULT_CALLBACK_PARSE);
             }
         }
     }
 
     public static function update() {
-        self::update_zone(CMS::$_vars[1], CMS::$_vars[2], $_POST['zone_data']);
+        self::update_zone(\CMS::$_vars[1], \CMS::$_vars[2], $_POST['zone_data']);
     }
 
     public static function check_url() {
 
         $found = false;
-        if (CMS::$_vars[0] == '' && DEFAULT_PAGE_GUEST == 'Zpage') {
+        if (\CMS::$_vars[0] == '' && DEFAULT_PAGE_GUEST == 'Zpage') {
             $found = true;
-        } elseif (CMS::$_vars[0] == 'page') {
+        } elseif (\CMS::$_vars[0] == 'page') {
             $found = true;
-        } elseif (CMS::$_vars[0] != '') {
-            self::$_pid = self::fetch_by_url(CMS::$_vars[0]);
+        } elseif (\CMS::$_vars[0] != '') {
+            self::$_pid = self::fetch_by_url(\CMS::$_vars[0]);
             if (is_numeric(self::$_pid)) {
                 if (self::$_pid != 0) {
                     $found = true;
@@ -43,24 +43,24 @@ class Zpage extends Page {
         }
 
         if ($found) {
-            CMS::$_page_type = 'zpage';
-            CMS::$_content_type = 'html';
-            CMS::callstack_add('create', DEFAULT_CALLBACK_CREATE);
-            CMS::callstack_add('parse', DEFAULT_CALLBACK_PARSE);
+            \CMS::$_page_type = 'zpage';
+            \CMS::$_content_type = 'html';
+            \CMS::callstack_add('create', DEFAULT_CALLBACK_CREATE);
+            \CMS::callstack_add('parse', DEFAULT_CALLBACK_PARSE);
         }
-        CMS::callstack_add('output', DEFAULT_CALLBACK_OUTPUT);
+        \CMS::callstack_add('output', DEFAULT_CALLBACK_OUTPUT);
     }
 
     public static function create() {
         if (!self::$_pid) {
-            if (CMS::$_vars[0] == '') {
+            if (\CMS::$_vars[0] == '') {
                 self::$_pid = DEFAULT_ZPAGE;
                 self::$_data = self::fetch_by_id(self::$_pid);
                 self::$_status = 200;
-            } elseif (CMS::$_vars[0] == 'page') {
-                $check = self::fetch_by_id(CMS::$_vars[1]);
+            } elseif (\CMS::$_vars[0] == 'page') {
+                $check = self::fetch_by_id(\CMS::$_vars[1]);
                 if (is_array($check)) {
-                    self::$_pid = CMS::$_vars[1];
+                    self::$_pid = \CMS::$_vars[1];
                     self::$_data = $check;
                     self::$_status = 200;
                 } else {
@@ -71,30 +71,30 @@ class Zpage extends Page {
             self::$_data = self::fetch_by_id(self::$_pid);
             self::$_status = 200;
         }
-        Admin::add_quick_link('<li><a href="{root_doc}admin/page/edit/' . self::$_pid . '">Edit Page</a></li>');
-        CMS::log('Zpage', 'loading page "' . self::$_data['pid'] . '"');
+        \Page\Admin::add_quick_link('<li><a href="{root_doc}admin/page/edit/' . self::$_pid . '">Edit Page</a></li>');
+        \CMS::log('Zpage', 'loading page "' . self::$_data['pid'] . '"');
         self::mount_zones();
     }
 
     public static function parse() {
-        Html::load(self::$_data['template']);
+        \Html::load(self::$_data['template']);
         if (is_array(self::$_data)) {
             foreach (self::$_data as $key => $value) {
-                Html::set('{' . $key . '}', $value);
+                \Html::set('{' . $key . '}', $value);
             }
         }
     }
 
     public static function output() {
-        if (!HTML::$_hascontent && CMS::$_content_type == 'html' && $_page_type == 'zpage') {
+        if (!\Html::$_hascontent && \CMS::$_content_type == 'html' && $_page_type == 'zpage') {
             self::display_404();
         }
     }
 
     private static function fetch_by_url($url) {
         $url = strtolower(trim($url));
-        $sql = 'SELECT pid FROM `pages` WHERE `url` = \'' . DB::clean($url) . '\' AND `status` = \'active\' LIMIT 1;';
-        $response = DB::q($sql);
+        $sql = 'SELECT pid FROM `pages` WHERE `url` = \'' . \DB::clean($url) . '\' AND `status` = \'active\' LIMIT 1;';
+        $response = \DB::q($sql);
         if (is_array($response)) {
             foreach ($response as $item) {
                 return $item['pid'];
@@ -108,11 +108,11 @@ class Zpage extends Page {
         }
         $pid = trim($pid);
         if ($all) {
-            $sql = 'SELECT * FROM `pages` WHERE `pid` = \'' . DB::clean($pid) . '\' LIMIT 1;';
+            $sql = 'SELECT * FROM `pages` WHERE `pid` = \'' . \DB::clean($pid) . '\' LIMIT 1;';
         } else {
-            $sql = 'SELECT * FROM `pages` WHERE `pid` = \'' . DB::clean($pid) . '\' AND `status` = \'active\' LIMIT 1;';
+            $sql = 'SELECT * FROM `pages` WHERE `pid` = \'' . \DB::clean($pid) . '\' AND `status` = \'active\' LIMIT 1;';
         }
-        $response = DB::q($sql);
+        $response = \DB::q($sql);
         if (is_array($response)) {
             foreach ($response as $item) {
                 return $item;
@@ -133,8 +133,8 @@ class Zpage extends Page {
             return false;
         }
         $zid = trim($zid);
-        $sql = 'SELECT z_data FROM `zones` WHERE `zid` = \'' . DB::clean($zid) . '\' LIMIT 1;';
-        $response = DB::q($sql);
+        $sql = 'SELECT z_data FROM `zones` WHERE `zid` = \'' . \DB::clean($zid) . '\' LIMIT 1;';
+        $response = \DB::q($sql);
         if (is_array($response)) {
             foreach ($response as $item) {
                 return urldecode($item['z_data']);
@@ -143,7 +143,7 @@ class Zpage extends Page {
     }
 
     private static function display_404() {
-        Html::load('404.html');
+        \Html::load('404.html');
     }
 
     private static function update_zone($zid, $pid, $zdata) {
@@ -154,21 +154,21 @@ class Zpage extends Page {
 			`z_data`,
 			`z_creation`
 		) VALUES (
-			\'' . DB::clean($zdata) . '\',
+			\'' . \DB::clean($zdata) . '\',
 			\'' . $zdate . '\'
 		)';
-        DB::q($sql);
+        \DB::q($sql);
 
 
 
         $sql = '
 			UPDATE `pages` SET 
-				`' . DB::clean($zid) . '` = \'' . DB::clean(DB::$_lastid) . '\'
+				`' . \DB::clean($zid) . '` = \'' . \DB::clean(\DB::$_lastid) . '\'
 			WHERE 
-				`pid` = \'' . DB::clean($pid) . '\' 
+				`pid` = \'' . \DB::clean($pid) . '\' 
 			LIMIT 1
 		';
-        DB::q($sql);
+        \DB::q($sql);
         Json::$_body .= json_encode(array('status' => 'ok'));
     }
 

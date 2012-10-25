@@ -16,7 +16,7 @@ class Nav_simple extends Module {
 
     public static function build() {
         $sql = 'SELECT title, url FROM `pages` WHERE `status` = \'active\'';
-        $list = DB::q($sql);
+        $list = \DB::q($sql);
         $html = array();
         $html[] = '<ul>';
         foreach ($list as $item) {

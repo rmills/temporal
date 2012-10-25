@@ -21,7 +21,7 @@ class Admin_user extends Module {
     }
 
     public static function set_nav() {
-        \Admin::add_link('
+        \Page\Admin::add_link('
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Users<b class="caret"></b></a>
                 <ul class="dropdown-menu">
@@ -33,7 +33,7 @@ class Admin_user extends Module {
     }
 
     public static function create() {
-        \Admin::$_subpage = true;
+        \Page\Admin::$_subpage = true;
     }
 
     public static function parse() {
@@ -161,15 +161,15 @@ class Admin_user extends Module {
                 `super_user`,
                 `groups`
             ) VALUES (
-                \'' . DB::clean($email) . '\',
-                \'' . DB::clean($name) . '\',
-                \'' . DB::clean($password) . '\',
-                \'' . DB::clean($salt) . '\',
+                \'' . \DB::clean($email) . '\',
+                \'' . \DB::clean($name) . '\',
+                \'' . \DB::clean($password) . '\',
+                \'' . \DB::clean($salt) . '\',
                 \'' . $super_user . '\',
                 \'1\'
 		)';
-        DB::q($sql);
-        echo DB::$_lasterror;
+        \DB::q($sql);
+        echo \DB::$_lasterror;
         $html = '<h4>Success</h4><hr /><p>User "' . $email . '" created.</p><div class="form-actions"><a class="btn btn-info" href="{root_doc}admin/user/add/">Add User</a></div>';
         \Html::set('{admin_content}', $html);
         self::$_action_complete = true;
@@ -179,7 +179,7 @@ class Admin_user extends Module {
         $html = self::block('editlist.html');
         $users = array();
         $sql = 'SELECT * FROM `users`';
-        $list = DB::q($sql);
+        $list = \DB::q($sql);
         foreach ($list as $v) {
             if ($v['status'] != 'active') {
                 $status = '<a class="btn btn-danger disabled">' . $v['status'] . '</a>';
@@ -270,21 +270,21 @@ class Admin_user extends Module {
         if ($_POST['password'] != '') {
             echo 1;
             $sql = 'UPDATE `users` SET 
-            `email` = \'' . DB::clean($email) . '\',
-            `name` = \'' . DB::clean($name) . '\',
-            `password` = \'' . DB::clean($password) . '\',
-             `salt` = \'' . DB::clean($salt) . '\',
-            `super_user` = \'' . DB::clean($super_user) . '\'
-            WHERE `uid` = \'' . DB::clean($uid) . '\' LIMIT 1';
+            `email` = \'' . \DB::clean($email) . '\',
+            `name` = \'' . \DB::clean($name) . '\',
+            `password` = \'' . \DB::clean($password) . '\',
+             `salt` = \'' . \DB::clean($salt) . '\',
+            `super_user` = \'' . \DB::clean($super_user) . '\'
+            WHERE `uid` = \'' . \DB::clean($uid) . '\' LIMIT 1';
         } else {
             $sql = 'UPDATE `users` SET 
-            `email` = \'' . DB::clean($email) . '\',
-            `name` = \'' . DB::clean($name) . '\',
-            `super_user` = \'' . DB::clean($super_user) . '\'
-            WHERE `uid` = \'' . DB::clean($uid) . '\' LIMIT 1';
+            `email` = \'' . \DB::clean($email) . '\',
+            `name` = \'' . \DB::clean($name) . '\',
+            `super_user` = \'' . \DB::clean($super_user) . '\'
+            WHERE `uid` = \'' . \DB::clean($uid) . '\' LIMIT 1';
         }
 
-        DB::q($sql);
+        \DB::q($sql);
         $html = '<h4>Success</h4><hr /><p>User "' . $email . '" updated.</p><div class="form-actions"><a class="btn btn-info" href="{root_doc}admin/user/editlist/">Return</a></div>';
         \Html::set('{admin_content}', $html);
         self::$_action_complete = true;
@@ -303,8 +303,8 @@ class Admin_user extends Module {
     public static function delete_user() {
         $uid = \CMS::$_vars[3];
         if ($uid !== '1') {
-            $sql = 'DELETE FROM `users` WHERE `uid` = \'' . DB::clean($uid) . '\' LIMIT 1';
-            DB::q($sql);
+            $sql = 'DELETE FROM `users` WHERE `uid` = \'' . \DB::clean($uid) . '\' LIMIT 1';
+            \DB::q($sql);
 
             $html = '<h4>User Deleted</h4><hr /><p>User removed.</p><div class="form-actions"><a class="btn btn-info" href="{root_doc}admin/user/editlist/">Return</a></div>';
             \Html::set('{admin_content}', $html);
@@ -325,8 +325,8 @@ class Admin_user extends Module {
                 \Html::set('{admin_content}', $html);
                 return false;
             } else {
-                $sql = 'UPDATE `users` SET `status` = \'suspended\' WHERE `uid` = \'' . DB::clean($uid) . '\' LIMIT 1';
-                DB::q($sql);
+                $sql = 'UPDATE `users` SET `status` = \'suspended\' WHERE `uid` = \'' . \DB::clean($uid) . '\' LIMIT 1';
+                \DB::q($sql);
                 $html = '<h4>Success</h4><hr /><p>User ' . $user->_data['email'] . ' suspended.</p><div class="form-actions"><a class="btn btn-info" href="{root_doc}admin/user/editlist/">Return</a></div>';
 
                 \Html::set('{admin_content}', $html);
@@ -343,8 +343,8 @@ class Admin_user extends Module {
         $uid = \CMS::$_vars[3];
         $user = new User();
         $user->init($uid, false);
-        $sql = 'UPDATE `users` SET `status` = \'active\' WHERE `uid` = \'' . DB::clean($uid) . '\' LIMIT 1';
-        DB::q($sql);
+        $sql = 'UPDATE `users` SET `status` = \'active\' WHERE `uid` = \'' . \DB::clean($uid) . '\' LIMIT 1';
+        \DB::q($sql);
         $html = '<h4>Success</h4><hr /><p>User ' . $user->_data['email'] . ' access restored.</p><div class="form-actions"><a class="btn btn-info" href="{root_doc}admin/user/editlist/">Return</a></div>';
 
         \Html::set('{admin_content}', $html);
@@ -353,7 +353,7 @@ class Admin_user extends Module {
 
     public static function dup_email_check($email, $uid = 0) {
         $sql = 'SELECT * FROM `users` WHERE `email` = \'' . $email . '\'';
-        $list = DB::q($sql);
+        $list = \DB::q($sql);
         if (is_array($list)) {
             foreach ($list as $v) {
                 if ($uid != $v['uid']) {

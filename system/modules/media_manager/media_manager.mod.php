@@ -71,7 +71,7 @@ class Media_manager extends Module {
         }
         $html[] = '<option value="1">Root</option>';
         $sql = 'SELECT * FROM `media_folders` ORDER BY `name` ASC';
-        $response = DB::q($sql);
+        $response = \DB::q($sql);
         foreach ($response as $item) {
             if ($ignore_id != $item['fid'] && $item['fid'] != '1') {
                 $html[] = '<option value="' . $item['fid'] . '">' . $item['name'] . '</option>';

@@ -14,9 +14,9 @@ class Admin_bar extends Module {
 
     public static function set_tags() {
         $html = self::build_admin_bar();
-        ksort(\Admin::$_quicklinks);
+        ksort(\Page\Admin::$_quicklinks);
         $i = 0;
-        foreach (\Admin::$_quicklinks as $v) {
+        foreach (\Page\Admin::$_quicklinks as $v) {
             $break = '<li class="divider-vertical"></li>';
             $html = str_replace('{adminlinks}', $v . $break . '{adminlinks}', $html);
             $i++;
