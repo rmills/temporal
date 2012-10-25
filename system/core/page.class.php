@@ -17,7 +17,8 @@ class Page {
      */
     protected static function block($filename) {
         $trace = debug_backtrace();
-        $file = PATH_PAGE_ROOT . strtolower($trace[1]['class']) . '/blocks/' . $filename;
+        $class = explode('\\', $trace[1]['class']);
+        $file = PATH_PAGE_ROOT . strtolower($class[1]) . '/blocks/' . $filename;
         if (is_file($file)) {
             return file_get_contents($file);
         } else {
@@ -25,8 +26,8 @@ class Page {
             if (is_file($file)) {
                 return file_get_contents($file);
             } else {
-                CMS::log('Page', 'Missing block: ' . $file, 2);
-                return false;
+                return 'NotFound: '.$file;
+                \CMS::log('Page', 'Missing block: ' . $file, 2);
             }
         }
     }

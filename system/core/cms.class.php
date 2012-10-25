@@ -14,8 +14,8 @@ class CMS {
     static private $__log = array();
     static private $__time;
     static private $__callstack = array();
-    static private $__modules = array();
-    static private $__pages = array();
+    static public $__modules = array();
+    static public $__pages = array();
     static public $_usermod = array();
     static public $_user = false;
 

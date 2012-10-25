@@ -28,7 +28,8 @@ class Module {
      */
     protected static function block($filename) {
         $trace = debug_backtrace();
-        $file = PATH_MODULE_ROOT . strtolower($trace[1]['class']) . '/blocks/' . $filename;
+        $class = explode('\\', $trace[1]['class']);
+        $file = PATH_MODULE_ROOT . strtolower($class[1]) . '/blocks/' . $filename;
         if (is_file($file)) {
             return file_get_contents($file);
         } else {
@@ -36,6 +37,7 @@ class Module {
             if (is_file($file)) {
                 return file_get_contents($file);
             } else {
+                return 'NotFound: '.$file;
                 \CMS::log('Page', 'Missing block: ' . $file, 2);
                 return false;
             }

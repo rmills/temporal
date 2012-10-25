@@ -27,6 +27,9 @@ class Login extends Page {
 
         \CMS::$_page_type = 'login';
         \CMS::$_content_type = 'html';
+    }
+
+    public static function parse() {
         if (USER_TYPE == 'admin') {
             \Html::template(self::block('admin.html'));
         } else {
@@ -34,9 +37,6 @@ class Login extends Page {
             \Html::set('{content}', self::block('community.html'));
         }
         \Html::set('{login_error}');
-    }
-
-    public static function parse() {
         if (isset($_POST['do_login'])) {
             if (!self::auth($_POST['email'], $_POST['pass'])) {
                 if (\CMS::$_user->_error) {
@@ -64,7 +64,7 @@ class Login extends Page {
             if ($hashed == $response[0]['password']) {
                 if ($response[0]['status'] == 'active') {
                     $_SESSION['user'] = $response[0]['uid'];
-                    \CMS::$_user = new User($response[0]['uid']);
+                    \CMS::$_user = new \User($response[0]['uid']);
                     return true;
                 } elseif ($response[0]['status'] == 'new') {
                     $this->_error = 'You have not actived your account. Please check your email address';

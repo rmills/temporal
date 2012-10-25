@@ -227,8 +227,7 @@ class Admin_user extends Module {
                 $uid = $_POST['uid'];
             }
 
-            $user = new User();
-            $user->init($uid, false);
+            $user = new \User($uid);
 
             \Html::set('{admin_content}', $html);
 
@@ -268,7 +267,6 @@ class Admin_user extends Module {
         }
 
         if ($_POST['password'] != '') {
-            echo 1;
             $sql = 'UPDATE `users` SET 
             `email` = \'' . \DB::clean($email) . '\',
             `name` = \'' . \DB::clean($name) . '\',

@@ -88,6 +88,7 @@ class User {
         }
         
         foreach($this->_permissions as $v){
+            //echo trim(strtolower($v)).':'.trim(strtolower($key)).'<br>';
             if(trim(strtolower($v)) == trim(strtolower($key))){
                 return true;
             }
