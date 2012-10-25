@@ -1,33 +1,36 @@
 <?php
 
-class User_quickaccess extends Module{
+namespace Module;
+
+class User_quickaccess extends Module {
+
     public static function __registar_callback() {
-        CMS::callstack_add('parse', DEFAULT_CALLBACK_PARSE+1);
+        \CMS::callstack_add('parse', DEFAULT_CALLBACK_PARSE + 1);
     }
-    
-    public static function parse(){
-        if(USER_TYPE == 'community'){
-            if(Html::find('{user_quickaccess}')){
-                if(isset($_SESSION['user'])){
-                    if($_SESSION['user'] == DEFAULT_USER || $_SESSION['user'] == 0){
+
+    public static function parse() {
+        if (USER_TYPE == 'community') {
+            if (\Html::find('{user_quickaccess}')) {
+                if (isset($_SESSION['user'])) {
+                    if ($_SESSION['user'] == DEFAULT_USER || $_SESSION['user'] == 0) {
                         self::build_guest();
-                    }else{
+                    } else {
                         self::build_loggedin();
                     }
-                }else{
+                } else {
                     self::build_guest();
                 }
             }
-        }else{
-            Html::set('{user_quickaccess}');
+        } else {
+            \Html::set('{user_quickaccess}');
         }
     }
-    
-    public static function build_guest(){
-        Html::set("{user_quickaccess}",     '
+
+    public static function build_guest() {
+        \Html::set("{user_quickaccess}", '
             <div class="btn-group">
             <a class="btn-mini dropdown-toggle" data-toggle="dropdown" href="#">
-            '.CMS::$_user->_data['name'].'
+            ' . \CMS::$_user->_data['name'] . '
             <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
@@ -37,12 +40,12 @@ class User_quickaccess extends Module{
             </div>
         ');
     }
-    
-    public static function build_loggedin(){
-        Html::set("{user_quickaccess}",     '
+
+    public static function build_loggedin() {
+        \Html::set("{user_quickaccess}", '
             <div class="btn-group">
             <a class="btn-mini dropdown-toggle" data-toggle="dropdown" href="#">
-            '.CMS::$_user->_data['name'].'
+            ' . \CMS::$_user->_data['name'] . '
             <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
@@ -52,4 +55,5 @@ class User_quickaccess extends Module{
             </div>
         ');
     }
+
 }

@@ -1,6 +1,6 @@
 <?php
 
-class Zpage extends Module {
+class Zpage extends Page {
 
     static public $_data;
     static public $_status = 500;

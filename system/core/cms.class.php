@@ -196,11 +196,8 @@ class CMS {
         foreach (self::$__modules as $v) {
             include($v[0]);
             $module = ucwords($v[1]);
-            $try = method_exists($module, '__registar_callback');
-            if ($try) {
-                /** NOTE: format changes in PHP 5.2.3 * */
-                call_user_func(array($module, '__registar_callback'));
-            }
+            $name = '\Module\\'.$module;
+            $try = call_user_func(array($name, '__registar_callback'));
         }
     }
 
@@ -370,7 +367,15 @@ class CMS {
      */
     public static function callstack_add($method, $loop = 0) {
         $trace = debug_backtrace();
-        self::$__callstack[$loop][] = array($trace[1]['class'], $method);
+        //echo '<pre>'.print_r($trace, true).'</pre>-------------------------------';
+        $type = explode('.', $trace[0]['file']);
+        switch($type[1]){
+            case 'mod':
+                $type = 'Module\\';
+            default:
+                $type = $type[1];
+        }
+        self::$__callstack[$loop][] = array($trace[1]['class'], $method, $type);
     }
 
     /**

@@ -1,5 +1,7 @@
 <?php
 
+namespace Module;
+
 class Admin_user extends Module {
 
     private static $_pagemode = false;
@@ -7,19 +9,19 @@ class Admin_user extends Module {
     private static $_action_complete = false;
 
     public static function __registar_callback() {
-        if (CMS::allowed()) {
-            if (CMS::$_vars[0] == 'admin' && CMS::$_vars[1] == 'user') {
-                CMS::callstack_add('create', DEFAULT_CALLBACK_CREATE);
-                CMS::callstack_add('parse', DEFAULT_CALLBACK_PARSE);
-                CMS::callstack_add('set_nav', DEFAULT_CALLBACK_CREATE);
+        if (\CMS::allowed()) {
+            if (\CMS::$_vars[0] == 'admin' && \CMS::$_vars[1] == 'user') {
+                \CMS::callstack_add('create', DEFAULT_CALLBACK_CREATE);
+                \CMS::callstack_add('parse', DEFAULT_CALLBACK_PARSE);
+                \CMS::callstack_add('set_nav', DEFAULT_CALLBACK_CREATE);
             } else {
-                CMS::callstack_add('set_nav', DEFAULT_CALLBACK_CREATE);
+                \CMS::callstack_add('set_nav', DEFAULT_CALLBACK_CREATE);
             }
         }
     }
 
     public static function set_nav() {
-        Admin::add_link('
+        \Admin::add_link('
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Users<b class="caret"></b></a>
                 <ul class="dropdown-menu">
@@ -31,13 +33,13 @@ class Admin_user extends Module {
     }
 
     public static function create() {
-        Admin::$_subpage = true;
+        \Admin::$_subpage = true;
     }
 
     public static function parse() {
         /* Pre Action Handlers */
-        if (CMS::$_vars[3] == 'submit') {
-            switch (CMS::$_vars[2]) {
+        if (\CMS::$_vars[3] == 'submit') {
+            switch (\CMS::$_vars[2]) {
                 case 'edit':
                     self::edit_user_submit();
                     break;
@@ -50,84 +52,84 @@ class Admin_user extends Module {
 
 
         /* Page Content Handlers */
-        switch (CMS::$_vars[2]) {
+        switch (\CMS::$_vars[2]) {
             case 'add':
                 self::$_pagemode = 'add';
                 self::add_user();
-                HTML::set('{userstitle}', 'Add User');
+                \Html::set('{userstitle}', 'Add User');
                 break;
 
             case 'edit':
                 self::$_pagemode = 'edit';
                 self::edit_user();
-                HTML::set('{userstitle}', 'Update User');
+                \Html::set('{userstitle}', 'Update User');
                 break;
 
             case 'editlist':
                 self::$_pagemode = 'editlist';
                 self::edit_list();
-                HTML::set('{userstitle}', 'Manage Users');
+                \Html::set('{userstitle}', 'Manage Users');
                 break;
 
             case 'confirmdelete':
                 self::$_pagemode = 'confirmdelete';
                 self::confirmdelete_user();
-                HTML::set('{userstitle}', 'Delete User');
+                \Html::set('{userstitle}', 'Delete User');
                 break;
 
             case 'delete':
                 self::$_pagemode = 'delete';
                 self::delete_user();
-                HTML::set('{userstitle}', 'Delete User');
+                \Html::set('{userstitle}', 'Delete User');
                 break;
 
             case 'suspend':
                 self::$_pagemode = 'suspend';
                 self::suspend_user();
-                HTML::set('{userstitle}', 'Suspend User');
+                \Html::set('{userstitle}', 'Suspend User');
                 break;
 
             case 'restore':
                 self::$_pagemode = 'restore';
                 self::restore_user();
-                HTML::set('{userstitle}', 'Restore User');
+                \Html::set('{userstitle}', 'Restore User');
                 break;
         }
 
         if (self::$_status) {
-            HTML::set('{status}', self::$_status);
+            \Html::set('{status}', self::$_status);
         }
     }
 
     public static function add_user() {
         if (!self::$_action_complete) {
             $html = self::block('adduser.html');
-            HTML::set('{admin_content}', $html);
+            \Html::set('{admin_content}', $html);
 
             if (isset($_POST['email'])) {
-                HTML::set('{setemail}', $_POST['email']);
+                \Html::set('{setemail}', $_POST['email']);
             } else {
-                HTML::set('{setemail}');
+                \Html::set('{setemail}');
             }
 
             if (isset($_POST['name'])) {
-                HTML::set('{setname}', $_POST['name']);
+                \Html::set('{setname}', $_POST['name']);
             } else {
-                HTML::set('{setname}');
+                \Html::set('{setname}');
             }
 
             if (isset($_POST['password'])) {
-                HTML::set('{setpassword}', $_POST['password']);
+                \Html::set('{setpassword}', $_POST['password']);
             } else {
-                HTML::set('{setpassword}');
+                \Html::set('{setpassword}');
             }
 
             if (isset($_POST['super_user'])) {
-                HTML::set('{setsuperuser}', 'checked="checked"');
+                \Html::set('{setsuperuser}', 'checked="checked"');
             } else {
-                HTML::set('{setsuperuser}');
+                \Html::set('{setsuperuser}');
             }
-            HTML::set('{status}');
+            \Html::set('{status}');
         }
     }
 
@@ -169,7 +171,7 @@ class Admin_user extends Module {
         DB::q($sql);
         echo DB::$_lasterror;
         $html = '<h4>Success</h4><hr /><p>User "' . $email . '" created.</p><div class="form-actions"><a class="btn btn-info" href="{root_doc}admin/user/add/">Add User</a></div>';
-        HTML::set('{admin_content}', $html);
+        \Html::set('{admin_content}', $html);
         self::$_action_complete = true;
     }
 
@@ -211,16 +213,16 @@ class Admin_user extends Module {
             ';
         }
         $html = str_replace('{users}', implode(PHP_EOL, $users), $html);
-        HTML::set('{admin_content}', $html);
+        \Html::set('{admin_content}', $html);
 
-        HTML::set('{status}');
+        \Html::set('{status}');
     }
 
     public static function edit_user() {
         if (!self::$_action_complete) {
             $html = self::block('edituser.html');
-            if (is_numeric(CMS::$_vars[3])) {
-                $uid = CMS::$_vars[3];
+            if (is_numeric(\CMS::$_vars[3])) {
+                $uid = \CMS::$_vars[3];
             } else {
                 $uid = $_POST['uid'];
             }
@@ -228,17 +230,17 @@ class Admin_user extends Module {
             $user = new User();
             $user->init($uid, false);
 
-            HTML::set('{admin_content}', $html);
+            \Html::set('{admin_content}', $html);
 
-            HTML::set('{status}');
-            HTML::set('{setemail}', $user->_data['email']);
+            \Html::set('{status}');
+            \Html::set('{setemail}', $user->_data['email']);
             $name = str_replace('"', '&quot;', $user->_data['name']);
-            HTML::set('{setname}', $name);
-            HTML::set('{uid}', $uid);
+            \Html::set('{setname}', $name);
+            \Html::set('{uid}', $uid);
             if ($user->_data['super_user'] == 'yes') {
-                HTML::set('{setsuperuser}', 'checked="checked"');
+                \Html::set('{setsuperuser}', 'checked="checked"');
             } else {
-                HTML::set('{setsuperuser}');
+                \Html::set('{setsuperuser}');
             }
         }
     }
@@ -246,9 +248,9 @@ class Admin_user extends Module {
     public static function edit_user_submit() {
         $email = trim(strtolower($_POST['email']));
         $name = trim($_POST['name']);
-        
+
         $salt = Crypto::random_key();
-        
+
         $password = md5($salt . trim($_POST['password']) . $salt);
         $uid = $_POST['uid'];
 
@@ -284,68 +286,68 @@ class Admin_user extends Module {
 
         DB::q($sql);
         $html = '<h4>Success</h4><hr /><p>User "' . $email . '" updated.</p><div class="form-actions"><a class="btn btn-info" href="{root_doc}admin/user/editlist/">Return</a></div>';
-        HTML::set('{admin_content}', $html);
+        \Html::set('{admin_content}', $html);
         self::$_action_complete = true;
     }
 
     public static function confirmdelete_user() {
-        $uid = CMS::$_vars[3];
+        $uid = \CMS::$_vars[3];
         $user = new User();
         $user->init($uid, false);
 
 
         $html = '<h4>Confirm Delete</h4><hr /><p>Are you sure you want to delete the user: "' . $user->_data['email'] . '"?</p><div class="form-actions"><a class="btn btn-warning" href="{root_doc}admin/user/delete/' . $uid . '">Delete</a> <a class="btn btn-info" href="{root_doc}admin/user/editlist/">Cancel</a></div>';
-        HTML::set('{admin_content}', $html);
+        \Html::set('{admin_content}', $html);
     }
 
     public static function delete_user() {
-        $uid = CMS::$_vars[3];
+        $uid = \CMS::$_vars[3];
         if ($uid !== '1') {
             $sql = 'DELETE FROM `users` WHERE `uid` = \'' . DB::clean($uid) . '\' LIMIT 1';
             DB::q($sql);
 
             $html = '<h4>User Deleted</h4><hr /><p>User removed.</p><div class="form-actions"><a class="btn btn-info" href="{root_doc}admin/user/editlist/">Return</a></div>';
-            HTML::set('{admin_content}', $html);
+            \Html::set('{admin_content}', $html);
         } else {
             $html = '<h4>Failed</h4><hr /><p>Guest user can not be removed.</p><div class="form-actions"><a class="btn btn-info" href="{root_doc}admin/user/editlist/">Return</a></div>';
-            HTML::set('{admin_content}', $html);
+            \Html::set('{admin_content}', $html);
         }
     }
 
     public static function suspend_user() {
-        $uid = CMS::$_vars[3];
+        $uid = \CMS::$_vars[3];
         $user = new User();
         $user->init($uid, false);
         if ($uid !== '1') {
-            if ($uid == CMS::$_user->_data['uid']) {
+            if ($uid == \CMS::$_user->_data['uid']) {
                 $html = '<h4>Failed</h4><hr /><p>You can not suspend yourself.</p><div class="form-actions"><a class="btn btn-info" href="{root_doc}admin/user/editlist/">Return</a></div>';
 
-                HTML::set('{admin_content}', $html);
+                \Html::set('{admin_content}', $html);
                 return false;
             } else {
                 $sql = 'UPDATE `users` SET `status` = \'suspended\' WHERE `uid` = \'' . DB::clean($uid) . '\' LIMIT 1';
                 DB::q($sql);
                 $html = '<h4>Success</h4><hr /><p>User ' . $user->_data['email'] . ' suspended.</p><div class="form-actions"><a class="btn btn-info" href="{root_doc}admin/user/editlist/">Return</a></div>';
 
-                HTML::set('{admin_content}', $html);
+                \Html::set('{admin_content}', $html);
                 return true;
             }
         } else {
             $html = '<h4>Failed</h4><hr /><p>Guest user can not be suspended.</p><div class="form-actions"><a class="btn btn-info" href="{root_doc}admin/user/editlist/">Return</a></div>';
-            HTML::set('{admin_content}', $html);
+            \Html::set('{admin_content}', $html);
             return false;
         }
     }
 
     public static function restore_user() {
-        $uid = CMS::$_vars[3];
+        $uid = \CMS::$_vars[3];
         $user = new User();
         $user->init($uid, false);
         $sql = 'UPDATE `users` SET `status` = \'active\' WHERE `uid` = \'' . DB::clean($uid) . '\' LIMIT 1';
         DB::q($sql);
         $html = '<h4>Success</h4><hr /><p>User ' . $user->_data['email'] . ' access restored.</p><div class="form-actions"><a class="btn btn-info" href="{root_doc}admin/user/editlist/">Return</a></div>';
 
-        HTML::set('{admin_content}', $html);
+        \Html::set('{admin_content}', $html);
         return true;
     }
 
