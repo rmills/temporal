@@ -1,0 +1,21 @@
+<h4>Add Permissions Group</h4>
+<hr>
+{status}
+<form class="form-horizontal" id="pageform" action="{root_doc}admin/permissions/add/submit" method="post">
+    <div class="control-group">
+        <label for="name">Name: </label>
+        <input class="input required" size="20" type="text" id="name" name="name" placeholder="Name of group">
+    </div>
+    <div class="control-group">
+    {modules}
+    </div>
+    <p>&nbsp;</p>
+    <div class="form-actions">
+        <input class="btn btn-info" type="submit" value="Add Group">
+    </div>
+</form>
+<script>
+$(document).ready(function(){
+    $("#pageform").validate();
+});
+</script>

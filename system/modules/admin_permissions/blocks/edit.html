@@ -1,0 +1,22 @@
+<h4>Edit Permissions Group</h4>
+<hr>
+{status}
+<form class="form-horizontal" id="pageform" action="{root_doc}admin/permissions/edit/submit" method="post">
+    <input type="hidden" name="id" value="{id}">
+    <div class="control-group">
+        <label for="name">Name: </label>
+        <input class="input required" size="20" type="text" id="name" name="name" value="{setname}">
+    </div>
+    <div class="control-group">
+    {modules}
+    </div>
+    <p>&nbsp;</p>
+    <div class="form-actions">
+        <input class="btn btn-info" type="submit" value="Update Group">
+    </div>
+</form>
+<script>
+$(document).ready(function(){
+    $("#pageform").validate();
+});
+</script>
