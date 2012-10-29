@@ -34,7 +34,7 @@ class Module {
         if (is_file($file)) {
             return file_get_contents($file);
         } else {
-            $file = PATH_MODULE_ROOT_ADDON . strtolower($trace[1]['class']) . '/blocks/' . $filename;
+            $file = PATH_MODULE_ROOT_ADDON . strtolower($class[1]) . '/blocks/' . $filename;
             if (is_file($file)) {
                 return file_get_contents($file);
             } else {
