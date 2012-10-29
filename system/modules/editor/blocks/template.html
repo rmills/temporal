@@ -9,7 +9,6 @@
     var blank_zone = "Enter New Content";
     
     function editor_pushUpdate(zone, content){
-        console.log(content);
         $.jGrowl("updating content, please wait", { life: 3000, speed:  'slow' });
         var post_data = {zone_data: content};
         var post_url = "http://{domain}{root_doc}update_zone/"+zone+"/{pid}";
@@ -35,6 +34,7 @@
                 }
                 $("#"+zone).html( content );
             }
+            
         }else{
             var content = $("#"+zone).html();
             if(content == ''){
@@ -60,6 +60,7 @@
             $("#zoneupdate_"+zone).click(function() {
                 editor_pushUpdate(zone, window['editor_'+zone].getData() );
             });
+            
         }
     }
     
