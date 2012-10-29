@@ -1,7 +1,7 @@
 <?php
 namespace Page;
 class Zpage extends Page {
-
+    public static $_isrestricted = true;
     static public $_data;
     static public $_status = 500;
     static public $_pid = 0;
@@ -11,7 +11,7 @@ class Zpage extends Page {
     );
 
     public static function __registar_callback() {
-
+        
         if (\CMS::allowed()) {
             \CMS::callstack_add('check_url', 10);
             if (\CMS::$_vars[0] == 'update_zone' && isset($_POST['zone_data'])) {

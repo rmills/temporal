@@ -3,6 +3,7 @@
 namespace Module;
 class Admin_permissions extends Module{
     private static $_pagemode = false;
+    public static $_isrestricted = true;
     private static $_status = false;
     private static $_action_complete = false;
     
@@ -93,11 +94,18 @@ class Admin_permissions extends Module{
     public static function add(){
         \Html::set('{admin_content}', self::block('add.html'));
         foreach(\CMS::$__modules as $v){
-            \Html::set('{modules}', '<label class="checkbox"><input type="checkbox" name="'.self::format_name($v).'" value="add">'.self::format_name($v).'</label>');
+            $classname = '\Module\\'.ucfirst($v[1]);
+            if($classname::$_isrestricted){
+                \Html::set('{modules}', '<label class="checkbox"><input type="checkbox" name="'.self::format_name($v).'" value="add">'.self::format_name($v).'</label>');
+            }
         }
         foreach(\CMS::$__pages as $v){
-            \Html::set('{modules}', '<label class="checkbox"><input type="checkbox" name="'.self::format_name($v).'" value="add">'.self::format_name($v).'</label>');
+            $classname = '\Page\\'.ucfirst($v[1]);
+            if($classname::$_isrestricted){
+                \Html::set('{modules}', '<label class="checkbox"><input type="checkbox" name="'.self::format_name($v).'" value="add">'.self::format_name($v).'</label>');
+            }
         }
+        \Html::set('{modules}');
         \Html::set('{setname}');
     }
     
@@ -115,24 +123,31 @@ class Admin_permissions extends Module{
 
             foreach(\CMS::$__modules as $v){
                 $check = false;
-                foreach($items as $v2){
-                    $name = self::format_name($v);
-                    if($v2 == $name){
-                        $check = 'checked="yes"';
+                $classname = '\Module\\'.ucfirst($v[1]);
+                if($classname::$_isrestricted){
+                    foreach($items as $v2){
+                        $name = self::format_name($v);
+                        if($v2 == $name){
+                            $check = 'checked="yes"';
+                        }
                     }
+                    \Html::set('{modules}', '<label class="checkbox"><input type="checkbox" name="'.$name.'" value="add" '.$check.' >'.$name.'</label>');
                 }
-                \Html::set('{modules}', '<label class="checkbox"><input type="checkbox" name="'.$name.'" value="add" '.$check.' >'.$name.'</label>');
             }
             foreach(\CMS::$__pages as $v){
                 $check = false;
-                foreach($items as $v2){
-                    $name = self::format_name($v);
-                    if($v2 == $name){
-                         $check = 'checked="yes"';
+                $classname = '\Page\\'.ucfirst($v[1]);
+                if($classname::$_isrestricted){
+                    foreach($items as $v2){
+                        $name = self::format_name($v);
+                        if($v2 == $name){
+                             $check = 'checked="yes"';
+                        }
                     }
+                    \Html::set('{modules}', '<label class="checkbox"><input type="checkbox" name="'.$name.'" value="add" '.$check.' >'.$name.'</label>');
                 }
-                \Html::set('{modules}', '<label class="checkbox"><input type="checkbox" name="'.$name.'" value="add" '.$check.' >'.$name.'</label>');
             }
+            \Html::set('{modules}');
         }else{
            \Html::set('{admin_content}', self::block('updated.html'));
         }
@@ -155,14 +170,14 @@ class Admin_permissions extends Module{
     public static function delete(){
         \Html::set('{admin_content}', self::block('delete.html'));
         $id = \CMS::$_vars[3];
-        if ($id !== '1') {
+        if ($id !== '1' && $id !== '2' ) {
             $sql = 'DELETE FROM `groups` WHERE `id` = \'' . \DB::clean($id) . '\' LIMIT 1';
             \DB::q($sql);
 
             $html = Notice::success('Group Deleted').'<div class="form-actions"><a class="btn btn-info" href="{root_doc}admin/permissions/">Return</a></div>';
             \Html::set('{admin_content}', $html);
         } else {
-            $html = '<h4>Failed</h4><hr /><p>Guest permissions can not be removed, you can only edit them.</p><div class="form-actions"><a class="btn btn-info" href="{root_doc}admin/permissions/">Return</a></div>';
+            $html = '<h4>Failed</h4><hr /><p>Default "public" and "loggedin" permissions can not be removed, you can only edit them.</p><div class="form-actions"><a class="btn btn-info" href="{root_doc}admin/permissions/">Return</a></div>';
             \Html::set('{admin_content}', $html);
         }
     }

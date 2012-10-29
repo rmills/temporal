@@ -7,7 +7,7 @@
  */
 namespace Page;
 class Login extends Page {
-
+    public static $_isrestricted = true;
     private static $_fail_strings = array(
         'Fail! Are you sure you<br />belong here?',
         'Nope, thats not vaild!',

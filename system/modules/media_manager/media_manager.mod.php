@@ -5,7 +5,7 @@ include 'upload.class.php';
 namespace Module;
 
 class Media_manager extends Module {
-
+    public static $_isrestricted = true;
     public static function __registar_callback() {
         if (\CMS::allowed()) {
             \CMS::callstack_add('set_nav', DEFAULT_CALLBACK_CREATE);

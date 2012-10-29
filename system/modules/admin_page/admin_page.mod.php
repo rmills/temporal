@@ -3,7 +3,7 @@
 namespace Module;
 
 class Admin_page extends Module {
-
+    public static $_isrestricted = true;
     private static $_pagemode = false;
     private static $_status = false;
     private static $_restricted_url = array('admin', 'edit', 'page', 'login', 'logout');

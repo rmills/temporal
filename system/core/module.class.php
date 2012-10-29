@@ -9,6 +9,7 @@
 namespace Module;
 
 class Module {
+    public static $_isrestricted = false;
 
     /**
      * Registar a callback with the core

@@ -3,7 +3,7 @@
 namespace Page;
 
 class Admin extends Page {
-
+    public static $_isrestricted = true;
     static public $_body = false;
     static public $_quicklinks = array();
     static public $_links = array();

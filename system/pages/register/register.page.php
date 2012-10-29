@@ -9,13 +9,15 @@ if (!defined('REGISTER_DEFAULT_GROUPS')) {
 }
 
 class Register extends Page {
-
+    public static $_isrestricted = true;
     private static $_error = '';
 
     public static function active() {
-        if (USER_TYPE == 'community') {
-            \CMS::callstack_add('setup', DEFAULT_CALLBACK_SETUP);
-            \CMS::callstack_add('parse', DEFAULT_CALLBACK_PARSE);
+        if(\CMS::allowed()){
+            if (USER_TYPE == 'community') {
+                \CMS::callstack_add('setup', DEFAULT_CALLBACK_SETUP);
+                \CMS::callstack_add('parse', DEFAULT_CALLBACK_PARSE);
+            }
         }
     }
 

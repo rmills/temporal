@@ -9,7 +9,8 @@
 namespace Page;
 
 class Page {
-
+    public static $_isrestricted = false;
+    
     /**
      * Load block for page
      * @param string $filename

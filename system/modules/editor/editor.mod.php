@@ -3,7 +3,7 @@
 namespace Module;
 
 class Editor extends Module {
-
+    public static $_isrestricted = true;
     public static function __registar_callback() {
         if (\CMS::allowed()) {
             \CMS::callstack_add('add_links', DEFAULT_CALLBACK_PARSE - 1);

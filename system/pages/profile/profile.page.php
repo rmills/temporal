@@ -1,15 +1,18 @@
 <?php
 namespace Page;
 class Profile extends Page {
+    public static $_isrestricted = true;
     private static $_error = '';
     private static $_type = 'private';
     private static $_userid = 0;
     public static $_status = false;
     
     public static function active(){
-        if(USER_TYPE == 'community'){
-            \CMS::callstack_add('setup', DEFAULT_CALLBACK_SETUP);
-            \CMS::callstack_add('parse', DEFAULT_CALLBACK_PARSE);
+        if(\CMS::allowed()){
+            if(USER_TYPE == 'community'){
+                \CMS::callstack_add('setup', DEFAULT_CALLBACK_SETUP);
+                \CMS::callstack_add('parse', DEFAULT_CALLBACK_PARSE);
+            }
         }
     }
     
