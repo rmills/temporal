@@ -259,8 +259,12 @@ class CMS {
 
     public static function init_active_page() {
         if (self::$_vars[0]) {
-            if (!call_user_func(array('\Page\\'.ucfirst(self::$_vars[0]), 'active'))) {
-            } else {
+            if(method_exists('\Page\\'.ucfirst(self::$_vars[0]), 'active')){
+                if (!call_user_func(array('\Page\\'.ucfirst(self::$_vars[0]), 'active'))) {
+                } else {
+                    call_user_func(array('\Page\\'.ucfirst(DEFAULT_PAGE_GUEST), 'active'));
+                }
+            }else{
                 call_user_func(array('\Page\\'.ucfirst(DEFAULT_PAGE_GUEST), 'active'));
             }
         } else {

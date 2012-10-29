@@ -1,8 +1,6 @@
 {status}
 <style>
-    #users-form{
-        width: 300px;
-    }
+
 </style>
 <div id="users-form">
 <form class="form-horizontal" id="pageform" action="{root_doc}admin/user/edit/submit" method="post">
@@ -22,15 +20,19 @@
         <input class="input password" size="20" type="text" id="password" placeholder="Password" name="password"/>
         <span class="help-block">*leave password blank not to change</span>
     </div>
-     <p>&nbsp;</p>
+    <p>&nbsp;</p>
     <p>User options:</p>
     <div class="control-group">
-        <label class="checkbox inline" for="password">Super User: </label>
-        <input type="checkbox" name="super_user" {setsuperuser} />
+        <label class="checkbox inline" for="super_user"><input type="checkbox" name="super_user" {setsuperuser} > Super User</label>
+    </div>
+    <p>&nbsp;</p>
+    <p>Group Permissions:</p>
+    <div class="control-group">
+    {groups}
     </div>
     <p>&nbsp;</p>
     <div class="form-actions">
-        <input class="btn btn-info" type="submit" value="Update User" />
+        <input class="btn btn-info" type="submit" value="Update User" />  <a class="btn btn-warning" href="{root_doc}admin/user/">Cancel</a>
     </div>
 </form>
 </div>

@@ -94,6 +94,11 @@ class Admin_user extends Module {
                 self::restore_user();
                 \Html::set('{userstitle}', 'Restore User');
                 break;
+            default:
+                self::$_pagemode = 'editlist';
+                self::edit_list();
+                \Html::set('{userstitle}', 'Manage Users');
+                break;
         }
 
         if (self::$_status) {
@@ -129,6 +134,7 @@ class Admin_user extends Module {
             } else {
                 \Html::set('{setsuperuser}');
             }
+            \Html::set('{groups}', self::build_groups_list( array(1,2) ));
             \Html::set('{status}');
         }
     }
@@ -136,7 +142,7 @@ class Admin_user extends Module {
     public static function add_user_submit() {
         $email = trim(strtolower($_POST['email']));
         $name = trim($_POST['name']);
-        $salt = Crypto::random_key();
+        $salt = \Crypto::random_key();
         $password = md5($salt . trim($_POST['password']) . $salt);
 
         $check = self::dup_email_check($email);
@@ -151,7 +157,15 @@ class Admin_user extends Module {
         } else {
             $super_user = 'no';
         }
-
+        
+        $groups = false;
+        foreach($_POST as $k=>$v){
+            if($v == 'add'){
+                $id = self::fetch_group_id($k);
+                $groups .= $id.',';
+            }
+        }
+        
         $sql = '
             INSERT INTO users (
                 `email`,
@@ -166,11 +180,11 @@ class Admin_user extends Module {
                 \'' . \DB::clean($password) . '\',
                 \'' . \DB::clean($salt) . '\',
                 \'' . $super_user . '\',
-                \'1\'
+                \''.$groups.'\'
 		)';
         \DB::q($sql);
         echo \DB::$_lasterror;
-        $html = '<h4>Success</h4><hr /><p>User "' . $email . '" created.</p><div class="form-actions"><a class="btn btn-info" href="{root_doc}admin/user/add/">Add User</a></div>';
+        $html = '<h4>Success</h4><hr /><p>User "' . $email . '" created.</p><div class="form-actions"><a class="btn" href="{root_doc}admin/user/add/">Add User</a> <a class="btn btn-info" href="{root_doc}admin/user/">Return</a></div>';
         \Html::set('{admin_content}', $html);
         self::$_action_complete = true;
     }
@@ -236,6 +250,7 @@ class Admin_user extends Module {
             $name = str_replace('"', '&quot;', $user->_data['name']);
             \Html::set('{setname}', $name);
             \Html::set('{uid}', $uid);
+            \Html::set('{groups}', self::build_groups_list($user->_data['groups']));
             if ($user->_data['super_user'] == 'yes') {
                 \Html::set('{setsuperuser}', 'checked="checked"');
             } else {
@@ -248,7 +263,7 @@ class Admin_user extends Module {
         $email = trim(strtolower($_POST['email']));
         $name = trim($_POST['name']);
 
-        $salt = Crypto::random_key();
+        $salt = \Crypto::random_key();
 
         $password = md5($salt . trim($_POST['password']) . $salt);
         $uid = $_POST['uid'];
@@ -265,6 +280,14 @@ class Admin_user extends Module {
         } else {
             $super_user = 'no';
         }
+        
+        $groups = false;
+        foreach($_POST as $k=>$v){
+            if($v == 'add'){
+                $id = self::fetch_group_id($k);
+                $groups .= $id.',';
+            }
+        }
 
         if ($_POST['password'] != '') {
             $sql = 'UPDATE `users` SET 
@@ -272,13 +295,15 @@ class Admin_user extends Module {
             `name` = \'' . \DB::clean($name) . '\',
             `password` = \'' . \DB::clean($password) . '\',
              `salt` = \'' . \DB::clean($salt) . '\',
-            `super_user` = \'' . \DB::clean($super_user) . '\'
+            `super_user` = \'' . \DB::clean($super_user) . '\',
+            `groups` = \'' . \DB::clean($groups) . '\'
             WHERE `uid` = \'' . \DB::clean($uid) . '\' LIMIT 1';
         } else {
             $sql = 'UPDATE `users` SET 
             `email` = \'' . \DB::clean($email) . '\',
             `name` = \'' . \DB::clean($name) . '\',
-            `super_user` = \'' . \DB::clean($super_user) . '\'
+            `super_user` = \'' . \DB::clean($super_user) . '\',
+            `groups` = \'' . \DB::clean($groups) . '\'
             WHERE `uid` = \'' . \DB::clean($uid) . '\' LIMIT 1';
         }
 
@@ -357,6 +382,36 @@ class Admin_user extends Module {
                 if ($uid != $v['uid']) {
                     return true;
                 }
+            }
+        }
+        return false;
+    }
+    
+    public static function build_groups_list($ids = array()){
+        $sql = 'SELECT * FROM `groups`';
+        $html = false;
+        $q = \DB::q($sql);
+        foreach ($q as $v) {
+            $check = false;
+            foreach($ids as $v2){
+                if($v['id'] == $v2 && !$check ){
+                    $check = 'checked="yes"';
+                    break;
+                }else{
+                    $check = false;
+                }
+            }
+            $html .= '<label class="checkbox"><input type="checkbox" name="'.$v['name'].'" value="add" '.$check.' >'.$v['name'].'</label>';
+        }
+        return $html;
+    }
+    
+    public static function fetch_group_id($name){
+        $sql = 'SELECT * FROM `groups` WHERE `name` = \''.\DB::clean($name).'\' LIMIT 1';
+        $q = \DB::q($sql);
+        if(is_array($q)){
+            foreach ($q as $v) {
+                return $v['id'];
             }
         }
         return false;

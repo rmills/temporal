@@ -35,12 +35,13 @@ class User {
         foreach($array as $key=>$value){
             $this->_data[$key] = $value;
         }
-
+        
         $this->_super_user = $this->_data['super_user'];
 
         if($this->_data['super_user'] != 'yes'){
             $_SESSION['user_allow_ext'] = 'no';
             $permission_groups = explode(',',$this->_data['groups']); 
+            $this->_data['groups'] = $permission_groups;
             foreach($permission_groups as $group){
                 $sql = 'SELECT modules FROM `groups` WHERE `id` = "'.DB::clean($group).'" LIMIT 1';
                 $response = DB::q($sql);
