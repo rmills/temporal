@@ -207,7 +207,7 @@ class Admin_page extends Module {
             $pid = $_POST['pid'];
         }
 
-        $zdata = Zpage::fetch_by_id($pid, true);
+        $zdata = \Page\Zpage::fetch_by_id($pid, true);
 
 
 
