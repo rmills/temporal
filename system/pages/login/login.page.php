@@ -7,6 +7,7 @@
  */
 namespace Page;
 class Login extends Page {
+    public static $_error = false;
     public static $_isrestricted = true;
     private static $_fail_strings = array(
         'Fail! Are you sure you<br />belong here?',
@@ -39,8 +40,8 @@ class Login extends Page {
         \Html::set('{login_error}');
         if (isset($_POST['do_login'])) {
             if (!self::auth($_POST['email'], $_POST['pass'])) {
-                if (\CMS::$_user->_error) {
-                    \Html::set('{login_error}', '<p class="alert alert-error">' . \CMS::$_user->_error . '</p>');
+                if (self::$_error) {
+                    \Html::set('{login_error}', '<p class="alert alert-error">' . self::$_error . '</p>');
                 } else {
                     \Html::set('{login_error}', '<p class="alert alert-error">' . self::$_fail_strings[rand(0, count(self::$_fail_strings) - 1)] . '</p>');
                 }
@@ -67,7 +68,7 @@ class Login extends Page {
                     \CMS::$_user = new \User($response[0]['uid']);
                     return true;
                 } elseif ($response[0]['status'] == 'new') {
-                    $this->_error = 'You have not actived your account. Please check your email address';
+                    self::$_error = 'You have not actived your account. Please check your email address';
                 }
             } else {
                 \CMS::log('User', 'password does not match email');

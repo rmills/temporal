@@ -22,7 +22,7 @@ class Sendsmtp extends Module {
      */
     public static function send($to, $subject, $body, $attachments = array()) {
         if (ENABLE_MAIL) {
-            $mail = new PHPMailer();
+            $mail = new \PHPMailer();
 
             //$body             = preg_replace('/[\]/','',$body);
 

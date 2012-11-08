@@ -171,23 +171,7 @@ class CMS {
             $folder->close();
         }
 
-        if (is_dir(PATH_MODULE_ROOT_ADDON)) {
-            foreach ($folders_addon as $v) {
-                $folder = dir(PATH_MODULE_ROOT_ADDON . $v);
-                while (false !== ($entry = $folder->read())) {
-                    if (strpos($entry, '.usermod.') !== false) {
-                        $path = PATH_MODULE_ROOT_ADDON . $v . '/' . $entry;
-                        if (!is_file(PATH_MODULE_ROOT_ADDON . $v . '/ignore.txt')) {
-                            self::log('CMS', 'CMS::init_usermod addon() found: ' . $path);
-                            include $path;
-                        } else {
-                            self::log('CMS', 'CMS::init_usermod addon() ignoring: ' . $path);
-                        }
-                    }
-                }
-                $folder->close();
-            }
-        }
+        
     }
     
     

@@ -169,7 +169,7 @@ class Zpage extends Page {
 			LIMIT 1
 		';
         \DB::q($sql);
-        Json::$_body .= json_encode(array('status' => 'ok'));
+        \Json::$_body .= json_encode(array('status' => 'ok'));
     }
 
 }

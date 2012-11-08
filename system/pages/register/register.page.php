@@ -46,7 +46,7 @@ class Register extends Page {
                 $key = \CMS::$_vars[2];
             }
             if (is_numeric($key)) {
-                $try = self::check_key(\CMS::$_vars[2]);
+                $try = self::check_key($key);
                 if ($try) {
                     \Html::set('{content}', self::block('key_valid.html'));
                 } else {
@@ -76,7 +76,7 @@ class Register extends Page {
             $body = self::block('email.html');
             $body = str_replace('{domain}', DEFAULT_PROTOCOL . DOMAIN, $body);
             $body = str_replace('{code}', $key, $body);
-            $try = Sendsmtp::send($_POST['email'], REGISTER_SITENAME, $body);
+            $try = \Module\Sendsmtp::send($_POST['email'], REGISTER_SITENAME, $body);
             if ($try) {
                 return true;
             } else {
@@ -92,7 +92,7 @@ class Register extends Page {
         $list = \DB::q($sql);
         if (is_array($list)) {
             foreach ($list as $v) {
-                if ($key == $v['confirm_key']) {
+                if ($key == $v['activation_code']) {
                     self::activate_account($v['uid']);
                     return true;
                 }

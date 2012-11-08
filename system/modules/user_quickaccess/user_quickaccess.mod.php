@@ -49,7 +49,8 @@ class User_quickaccess extends Module {
             <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-            <li><a href="{root_doc}profile">profile</a></li>
+            <li><a href="{root_doc}profile">view profile</a></li>
+            <li><a href="{root_doc}profile/edit">edit profile</a></li>
             <li><a href="{root_doc}logout">logout</a></li>
             </ul>
             </div>
