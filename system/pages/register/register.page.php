@@ -75,6 +75,7 @@ class Register extends Page {
         if ($try) {
             $body = self::block('email.html');
             $body = str_replace('{domain}', DEFAULT_PROTOCOL . DOMAIN, $body);
+            $body = str_replace('{site_name}', SITE_NAME, $body);
             $body = str_replace('{code}', $key, $body);
             $try = \Module\Sendsmtp::send($_POST['email'], REGISTER_SITENAME, $body);
             if ($try) {

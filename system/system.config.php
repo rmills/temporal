@@ -119,12 +119,8 @@ if(!defined('PATH_CONTENT_TYPES_ROOT_ADDON')){
     define('PATH_CONTENT_TYPES_ROOT_ADDON', 'site/content_types/');
 }
 
-if(!defined('PATH_MEDIA_LOCAL_ROOT')){
-    define('PATH_MEDIA_LOCAL_ROOT', 'D:/!!git/temporal/system/upload/');
-}
-
-if(!defined('PATH_MEDIA_REL_ROOT')){
-    define('PATH_MEDIA_REL_ROOT', '/system/upload/');
+if(!defined('PATH_MEDIA')){
+    define('PATH_MEDIA', 'site/media/');
 }
 
 if(!defined('DEFAULT_PAGE_AUTH')){
