@@ -315,9 +315,7 @@ class Admin_user extends Module {
 
     public static function confirmdelete_user() {
         $uid = \CMS::$_vars[3];
-        $user = new \User();
-        $user->init($uid, false);
-
+        $user = new \User($uid );
 
         $html = '<h4>Confirm Delete</h4><hr /><p>Are you sure you want to delete the user: "' . $user->_data['email'] . '"?</p><div class="form-actions"><a class="btn btn-warning" href="{root_doc}admin/user/delete/' . $uid . '">Delete</a> <a class="btn btn-info" href="{root_doc}admin/user/editlist/">Cancel</a></div>';
         \Html::set('{admin_content}', $html);
@@ -339,8 +337,7 @@ class Admin_user extends Module {
 
     public static function suspend_user() {
         $uid = \CMS::$_vars[3];
-        $user = new \User();
-        $user->init($uid, false);
+        $user = new \User($uid);
         if ($uid !== '1') {
             if ($uid == \CMS::$_user->_data['uid']) {
                 $html = '<h4>Failed</h4><hr /><p>You can not suspend yourself.</p><div class="form-actions"><a class="btn btn-info" href="{root_doc}admin/user/editlist/">Return</a></div>';
@@ -364,8 +361,7 @@ class Admin_user extends Module {
 
     public static function restore_user() {
         $uid = \CMS::$_vars[3];
-        $user = new \User();
-        $user->init($uid, false);
+        $user = new \User($uid);
         $sql = 'UPDATE `users` SET `status` = \'active\' WHERE `uid` = \'' . \DB::clean($uid) . '\' LIMIT 1';
         \DB::q($sql);
         $html = '<h4>Success</h4><hr /><p>User ' . $user->_data['email'] . ' access restored.</p><div class="form-actions"><a class="btn btn-info" href="{root_doc}admin/user/editlist/">Return</a></div>';
