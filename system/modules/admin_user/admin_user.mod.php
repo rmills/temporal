@@ -315,7 +315,7 @@ class Admin_user extends Module {
 
     public static function confirmdelete_user() {
         $uid = \CMS::$_vars[3];
-        $user = new User();
+        $user = new \User();
         $user->init($uid, false);
 
 
@@ -339,7 +339,7 @@ class Admin_user extends Module {
 
     public static function suspend_user() {
         $uid = \CMS::$_vars[3];
-        $user = new User();
+        $user = new \User();
         $user->init($uid, false);
         if ($uid !== '1') {
             if ($uid == \CMS::$_user->_data['uid']) {
@@ -364,7 +364,7 @@ class Admin_user extends Module {
 
     public static function restore_user() {
         $uid = \CMS::$_vars[3];
-        $user = new User();
+        $user = new \User();
         $user->init($uid, false);
         $sql = 'UPDATE `users` SET `status` = \'active\' WHERE `uid` = \'' . \DB::clean($uid) . '\' LIMIT 1';
         \DB::q($sql);
