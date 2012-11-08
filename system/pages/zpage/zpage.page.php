@@ -1,6 +1,9 @@
 <?php
+
 namespace Page;
+
 class Zpage extends Page {
+
     public static $_isrestricted = true;
     static public $_data;
     static public $_status = 500;
@@ -11,7 +14,7 @@ class Zpage extends Page {
     );
 
     public static function __registar_callback() {
-        
+
         if (\CMS::allowed()) {
             \CMS::callstack_add('check_url', 10);
             if (\CMS::$_vars[0] == 'update_zone' && isset($_POST['zone_data'])) {
@@ -150,24 +153,24 @@ class Zpage extends Page {
         $zdate = date("m-d-Y");
         $zdata = urlencode(trim($zdata));
         $sql = '
-		INSERT INTO zones (
-			`z_data`,
-			`z_creation`
-		) VALUES (
-			\'' . \DB::clean($zdata) . '\',
-			\'' . $zdate . '\'
-		)';
+            INSERT INTO zones (
+                `z_data`,
+                `z_creation`
+            ) VALUES (
+                \'' . \DB::clean($zdata) . '\',
+                \'' . $zdate . '\'
+            )';
         \DB::q($sql);
 
 
 
         $sql = '
-			UPDATE `pages` SET 
-				`' . \DB::clean($zid) . '` = \'' . \DB::clean(\DB::$_lastid) . '\'
-			WHERE 
-				`pid` = \'' . \DB::clean($pid) . '\' 
-			LIMIT 1
-		';
+            UPDATE `pages` SET 
+                    `' . \DB::clean($zid) . '` = \'' . \DB::clean(\DB::$_lastid) . '\'
+            WHERE 
+                    `pid` = \'' . \DB::clean($pid) . '\' 
+            LIMIT 1
+	';
         \DB::q($sql);
         \Json::$_body .= json_encode(array('status' => 'ok'));
     }
