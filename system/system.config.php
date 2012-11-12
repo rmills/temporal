@@ -63,7 +63,6 @@ if(!defined('DEFAULT_USER')){
 }
 
 if(!defined('PATH_BASE')){
-    #Path to layout folder
     define('PATH_BASE', '/');
 }
 
@@ -121,6 +120,10 @@ if(!defined('PATH_CONTENT_TYPES_ROOT_ADDON')){
 
 if(!defined('PATH_MEDIA')){
     define('PATH_MEDIA', 'site/media/');
+}
+
+if(!defined('CACHE_PATH')){
+    define('CACHE_PATH', PATH_MEDIA.'cache/');
 }
 
 if(!defined('DEFAULT_PAGE_AUTH')){
