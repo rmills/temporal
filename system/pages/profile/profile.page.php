@@ -5,7 +5,7 @@ class Profile extends Page {
     private static $_error = '';
     private static $_type = 'private';
     private static $_userid = 0;
-    public static $_status = false;
+    public static $_status = array();
     
     public static function active(){
         if(\CMS::allowed()){
@@ -101,7 +101,10 @@ class Profile extends Page {
     
     private static function build_edit(){
         $html = self::block('edit.html');
-        $html = str_replace('{status}', self::$_status, $html );
+        foreach(self::$_status as $v){
+            $html = str_replace('{status}', $v.'{status}', $html );
+        }
+        $html = str_replace('{status}', '', $html );
         $html = str_replace('{setname}', \CMS::$_user->_data['name'], $html );
         $html = str_replace('{setemail}', \CMS::$_user->_data['email'], $html );
         
@@ -128,12 +131,12 @@ class Profile extends Page {
     
     private static function submit_edit(){
         if(!self::dup_email_check($_POST['email'], $_SESSION['user'])){
-            self::$_status = '<div class="alert alert-error">Email address already in use.</div>';
+            self::$_status[] = '<div class="alert alert-error">Email address already in use.</div>';
             return false;
         }
         
         if(!self::dup_user_check($_POST['name'], $_SESSION['user'])){
-            self::$_status = '<div class="alert alert-error">Username address already in use.</div>';
+            self::$_status[] = '<div class="alert alert-error">Username address already in use.</div>';
             return false;
         }
         $sql = 'UPDATE `users` SET 
@@ -141,7 +144,7 @@ class Profile extends Page {
             `name` = \'' . \DB::clean($_POST['name']) . '\'
             WHERE `uid` = \'' . \DB::clean($_SESSION['user']) . '\' LIMIT 1';
         \DB::q($sql);
-        self::$_status = '<div class="alert alert-block">Profile Updated</div>';
+        self::$_status[] = '<div class="alert alert-block">Profile Updated</div>';
         $content = array();
         foreach(\CMS::$_user->_modules as $usermod){
             $usermod->update();

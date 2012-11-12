@@ -68,7 +68,7 @@ class Image {
         return false;
     }
 
-    private function check_folders() {
+    public function check_folders() {
 
         if (!is_dir(CACHE_PATH)) {
             echo CACHE_PATH;

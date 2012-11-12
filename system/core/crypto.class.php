@@ -120,5 +120,14 @@ class Crypto {
         }
         return $result;
     }
+    
+    public static function random_filename($len = 15) {
+        $result = "";
+        $charPool = '0123456789abcdefghijklmnopqrstuvwxyz';
+        for ($p = 0; $p < $len; $p++) {
+            $result .= $charPool[mt_rand(0, strlen($charPool) - 1)];
+        }
+        return $result;
+    }
 
 }
