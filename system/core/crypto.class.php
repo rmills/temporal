@@ -129,5 +129,14 @@ class Crypto {
         }
         return $result;
     }
+    
+    public static function random_secure_key($len = 10) {
+        $result = "";
+        $charPool = '0123456789abcdefghijklmnopqrstuvwxyz';
+        for ($p = 0; $p < $len; $p++) {
+            $result .= $charPool[mt_rand(0, strlen($charPool) - 1)];
+        }
+        return $result;
+    }
 
 }
