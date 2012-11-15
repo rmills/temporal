@@ -184,7 +184,7 @@ class Admin_user extends Module {
 		)';
         \DB::q($sql);
         echo \DB::$_lasterror;
-        $html = '<h4>Success</h4><hr /><p>User "' . $email . '" created.</p><div class="form-actions"><a class="btn" href="{root_doc}admin/user/add/">Add User</a> <a class="btn btn-info" href="{root_doc}admin/user/">Return</a></div>';
+        $html = '<h4>Success</h4><hr /><p>User "' . $email . '" created.</p><div class="form-actions"> <a class="btn btn-info" href="{root_doc}admin/user/">Return</a></div>';
         \Html::set('{admin_content}', $html);
         self::$_action_complete = true;
     }
