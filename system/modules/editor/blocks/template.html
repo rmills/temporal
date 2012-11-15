@@ -56,7 +56,9 @@
             if(document.getElementById(zone)){
                 window['editor_'+zone] = CKEDITOR.inline( document.getElementById( "edit-"+zone ) );
             }
-            CKFinder.setupCKEditor( window['editor_'+zone], { basePath : '/site/modules/media/assets/', skin : 'v1' });
+            if(CKFinder){
+                CKFinder.setupCKEditor( window['editor_'+zone], { basePath : '/site/modules/media/assets/', skin : 'v1' });
+            }
             $("#zoneupdate_"+zone).click(function() {
                 editor_pushUpdate(zone, window['editor_'+zone].getData() );
             });
