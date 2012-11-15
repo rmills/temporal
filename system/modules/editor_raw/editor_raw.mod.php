@@ -13,7 +13,7 @@ class Editor_raw extends Module {
     public static function add_links() {
         \Html::set('{scripts}', '<script src="{root_doc}system/inc/js/tmpl.min.js" type="text/javascript"></script>');
         if (\CMS::$_page_type == 'zpage') {
-            \Admin::add_quick_link('<li><a id="raw-edit-button" href="#">Raw Editor</a></li>');
+            \Page\Admin::add_quick_link('<li><a id="raw-edit-button" href="#">Raw Editor</a></li>');
             \Html::set('{footer}', self::block('template.html'));
         }
     }
