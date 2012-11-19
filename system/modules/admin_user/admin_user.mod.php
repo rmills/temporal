@@ -184,7 +184,7 @@ class Admin_user extends Module {
 		)';
         \DB::q($sql);
         echo \DB::$_lasterror;
-        $html = '<h4>Success</h4><hr /><p>User "' . $email . '" created.</p><div class="form-actions"><a class="btn" href="{root_doc}admin/user/add/">Add User</a> <a class="btn btn-info" href="{root_doc}admin/user/">Return</a></div>';
+        $html = '<h4>Success</h4><hr /><p>User "' . $email . '" created.</p><div class="form-actions"> <a class="btn btn-info" href="{root_doc}admin/user/">Return</a></div>';
         \Html::set('{admin_content}', $html);
         self::$_action_complete = true;
     }
@@ -250,7 +250,8 @@ class Admin_user extends Module {
             $name = str_replace('"', '&quot;', $user->_data['name']);
             \Html::set('{setname}', $name);
             \Html::set('{uid}', $uid);
-            \Html::set('{groups}', self::build_groups_list($user->_data['groups']));
+            $list = explode(',', $user->_data['groups']);
+            \Html::set('{groups}', self::build_groups_list($list));
             if ($user->_data['super_user'] == 'yes') {
                 \Html::set('{setsuperuser}', 'checked="checked"');
             } else {
