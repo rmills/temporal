@@ -10,6 +10,9 @@
 </script>
 <script type="text/javascript">
     var zones = ["z1", "z2", "z3", "z4", "z5", "z6", "z7", "z8", "z9", "z10", "z11", "z12"];
+    if(zone_content == undefined){
+        var zone_content = {z1:"", z2:"", z3:"", z4:"", z5:"", z6:"", z7:"", z8:"", z9:"", z10:"", z11:"", z12:""};
+    }
     var raw_editor_open = false;
     
     function push_update(zone, content){
@@ -29,43 +32,64 @@
         });
     }
     
-    function toggle_raw_editor (zone, mode){
+    function toggle_raw_editor (zone, mode, closeonly){
+    
+        if(editor_open && !closeonly){
+            try{
+                editor_EnableEditorZones(true);
+            }catch(e){};
+        }
+    
         if(mode){
-            $("#"+zone).html( $("#editor-"+zone).val() );
+            attach_raw_editor(zone);
         }else{
-            var content = $("#"+zone).html();
-            var data = {
-                "zone": zone,
-                "zone_data": content
-            }
-            var result = tmpl("tmpl-form", data);
-            $("#"+zone).html( result );
-            $("#editor-"+zone).width( $("#"+zone).parent().width() );
-            $("#editor-"+zone).height( 400 );
-            
-            $("#zoneupdate_"+zone).click(function() {
-                push_update(zone, $("#editor-"+zone).val() );
-            });
+            $("#"+zone).html( $("#editor-"+zone).val() );
         }
     }
     
-    function enable_raw_zones(){
-        for (x in zones){
-            toggle_raw_editor(zones[x], raw_editor_open);
-        }
+    function enable_raw_zones(closeonly){
+        
+        
         if(raw_editor_open){
+            $('#raw-edit-button').html("Enable Raw Editor");
             raw_editor_open = false;
         }else{
+            $('#raw-edit-button').html("Disable Raw Editor");
             raw_editor_open = true;
+        }
+        
+        for (x in zones){
+            toggle_raw_editor(zones[x], raw_editor_open, closeonly);
         }
     }
     
     
+    function attach_raw_editor(zone){
+        var content = $("#"+zone).html();
+        var data = {
+            "zone": zone,
+            "zone_data": content
+        }
+        var result = tmpl("tmpl-form", data);
+        $("#"+zone).html( result );
+        $("#editor-"+zone).width( $("#"+zone).parent().width() );
+        $("#editor-"+zone).height( 400 );
+
+        $("#zoneupdate_"+zone).click(function() {
+            push_update(zone, $("#editor-"+zone).val() );
+        });
+    }
     
     $(document).ready(function() {
         $("#raw-edit-button").click(function() {
             enable_raw_zones();
         });
+        for (x in zones){
+            if(zone_content[zones[x]] == ''){
+                var content = $("#"+zones[x]).html();
+                zone_content[zones[x]] = content;
+            }
+        }
     });
     
 </script>

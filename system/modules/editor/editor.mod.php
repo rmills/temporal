@@ -16,7 +16,7 @@ class Editor extends Module {
             \Html::set('{scripts}', '<script src="{root_doc}system/modules/editor/assets/ckeditor.js" type="text/javascript"></script>');
             \Html::set('{scripts}', '<script src="{root_doc}system/modules/editor/assets/config.js" type="text/javascript"></script>');
             //\Html::set('{scripts}', '<script src="{root_doc}system/modules/media/assets/ckfinder.js" type="text/javascript"></script>');
-            \Page\Admin::add_quick_link('<li><a id="editor-edit-button" href="#">Enable Editor</a></li>');
+            \Page\Admin::add_quick_link('<li><a id="editor-edit-button" href="#">Enable Rich Editor</a></li>');
             \Html::set('{footer}', self::block('template.html'));
         }
     }
