@@ -6,42 +6,123 @@
  * Core CMS class
  */
 class CMS {
-
+    
+    /**
+     * Stores all dyn config vars
+     * @var array
+     */
     static public $_config;
+    
+    /**
+     * URI Vars
+     * 
+     * Example:
+     * /avar/avar2
+     * [0] avar
+     * [1] avar
+     * @var array
+     */
     static public $_vars;
+    
+    /**
+     * Sets the page, all pages must set this
+     * zpage etc
+     * @var string
+     */
     static public $_page_type = false;
+    
+    /**
+     * Sets the page content_type
+     * only html, json supported by default
+     * @var string 
+     */
     static public $_content_type = false;
-    static private $__log = array();
-    static private $__time;
-    static private $__callstack = array();
+    
+    /**
+     * Used to store a stack of currently loaded modules
+     * This should never be changed outside of the CMS class.
+     * @var array 
+     */
     static public $__modules = array();
+    
+    /**
+     * Used to store a stack of currently loaded pages
+     * This should never be changed outside of the CMS class.
+     * @var array 
+     */
     static public $__pages = array();
+    
+    /**
+     * Used to store a stack of currently loaded user mods
+     * This should never be changed outside of the CMS class.
+     * @var array 
+     */
     static public $_usermod = array();
+    
+    /**
+     * User Object. Loads the User() object for the loaded users. Will
+     * default to the guest user when a user is not logged in.
+     * @var \User() 
+     */
     static public $_user = false;
+    
+    /**
+     * For CacheDB()
+     * 
+     * Set in your page mod if a pages content should be cached. Use this carefully.
+     * @var bool 
+     */
     static public $_cacheable = false;
+    
+    /**
+     * Set block cache type. If false the whole page will be cached and display
+     * without the engine parsing it. With block enabled the page mod must load 
+     * via \CacheDB($URI) then set it. This should be used with elements of the
+     * page must loaded dynmaticly like anything related to user or community 
+     * login type.
+     * @var bool 
+     */
     static public $_cacheblock = false;
+    
+    /**
+     * Event Log, used internaly only
+     * @var array 
+     */
+    static private $__log = array();
+    
+    /**
+     * Do not use. This has replace in favor of BUILD_TIME
+     * @var int 
+     */
+    static private $__time;
+    
+    /**
+     * DO NOT MODIFY, this stores function calls and should never be modified
+     * unless you really understand the system.
+     * @var array 
+     */
+    static private $__callstack = array();
 
-//////////////////////////////////
-//
-//     Init Methods
-//
-//////////////////////////////////    
-
+    /**
+     * Init CMS system
+     * @param array $config
+     */
     public static function init($config = array()) {
         self::$_config = $config;
-
         self::init_vars();
         self::init_content_types();
         self::init_pages();
         self::init_modules();
         self::init_usermod();
         self::init_user();
-
         self::init_modules_callbacks();
         self::init_page_callbacks();
         self::init_active_page();
     }
-
+    
+    /**
+     * Init the URI vars into the \CMS::$_vars array
+     */
     private static function init_vars() {
         foreach (self::$_config['vars'] as $v) {
             self::$_vars[] = false;
@@ -56,10 +137,7 @@ class CMS {
     }
 
     /**
-     * Used to load modules.
-     * 
-     * @param bool $autoload
-     * @param array $modulestack 
+     * Used to load files and add them to the callstack
      */
     public static function init_modules() {
         self::log('CMS', 'CMS::init_modules() searching: ' . PATH_MODULE_ROOT);
@@ -72,6 +150,7 @@ class CMS {
                 $folders[] = $v;
             }
         }
+        
         if (is_dir(PATH_MODULE_ROOT_ADDON)) {
             self::log('CMS', 'CMS::init_modules addons() searching: ' . PATH_MODULE_ROOT_ADDON);
             $folders_addon = array();
@@ -82,9 +161,7 @@ class CMS {
                 }
             }
         }
-
-
-
+        
         foreach ($folders as $v) {
             $folder = dir(PATH_MODULE_ROOT . $v);
             while (false !== ($entry = $folder->read())) {
@@ -124,10 +201,7 @@ class CMS {
     
     
     /**
-     * Used to load modules.
-     * 
-     * @param bool $autoload
-     * @param array $modulestack 
+     * Used to load modules and add them to the callstack
      */
     public static function init_usermod() {
         self::log('CMS', 'CMS::init_usermod() searching: ' . PATH_USERMOD_ROOT);
@@ -139,6 +213,7 @@ class CMS {
                 $folders[] = $v;
             }
         }
+        
         if (is_dir(PATH_USERMOD_ROOT_ADDON)) {
             self::log('CMS', 'CMS::init_usermod addons() searching: ' . PATH_USERMOD_ROOT_ADDON);
             $folders_addon = array();
@@ -150,8 +225,6 @@ class CMS {
             }
         }
 
-
-        
         foreach ($folders as $v) {
             $folder = dir(PATH_USERMOD_ROOT . $v);
             while (false !== ($entry = $folder->read())) {
@@ -188,8 +261,11 @@ class CMS {
         
     }
     
-    
-
+    /**
+     * Call all modules __registar_callback() method
+     * 
+     * In the future this will be repaced with reg system similar to usermods.
+     */
     public static function init_modules_callbacks() {
         foreach (self::$__modules as $v) {
             include($v[0]);
@@ -200,10 +276,10 @@ class CMS {
     }
 
     /**
-     * Used to load modules.
+     * Load the content types
      * 
-     * @param bool $autoload
-     * @param array $modulestack 
+     * This has only been tested with Html and Json parsers, still not fully tested
+     * for new types.
      */
     public static function init_content_types() {
         self::log('CMS', 'CMS::init_content_types() searching: ' . PATH_CONTENT_TYPES_ROOT);
@@ -254,27 +330,9 @@ class CMS {
             }
         }
     }
-
-    public static function init_active_page() {
-        if (self::$_vars[0]) {
-            if(method_exists('\Page\\'.ucfirst(self::$_vars[0]), 'active')){
-                if (!call_user_func(array('\Page\\'.ucfirst(self::$_vars[0]), 'active'))) {
-                } else {
-                    call_user_func(array('\Page\\'.ucfirst(DEFAULT_PAGE_GUEST), 'active'));
-                }
-            }else{
-                call_user_func(array('\Page\\'.ucfirst(DEFAULT_PAGE_GUEST), 'active'));
-            }
-        } else {
-            call_user_func(array('\Page\\'.ucfirst(DEFAULT_PAGE_GUEST), 'active'));
-        }
-    }
-
+    
     /**
-     * Used to load pages
-     * 
-     * @param bool $autoload
-     * @param array $modulestack 
+     * Used to load pages and stack them into the callstack.
      */
     public static function init_pages() {
         self::log('CMS', 'CMS::init_pages() searching: ' . PATH_PAGE_ROOT);
@@ -310,6 +368,7 @@ class CMS {
             }
             $folder->close();
         }
+        
         if (is_dir(PATH_PAGE_ROOT_ADDON)) {
             foreach ($folders_addon as $v) {
                 $folder = dir(PATH_PAGE_ROOT_ADDON . $v);
@@ -325,7 +384,29 @@ class CMS {
             }
         }
     }
-
+    
+    /**
+     * Calls the active page based on URI, if that fails it calls the default
+     * page set via DEFAULT_PAGE_GUEST
+     */
+    public static function init_active_page() {
+        if (self::$_vars[0]) {
+            if(method_exists('\Page\\'.ucfirst(self::$_vars[0]), 'active')){
+                if (!call_user_func(array('\Page\\'.ucfirst(self::$_vars[0]), 'active'))) {
+                } else {
+                    call_user_func(array('\Page\\'.ucfirst(DEFAULT_PAGE_GUEST), 'active'));
+                }
+            }else{
+                call_user_func(array('\Page\\'.ucfirst(DEFAULT_PAGE_GUEST), 'active'));
+            }
+        } else {
+            call_user_func(array('\Page\\'.ucfirst(DEFAULT_PAGE_GUEST), 'active'));
+        }
+    }
+    
+    /**
+     * Load the user based on session data, if no user set, it will set DEFAULT_USER
+     */
     public static function init_user() {
         if (!isset($_SESSION['user'])) {
             self::$_user = new User(DEFAULT_USER);
@@ -340,7 +421,13 @@ class CMS {
             }
         }
     }
-
+    
+    /**
+     * Call all page __registar_callback() methods
+     * 
+     * This should not be used much, for better semantics methods called outside
+     * a page should be in there own module. Its only here for legacy modules.
+     */
     public static function init_page_callbacks() {
         foreach (self::$__pages as $v) {
             include($v[0]);
@@ -350,16 +437,9 @@ class CMS {
         }
     }
 
-//////////////////////////////////
-//
-//     Callback Methods
-//
-//////////////////////////////////
-
     /**
      * Sets a callback
      * 
-     * @param class $class
      * @param string $method name of method
      * @param int $loop index of the callback
      */
@@ -377,10 +457,8 @@ class CMS {
     }
 
     /**
-     * runs the callback static
+     * runs the callback stack
      * 
-     * @param class $class
-     * @param string $method name of method
      * @param int $loop index of the callback
      */
     public static function callstack_run($loop) {
@@ -396,6 +474,7 @@ class CMS {
                 }
             }
         }
+        /* this nest limit is only with some debuggers */
         if ($loop < 80) {
             self::callstack_run($loop + 1);
         } else {
@@ -411,42 +490,38 @@ class CMS {
     public static function callstack_display_html() {
         $html = array();
         $html[] = '
-			<div style="float: left; margin: 10px; width: 400px">
-			<table style="width: 400px" id="system-callstack">
-				<thead>
-					<tr>
-						<th>loop</th>
-						<th>class</th>
-						<th>method</th>
-					</tr>
-				</thead>
-				<tbody>';
+            <div style="float: left; margin: 10px; width: 400px">
+            <table style="width: 400px" id="system-callstack">
+            <thead>
+                <tr>
+                    <th>loop</th>
+                    <th>class</th>
+                    <th>method</th>
+                </tr>
+            </thead>
+            <tbody>
+        ';
         foreach (self::$__callstack as $key => $v) {
             foreach ($v as $v2) {
                 $html[] = '
-				<tr>
-					<td>' . $key . '</td>
-					<td>' . $v2[0] . '</td>
-					<td>' . $v2[1] . '</td>
-				</tr>';
+                    <tr>
+                        <td>' . $key . '</td>
+                        <td>' . $v2[0] . '</td>
+                        <td>' . $v2[1] . '</td>
+                    </tr>
+                ';
             }
         }
         $html[] = '</tbody></table></div>';
         $html[] = '
-			<script type="text/javascript">
-			  oTable = $("#system-callstack").dataTable({
-					"bJQueryUI": true
-				});
-			</script>
-		';
+            <script type="text/javascript">
+                oTable = $("#system-callstack").dataTable({
+                    "bJQueryUI": true
+                });
+            </script>
+        ';
         return implode(PHP_EOL, $html);
     }
-
-//////////////////////////////////
-//
-//     Log Methods
-//
-//////////////////////////////////
 
     /**
      * Log event
@@ -463,7 +538,7 @@ class CMS {
      */
     public static function log($module, $details, $level = 0) {
         self::$__log[] = array(
-            ( microtime() - self::$__time ),
+            ( microtime() - BUILD_TIME ),
             $module,
             $details,
             $level
@@ -478,44 +553,45 @@ class CMS {
     public static function log_display_html() {
         $html = array();
         $html[] = '
-			<div style="float: left; margin: 10px; width: 900px">
-			<table style="width: 900px" id="system-log">
-				<thead>
-					<tr>
-						<th>time</th>
-						<th>module</th>
-						<th>details</th>
-						<th>level</th>
-					</tr>
-				</thead>
-				<tbody>';
+            <div style="float: left; margin: 10px; width: 900px">
+            <table style="width: 900px" id="system-log">
+                <thead>
+                    <tr>
+                        <th>time</th>
+                        <th>module</th>
+                        <th>details</th>
+                        <th>level</th>
+                    </tr>
+                </thead>
+                <tbody>
+                ';
         foreach (self::$__log as $v) {
             $html[] = '
-				<tr>
-					<td>' . $v[0] . '</td>
-					<td>' . $v[1] . '</td>
-					<td>' . $v[2] . '</td>
-					<td>' . $v[3] . '</td>
-				</tr>';
+                <tr>
+                    <td>' . $v[0] . '</td>
+                    <td>' . $v[1] . '</td>
+                    <td>' . $v[2] . '</td>
+                    <td>' . $v[3] . '</td>
+                </tr>
+            ';
         }
         $html[] = '</tbody></table></div>';
         $html[] = '
-			<script type="text/javascript">
-			  oTable = $("#system-log").dataTable({
-					"bJQueryUI": true
-				});
-			</script>
-		';
+            <script type="text/javascript">
+                oTable = $("#system-log").dataTable({
+                    "bJQueryUI": true
+                });
+            </script>
+        ';
         return implode(PHP_EOL, $html);
     }
-
-//////////////////////////////////
-//
-//     Misc Methods
-//
-//////////////////////////////////   
-
-
+    
+    /**
+     * Redirect to either a supported page or ext location.
+     * Only home, login supported for internal.
+     * 
+     * @param string $target home, login supported
+     */
     public static function redirect($target) {
         switch ($target) {
             case 'home':
@@ -533,12 +609,24 @@ class CMS {
                 die();
         }
     }
-
+    
+    /**
+     * Checks if a user has permission to access a method. Anytime you want to
+     * restrit a user just add to the __registar_callback() call in your module
+     * to check.
+     * @return bool
+     */
     public static function allowed() {
         return self::$_user->allowed();
     }
     
-    
+    /**
+     * Register a callback, currently only the UserMod's are supported but 
+     * future modules will add this to replace __registar_callback
+     * @param string $class
+     * @param string $type
+     * @throws Exception if a type is not set, only UserMod is supported
+     */
     public static function register($class, $type){
         switch($type){
             case 'UserMod':
@@ -549,6 +637,10 @@ class CMS {
         }
     }
     
+    /**
+     * returns epoch time since page started
+     * @return float
+     */
     public static function get_build_time(){
         return round(microtime() - BUILD_TIME, 3);
     }
