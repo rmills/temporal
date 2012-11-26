@@ -199,6 +199,13 @@ if(!defined('MAIL_FROM_NAME')){
 if(!defined('MAIL_SECURE')){
     define('MAIL_SECURE', 'ssl');
 }
+if(!defined('ENABLE_CACHE')){
+    define('ENABLE_CACHE', true); //experimental
+}
+
+if(!defined('CACHE_TIME')){
+    define('CACHE_TIME', "+1 hour"); // this is wrapped into strtotime();
+}
 
 
 

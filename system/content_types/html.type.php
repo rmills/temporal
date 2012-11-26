@@ -151,6 +151,18 @@ class Html {
             self::error_404();
         }else{
             if (CMS::$_content_type == 'html') {
+                
+                if(ENABLE_CACHE){
+                    if(\CMS::$_cacheable){
+                        CacheDB::setcache($_SERVER['REQUEST_URI'], self::$_body, \CMS::$_cacheblock);
+                    }
+                }
+                
+                if(\CMS::$_user->_super_user){
+                    self::$_body = str_replace('{buildtime}', "Build Time: ".\CMS::get_build_time(), self::$_body);
+                }else{
+                    self::$_body = str_replace('{buildtime}', '', self::$_body);
+                }
                 echo self::$_body;
             }
         }

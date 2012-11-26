@@ -18,6 +18,8 @@ class CMS {
     static public $__pages = array();
     static public $_usermod = array();
     static public $_user = false;
+    static public $_cacheable = false;
+    static public $_cacheblock = false;
 
 //////////////////////////////////
 //
@@ -26,18 +28,13 @@ class CMS {
 //////////////////////////////////    
 
     public static function init($config = array()) {
-        self::$__time = microtime();
         self::$_config = $config;
-
-
 
         self::init_vars();
         self::init_content_types();
         self::init_pages();
         self::init_modules();
         self::init_usermod();
-
-        \DB::init();
         self::init_user();
 
         self::init_modules_callbacks();
@@ -550,6 +547,10 @@ class CMS {
             default:
                 throw new Exception('Unknown type "'.$type.'" can not be registered in CMS::register. Caller: '.$class);
         }
+    }
+    
+    public static function get_build_time(){
+        return round(microtime() - BUILD_TIME, 3);
     }
 
 }

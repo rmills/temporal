@@ -77,6 +77,10 @@ class Zpage extends Page {
         \Page\Admin::add_quick_link('<li><a href="{root_doc}admin/page/edit/' . self::$_pid . '">Edit Page</a></li>');
         \CMS::log('Zpage', 'loading page "' . self::$_data['pid'] . '"');
         self::mount_zones();
+        if(\CMS::$_user->_uid == DEFAULT_USER){
+            \CMS::$_cacheable = true;
+            \CMS::$_cacheblock = false;
+        }
     }
 
     public static function parse() {
