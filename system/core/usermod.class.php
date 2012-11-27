@@ -1,17 +1,42 @@
 <?php
 
 class UserMod{
+    
+    /**
+     * @var string where data is store
+     */
     protected $_table = false;
+    
+    /**
+     * @var type user id
+     */
     protected $_uid = false;
+    
+    /**
+     * @var mixed content stored in database serialized
+     */
     protected $_data = false;
+    
+    /**
+     * @var object class
+     */
     protected $_class = false;
     
+    /**
+     * Load based on class and uid
+     * @param type $class
+     * @param type $uid
+     * @return type
+     */
     function __construct($class, $uid) {
         $this->_uid = $uid; 
         $this->_class = $class; 
         return $this->init();
     }
     
+    /**
+     * Fetch data from database
+     */
     function init(){
         $sql = 'SELECT data FROM `usermod` WHERE `mid` = "'.DB::clean($this->_class).'" AND `uid` = "'.DB::clean($this->_uid).'" LIMIT 1';
         $response = DB::q($sql);
@@ -22,6 +47,9 @@ class UserMod{
         }
     }
     
+    /**
+     * Used to init a new row for a module or user
+     */
     function init_db_data(){
         $sql = '
             INSERT INTO `usermod` (
@@ -37,6 +65,9 @@ class UserMod{
         $this->_data = $this->_data;
     }
     
+    /**
+     * Updates content saved
+     */
     public function save(){
         $sql = 'UPDATE `usermod` SET `data` = \''.DB::clean(  serialize($this->_data) ).'\' WHERE `mid` = "'.DB::clean($this->_class).'" AND `uid` = "'.DB::clean($this->_uid).'" LIMIT 1';
         DB::q( $sql );
