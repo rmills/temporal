@@ -12,12 +12,15 @@ class Module {
     public static $_isrestricted = false;
 
     /**
-     * Registar a callback with the core
+     * Add callbacks to \CMS()
      */
     public static function __registar_callback() {
         
     }
-
+    
+    /**
+     * Legacy, do not use
+     */
     public static function active() {
         
     }

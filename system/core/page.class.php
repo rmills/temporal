@@ -41,7 +41,7 @@ class Page {
     }
 
     /**
-     * Registar a callback with the core
+     * Called based on URI
      */
     public static function active() {
         

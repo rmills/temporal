@@ -1,15 +1,50 @@
 <?php
 
 class User {
+    /**
+     * @var int user id  
+     */
     public $_uid = 0;
+    
+    /**
+     * @var array all data from db row for user
+     */
     public $_data = array();
+    
+    /**
+     * @var bool check if user was loaded from the database 
+     */
     public $_logged_in = false;
+    
+    /**
+     * @var bool Legacy, dont use
+     */
     public $_internal = false;
+    
+    /**
+     * @var bool load errors
+     */
     public $_error = false;
+    
+    /**
+     * @var bool super user flag
+     */
     public $_super_user = false;
+    
+    /**
+     * @var array permissions stack
+     */
     public $_permissions = array();
+    
+    /**
+     * @var array stack of UserMod() loaded
+     */
     public $_modules = array();
 
+    /**
+     * Load a user
+     * @param int $id
+     */
     public function __construct($id){
         $sql = 'SELECT * FROM `users` WHERE `uid` = '.DB::clean($id).' LIMIT 1';
         $response = DB::q($sql);
@@ -23,7 +58,11 @@ class User {
             CMS::log('User', '<pre>User:'.print_r($_SESSION['user'], true).'</pre>');
         }
     }
-
+    
+    /**
+     * Inflate user based on array
+     * @param array $array
+     */
     public function build($array){
         
         $this->_data = array();
@@ -57,6 +96,9 @@ class User {
         $this->init_usermod();
     }
     
+    /**
+     * Call all usermods so they can register
+     */
     public function init_usermod(){
         foreach(CMS::$_usermod as $classname){
             $name = '\UserMod\\'.$classname;
@@ -65,7 +107,10 @@ class User {
             }
         }
     }
-
+    
+    /**
+     * Deflate user and clear session data
+     */
     public function destroy(){
         if($this->_internal){
             $_SESSION['user'] = 0;
