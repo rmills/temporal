@@ -7,6 +7,9 @@ class DB {
     public static $_lasterror = false;
     public static $_lastid = 0;
 
+    /**
+     * Connect to database
+     */
     public static function init() {
         $DB = false;
         self::$__connection = new mysqli(
@@ -17,11 +20,16 @@ class DB {
         );
 
         if (mysqli_connect_errno()) {
-            printf("DB Connect failed: %s\n", mysqli_connect_error());
+            printf("Site offline for updates, Code: 1");
             exit();
         }
     }
-
+    
+    /**
+     * Make a database call
+     * @param sql $sql
+     * @return mixed 
+     */
     public static function q($sql) {
         /** store query for debug * */
         self::$__querys[] = $sql;
@@ -56,7 +64,12 @@ class DB {
         }
         return $data;
     }
-
+    
+    /**
+     * Sanitise user input for SQL querys, not binary safe
+     * @param string $input
+     * @return string
+     */
     public static function clean($input) {
         return mysqli_real_escape_string(self::$__connection, $input);
     }
