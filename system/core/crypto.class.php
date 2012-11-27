@@ -110,7 +110,9 @@ class Crypto {
     }
 
     /**
-     * Create a fixed len key
+     * Random key, not URL safe.
+     * @param int $len
+     * @return string
      */
     public static function random_key($len = 20) {
         $result = "";
@@ -121,6 +123,11 @@ class Crypto {
         return $result;
     }
     
+    /**
+     * Random filename, URL safe.
+     * @param int $len
+     * @return string
+     */
     public static function random_filename($len = 15) {
         $result = "";
         $charPool = '0123456789abcdefghijklmnopqrstuvwxyz';
@@ -130,6 +137,11 @@ class Crypto {
         return $result;
     }
     
+    /**
+     * Random key, url safe
+     * @param int $len
+     * @return string
+     */
     public static function random_secure_key($len = 10) {
         $result = "";
         $charPool = '0123456789abcdefghijklmnopqrstuvwxyz';
