@@ -145,7 +145,10 @@ class Html {
         self::parse();
         self::tags_strip();
     }
-
+    
+    /**
+     * Output buffer to browser
+     */
     public static function output() {
         if(!CMS::$_page_type){
             self::error_404();
@@ -167,20 +170,24 @@ class Html {
             }
         }
     }
-
+    
+    /**
+     * Set common tags
+     */
     public static function common_tags() {
         self::set('{title}', self::$_title);
         foreach (self::$_css as $v) {
             self::set('{css}', $v);
         }
+        
         self::set('{css}');
         foreach (self::$_scripts as $v) {
             self::set('{scripts}', $v);
         }
+        
         self::set('{scripts}');
         self::set('{footer}');
         self::set('{debug}');
-        
 
         self::set('{domain}', DOMAIN);
         self::set('{root_doc}', PATH_BASE);
@@ -190,6 +197,11 @@ class Html {
         self::set('{site_name}', SITE_NAME);
     }
 
+    /**
+     * Load a template into the bugger
+     * @param type $file filename
+     * @return boolean true if a template is found
+     */
     public static function load($file = false) {
         if ($file) {
             $path = CMS::$_config['path_layout'] . $file;
@@ -205,6 +217,9 @@ class Html {
         }
     }
     
+    /**
+     * Output 404 message
+     */
     public static function error_404(){
         $path_custom = PATH_LAYOUT_ROOT.'404.html';
         $path_system = PATH_LAYOUT_ROOT_DEFAULT.'404.html';

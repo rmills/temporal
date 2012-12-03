@@ -3,20 +3,36 @@
  * @author Ryan Mills <ryan@ryanmills.net> (Primary)
  */
 class Json{
+    /**
+     * Flag when content is loaded
+     * @var type 
+     */
     public static $_hascontent = false;
     
+    /**
+     * Primary Buffer
+     * @var type 
+     */
+    public static $_body;
+    
+    /**
+     * Standard Callback
+     */
     public static function __registar_callback(){
-        CMS::callstack_add('parse', DEFAULT_CALLBACK_PARSE+1);
+        CMS::callstack_add('parse', DEFAULT_CALLBACK_PARSE+1); // future use
         CMS::callstack_add('output', DEFAULT_CALLBACK_OUTPUT);
     }
     
-    public static $_body;
-    
-
+    /**
+     * Future use
+     */
     public static function parse(){
 
     }
     
+    /**
+     * Push content to the browser with JSON headers
+     */
     public static function output(){
         if(CMS::$_content_type == 'json'){
             header('Pragma: no-cache');

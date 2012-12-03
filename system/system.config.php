@@ -101,7 +101,6 @@ if(!defined('PATH_USERMOD_ROOT_ADDON')){
     define('PATH_USERMOD_ROOT_ADDON', 'site/usermod/');
 }
 
-
 if(!defined('PATH_PAGE_ROOT')){
     define('PATH_PAGE_ROOT', 'system/pages/');
 }
@@ -207,8 +206,6 @@ if(!defined('CACHE_TIME')){
     define('CACHE_TIME', "+1 hour"); // this is wrapped into strtotime();
 }
 
-
-
 $config = array();
 $config['vars'] = array
 (
@@ -220,6 +217,7 @@ $config['vars'] = array
     'uvar6',
     'uvar7'
 );
+
 if( is_dir(PATH_LAYOUT_ROOT) ){
     $config['path_layout'] = PATH_LAYOUT_ROOT;
     $config['path_layout_default'] = PATH_LAYOUT_ROOT.LAYOUT_DEFAULT;
@@ -227,56 +225,3 @@ if( is_dir(PATH_LAYOUT_ROOT) ){
     $config['path_layout'] = PATH_LAYOUT_ROOT_DEFAULT;
     $config['path_layout_default'] = PATH_LAYOUT_ROOT_DEFAULT.LAYOUT_DEFAULT; 
 }
-
-/*
- 
-IGNORE, just to refrence from old version
- 
-
-if($_SERVER['HTTP_HOST'] == '127.0.0.1'){
-	define('ENVIRONMENT', 'local'); 
-    define('DOMAIN', '127.0.0.1');
-}else{
-	define('ENVIRONMENT', 'live');
-    define('DOMAIN', 'DOMAIN_NOT SET');
-}
-
-
-$config = array();
-
-$config['domain'] = DOMAIN;
-$config['root'] = $_SERVER['DOCUMENT_ROOT'].'/';
-
-
-$config['vars'] = array
-(
-    'uvar1',
-    'uvar2',
-    'uvar3',
-    'uvar4',
-    'uvar5',
-    'uvar6',
-    'uvar7'
-);
-
-
-
-
-$config['media'] = array();
-$config['media']['image'] = array(
-  'jpg'  
-);
-$config['media']['video'] = array(
-  'mp4',
-  'mov'
-);
-$config['media']['document'] = array(
-  'pdf',
-  'txt',
-  'rtf',
-  'docx',
-  'doc'
-);
-
-  
- */
