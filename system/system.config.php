@@ -199,7 +199,7 @@ if(!defined('MAIL_SECURE')){
     define('MAIL_SECURE', 'ssl');
 }
 if(!defined('ENABLE_CACHE')){
-    define('ENABLE_CACHE', true); //experimental
+    define('ENABLE_CACHE', false); //experimental
 }
 
 if(!defined('CACHE_TIME')){
