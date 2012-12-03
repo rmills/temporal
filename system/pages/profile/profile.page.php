@@ -51,7 +51,7 @@ class Profile extends Page {
     
     private static function build_private(){
         $html = array();
-        $html[] = '<h2>'.\CMS::$_user->_data['name'].'</h2>';
+        $html[] = '<h4 class="temporal-usermod-title">'.\CMS::$_user->_data['name'].'</h4>';
         
         $content = array();
         foreach(\CMS::$_user->_modules as $usermod){

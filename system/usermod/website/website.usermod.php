@@ -20,7 +20,7 @@ class Website extends \UserMod implements \iUserMod{
     }
     
     public function profile($type){
-        return array('<i>Website:</i>'.$this->_data, 20);
+        return array('<div class="usermod-item"><div class="usermod-item-title">Website:</div><div class="usermod-item-content">'.$this->_data.'</div></div>', 20);
     }
 }
 \CMS::register('Website', __NAMESPACE__);

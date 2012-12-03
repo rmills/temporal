@@ -2,7 +2,7 @@
 namespace UserMod;
 
 if (!defined('USERMOD_AVATAR_HEIGHT')) {
-    define('USERMOD_AVATAR_HEIGHT', '400');
+    define('USERMOD_AVATAR_HEIGHT', '300');
 }
 
 if (!defined('USERMOD_AVATAR_EDIT_HEIGHT')) {
@@ -44,7 +44,7 @@ class Avatar extends \UserMod implements \iUserMod{
     public function profile($type){
         if(is_numeric($this->_data)){
             $avatar = new \Image($this->_data);
-            return array($avatar->thumbnail(USERMOD_AVATAR_HEIGHT, USERMOD_AVATAR_SQUARE), 20);
+            return array('<div class="usermod-avatar">'.$avatar->thumbnail(USERMOD_AVATAR_HEIGHT, USERMOD_AVATAR_SQUARE).'</div>', 20);
         }else{
             return array('<p>no avatar set</p>', 20);
         }
