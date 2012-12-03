@@ -206,6 +206,10 @@ if(!defined('CACHE_TIME')){
     define('CACHE_TIME', "+1 hour"); // this is wrapped into strtotime();
 }
 
+if(!defined('ZPAGE_HISTORY_LIMIT')){
+    define('ZPAGE_HISTORY_LIMIT', 10);
+}
+
 $config = array();
 $config['vars'] = array
 (

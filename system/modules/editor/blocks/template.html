@@ -10,6 +10,7 @@
     }
     var editor_open = false;
     var blank_zone = "Enter New Content";
+    var raw_editor_open = false;
     
     function editor_pushUpdate(zone, content){
         $.jGrowl("updating content, please wait", { life: 3000, speed:  'slow' });
@@ -105,8 +106,12 @@
     
     $(document).ready(function() {
         $("#editor-edit-button").click(function() {
+            try{
+                enable_raw_zones(true);
+            }catch(e){};
             editor_EnableEditorZones();
         });
+        
         for (x in zones){
             if(zone_content[zones[x]] == ''){
                 var content = $("#"+zones[x]).html();

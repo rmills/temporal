@@ -22,6 +22,16 @@ class Zpage extends Page {
                 \CMS::$_page_type = 'zpage';
                 \CMS::callstack_add('update', DEFAULT_CALLBACK_PARSE);
             }
+            if (\CMS::$_vars[0] == 'zone_history' && isset($_POST['zone']) && isset($_POST['pid'])) {
+                \CMS::$_content_type = 'json';
+                \CMS::$_page_type = 'zpage';
+                \CMS::callstack_add('zone_history', DEFAULT_CALLBACK_PARSE);
+            }
+            if (\CMS::$_vars[0] == 'zone_history_data' && isset($_POST['zid'])) {
+                \CMS::$_content_type = 'json';
+                \CMS::$_page_type = 'zpage';
+                \CMS::callstack_add('zone_history_data', DEFAULT_CALLBACK_PARSE);
+            }
         }
     }
 
@@ -154,15 +164,19 @@ class Zpage extends Page {
     }
 
     private static function update_zone($zid, $pid, $zdata) {
-        $zdate = date("m-d-Y");
+        $zdate = date("M jS Y - h:ma");
         $zdata = urlencode(trim($zdata));
         $sql = '
             INSERT INTO zones (
                 `z_data`,
-                `z_creation`
+                `z_creation`,
+                `z_pid`,
+                `z_parent`
             ) VALUES (
                 \'' . \DB::clean($zdata) . '\',
-                \'' . $zdate . '\'
+                \'' . $zdate . '\',
+                \'' . \DB::clean($pid) . '\',
+                \'' . \DB::clean($zid) . '\'
             )';
         \DB::q($sql);
 
@@ -177,6 +191,49 @@ class Zpage extends Page {
 	';
         \DB::q($sql);
         \Json::$_body .= json_encode(array('status' => 'ok'));
+    }
+    
+    public static function zone_history() {
+        $zone = $_POST['zone'];
+        $pid = $_POST['pid'];
+        
+        $sql = 'SELECT * FROM `zones` WHERE `z_pid` = \'' . \DB::clean($pid) . '\' AND `z_parent` = \'' . \DB::clean($zone) . '\' ORDER BY `zid` DESC LIMIT '.ZPAGE_HISTORY_LIMIT.';';
+        
+        $response = \DB::q($sql);
+        $stack = array();
+        if (is_array($response)) {
+            foreach ($response as $item) {
+                $temp = array();
+                foreach($item as $k=>$v){
+                    $temp[$k] = $v;
+                }
+                $stack[] = $temp;
+            }
+        }
+        
+ 
+        \Json::$_body .= json_encode($stack);
+    }
+    
+    public static function zone_history_data() {
+        $zid = $_POST['zid'];
+        
+        $sql = 'SELECT * FROM `zones` WHERE `zid` = \'' . \DB::clean($zid) . '\' LIMIT 1;';
+        
+        $response = \DB::q($sql);
+        $stack = array();
+        if (is_array($response)) {
+            foreach ($response as $item) {
+                $temp = array();
+                foreach($item as $k=>$v){
+                    $temp[$k] = $v;
+                }
+                $stack[] = $temp;
+            }
+        }
+        
+     
+        \Json::$_body .= json_encode($stack);
     }
 
 }
