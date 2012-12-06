@@ -1,6 +1,6 @@
 (function($){
     
-    var RawEditor = function(element)
+    var Editor = function(element)
     {
        var elem = $(element);
        var obj = this;
@@ -17,7 +17,7 @@
                 speed:  'slow'
             });
             var post_data = {
-                zone_data: $("#editor-"+this.zone).val()
+                zone_data: window['editor_'+this.zone].getData()
             };
             var post_url = "http://"+$(location).attr('hostname')+"/update_zone/"+this.zone+"/"+this.pid;
             jQuery.ajax({
@@ -52,7 +52,7 @@
                 cache: false
             }).done(function( responce ) {
                 for (x in responce){
-                    $('#editor-raw-history_'+responce[x].z_parent).append($("<option/>", { 
+                    $('#editor-history_'+responce[x].z_parent).append($("<option/>", { 
                         value: responce[x].zid,
                         text : responce[x].z_creation 
                     }));
@@ -74,8 +74,8 @@
                 data: post_data,
                 cache: false
             }).done(function( responce ) {
-                var editor = new RawEditor();
-                $("#editor-"+responce[0].z_parent).val(editor.decode_data(responce[0].z_data));
+                var editor = new Editor();
+                $("#edit-"+responce[0].z_parent).html(editor.decode_data(responce[0].z_data));
             });
         };
         
@@ -92,7 +92,6 @@
                     this.open = true;
                     this.attach();
                 }else{
-                    this.open = false;
                     this.close();
                 }
             }
@@ -109,65 +108,74 @@
                 default: 
                     this.state = 'closed';
             }
-            
             if(this.open){
-                var content = $("#editor-"+this.zone).val();
-                $("#"+this.zone).html( content );
+                var editor_content = window['editor_'+this.zone].getData();
+                if(editor_content != ''){
+                    $("#"+this.zone).html( editor_content );
+                }
             }
             this.open = false;
-            $('#raw-edit-button').html("Enable Raw Editor");
+            $('#editor-edit-button').html("Enable Rich Editor");
         }
         
         this.attach = function(){
-            console.log('rawopen');
+            console.log('editeropen');
             this.state = 'open';
-            var content = $("#"+this.zone).html();
             var data = {
                 Zone: this.zone,
-                ZoneData: content
+                ZoneData: $("#"+this.zone).html()
             };
             this.history();
-            $( "#"+this.zone ).html($.tmpl( raweditorTemplate, data ));
-            $("#editor-"+this.zone).width( $("#"+this.zone).parent().width() );
-            $("#editor-"+this.zone).height( 400 );
-
-            $("#zoneupdate_"+this.zone).click({zone: this.zone},function(e) {
-                $('#'+e.data.zone).data('raweditor').update();
+            $( "#"+this.zone ).html($.tmpl( editorTemplate, data ));
+            
+            $('#editor-history_'+this.zone).change({target: this},function(e) {
+                e.data.target.fetch_history($('#editor-history_'+e.data.target.zone).val());
             });
             
-            $('#editor-raw-history_'+this.zone).change({target: this},function(e) {
-                e.data.target.fetch_history($('#editor-raw-history_'+e.data.target.zone).val());
+            if(document.getElementById(this.zone)){
+                window['editor_'+this.zone] = CKEDITOR.inline( document.getElementById( "edit-"+this.zone ) );
+            }
+            try{
+                CKFinder.setupCKEditor( window['editor_'+this.zone], { basePath : '/site/modules/media/assets/', skin : 'v1' });
+            }catch(e){
+                //ignore, ckfinder is not installed
+            }
+             $("#zoneupdate_"+this.zone).click({zone: this.zone},function(e) {
+                $('#'+e.data.zone).data('editor').update();
             });
-            $('#raw-edit-button').html("Disable Raw Editor");
+            $('#editor-edit-button').html("Disable Rich Editor");
+            
         }
     };
-    $.fn.raweditor = function(action, pid)
+    $.fn.editor = function(action, pid)
    {
        return this.each(function()
        {
            var element = $(this);
-           if (!element.data('raweditor')){
-                var raweditor = new RawEditor(this);
-                Temporal.reg_editor(raweditor);
-                element.data('raweditor', raweditor);
-                raweditor.pid = pid;
-                raweditor.zone = $(this).attr('id');
+           if (!element.data('editor')){
+                var editor = new Editor(this);
+                Temporal.reg_editor(editor);
+                element.data('editor', editor);
+                editor.pid = pid;
+                editor.zone = $(this).attr('id');
            }
            
            switch(action){
                case 'update':
-                   element.data('raweditor').update();
+                   element.data('editor').update();
                    break;
                case 'close':
-                   element.data('raweditor').close();
+                   element.data('editor').close();
                    break;
                case 'toggle':
-                   element.data('raweditor').toggle();
+                   element.data('editor').toggle();
                    break;
                default:
-                   element.data('raweditor').toggle();
+                   element.data('editor').toggle();
                    break;
            }
        });
    };
 })(jQuery);
+
+
