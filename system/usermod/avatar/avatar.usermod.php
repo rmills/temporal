@@ -21,7 +21,7 @@ if (!defined('USERMOD_AVATAR_ALLOWED_TYPES')) {
 class Avatar extends \UserMod implements \iUserMod{
     public $_tag = '{profile_avatar}';
     public function __construct($uid) {
-        parent::__construct(__CLASS__, $uid);
+        parent::__construct(__CLASS__, $uid, 'Usermod-Avatar');
     }
     
     public function update(){
@@ -30,11 +30,15 @@ class Avatar extends \UserMod implements \iUserMod{
     }
     
     public function edit_html(){
+        
         if(is_numeric($this->_data)){
             $avatar = new \Image($this->_data);
+            $image = $avatar->thumbnail(USERMOD_AVATAR_EDIT_HEIGHT, USERMOD_AVATAR_SQUARE);
+        }else{
+            $image = '<p>no avatar set</p>';
         }
         $html[] = '<div class="control-group">';
-        $html[] = '<p>'.$avatar->thumbnail(USERMOD_AVATAR_EDIT_HEIGHT, USERMOD_AVATAR_SQUARE).'</p>';
+        $html[] = '<p>'.$image.'</p>';
         $html[] = '<label for="avatar">Avatar: </label>';
         $html[] = '<input type="file" name="avatar" value="'.$this->_data.'">';
         $html[] = '</div>';
@@ -82,8 +86,12 @@ class Avatar extends \UserMod implements \iUserMod{
                     \'' . \DB::clean(\CMS::$_user->_data['name']) . '\'
                 )';
                 \DB::q($sql);
+                echo \DB::$_lasterror;
                 $init_image = new \Image();
-                move_uploaded_file($_FILES["avatar"]["tmp_name"], $new_image );
+                $try = move_uploaded_file($_FILES["avatar"]["tmp_name"], $new_image );
+                if($try){
+                    echo 'moved';
+                }
                 $this->_data = \DB::$_lastid;
                 $this->save();
                 \Page\Profile::$_status[] = \Module\Notice::info('Avatar Updated');

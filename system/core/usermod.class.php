@@ -13,6 +13,11 @@ class UserMod{
     protected $_uid = false;
     
     /**
+     * @var type user id
+     */
+    protected $_mid = false;
+    
+    /**
      * @var mixed content stored in database serialized
      */
     protected $_data = false;
@@ -28,9 +33,10 @@ class UserMod{
      * @param type $uid
      * @return type
      */
-    function __construct($class, $uid) {
+    function __construct($class, $uid, $mid) {
         $this->_uid = $uid; 
         $this->_class = $class; 
+        $this->_mid = $mid;
         return $this->init();
     }
     
@@ -38,7 +44,7 @@ class UserMod{
      * Fetch data from database
      */
     function init(){
-        $sql = 'SELECT data FROM `usermod` WHERE `mid` = "'.DB::clean($this->_class).'" AND `uid` = "'.DB::clean($this->_uid).'" LIMIT 1';
+        $sql = 'SELECT data FROM `usermod` WHERE `mid` = "'.DB::clean($this->_mid).'" AND `uid` = "'.DB::clean($this->_uid).'" LIMIT 1';
         $response = DB::q($sql);
         if(count($response)){
             $this->_data = unserialize($response[0]['data']);
@@ -57,7 +63,7 @@ class UserMod{
                 `uid`,
                 `data`
             ) VALUES (
-                \''.DB::clean( $this->_class ).'\',
+                \''.DB::clean( $this->_mid ).'\',
                 \''.DB::clean( $this->_uid ).'\',
                 \''.DB::clean( serialize($this->_data) ).'\'
             )';
@@ -69,7 +75,7 @@ class UserMod{
      * Updates content saved
      */
     public function save(){
-        $sql = 'UPDATE `usermod` SET `data` = \''.DB::clean(  serialize($this->_data) ).'\' WHERE `mid` = "'.DB::clean($this->_class).'" AND `uid` = "'.DB::clean($this->_uid).'" LIMIT 1';
+        $sql = 'UPDATE `usermod` SET `data` = \''.DB::clean(  serialize($this->_data) ).'\' WHERE `mid` = "'.DB::clean($this->_mid).'" AND `uid` = "'.DB::clean($this->_uid).'" LIMIT 1';
         DB::q( $sql );
     }
 }

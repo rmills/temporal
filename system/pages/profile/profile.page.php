@@ -51,7 +51,7 @@ class Profile extends Page {
     
     private static function build_private(){
         $html = array();
-        $html[] = '<h4 class="temporal-usermod-title">'.\CMS::$_user->_data['name'].'</h4>';
+        $html[] = '<div id="profile"><h4 class="temporal-usermod-title">'.\CMS::$_user->_data['name'].'</h4>';
         
         $content = array();
         foreach(\CMS::$_user->_modules as $usermod){
@@ -70,6 +70,7 @@ class Profile extends Page {
         foreach($content as $v){
             $html[] = $v;
         }
+        $html[] = '</div>';
         return implode(PHP_EOL, $html);
         
     }
@@ -77,7 +78,7 @@ class Profile extends Page {
     private static function build_public(){
         $user = new \User(self::$_userid);
         $html = array();
-        $html[] = '<h2>'.$user->_data['name'].'</h2>';
+        $html[] = '<div id="profile"><h2>'.$user->_data['name'].'</h2>';
         $content = array();
         foreach(\CMS::$_user->_modules as $usermod){
             $data = $usermod->profile('public');
@@ -95,6 +96,7 @@ class Profile extends Page {
         foreach($content as $v){
             $html[] = $v;
         }
+        $html[] = '</div>';
         return implode(PHP_EOL, $html);
     }
     
@@ -149,6 +151,7 @@ class Profile extends Page {
         foreach(\CMS::$_user->_modules as $usermod){
             $usermod->update();
         }
+        \CMS::$_user = new \User(\CMS::$_user->_uid);
     }
     
     public static function  dup_email_check($email, $uid){

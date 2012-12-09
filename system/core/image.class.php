@@ -93,6 +93,7 @@ class Image {
                 foreach ($item as $k => $v) {
                     $this->_data[$k] = $v;
                 }
+                $this->_id = $item['id'];
                 $this->_name = urldecode($item['name']);
                 $this->_file = $item['file'];
                 return true;
@@ -170,7 +171,7 @@ class Image {
      */
     public function thumbnail_link($href, $size = IMAGE_DEFAULT_THUMBNAIL_SIZE, $square = IMAGE_DEFAULT_SQUARE, $class = false) {
         $this->check_cache($this->_file, $size, $square);
-        return '<a class="'.$class.'" href="' . $href . '">' . $this->thumbnail($size, $square) . '</a>';
+        return '<a id="'.$this->_id.'" class="'.$class.'" title="' . $this->_name . '" href="' . $href . '">' . $this->thumbnail($size, $square) . '</a>';
     }
     
     /**
@@ -184,7 +185,7 @@ class Image {
     public function thumbnail_display_link($display_size, $size = IMAGE_DEFAULT_THUMBNAIL_SIZE, $square = IMAGE_DEFAULT_SQUARE, $class = false) {
         $this->check_cache($this->_file, $display_size, 0);
         $href = PATH_BASE.IMAGE_CACHE_PATH .'0'.'/' . $display_size . '/'.$this->_file;
-        return '<a class="'.$class.'" href="' . $href . '">' . $this->thumbnail($size, $square) . '</a>';
+        return '<a id="'.$this->_id.'" class="'.$class.'" title="' . $this->_name . '" href="' . $href . '">' . $this->thumbnail($size, $square) . '</a>';
     }
     
     /**

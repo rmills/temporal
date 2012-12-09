@@ -3,7 +3,7 @@ namespace UserMod;
 class Website extends \UserMod implements \iUserMod{
     public $_tag = '{profile_website}';
     public function __construct($uid) {
-        parent::__construct(__CLASS__, $uid);
+        parent::__construct(__CLASS__, $uid, 'Usermod-Website');
     }
     
     public function update(){

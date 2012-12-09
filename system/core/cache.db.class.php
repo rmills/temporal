@@ -54,12 +54,12 @@ class  CacheDB{
      * @param bool $block true if content is only used inside a page.
      * @return bool true if content found
      */
-    function __construct($id = false, $block = false) {
-        if(is_numeric($id)){
-            $try = $this->load($id, $block);
+    function __construct($path = false, $block = false) {
+        if(is_numeric($path)){
+            $try = $this->load($path, $block);
             return $try;
-        }elseif($id){
-            $try = $this->loadpath($id, $block);
+        }elseif($path){
+            $try = $this->loadpath($path, $block);
             return $try;
         }
     }
@@ -78,11 +78,13 @@ class  CacheDB{
             $this->_data = self::decode($row['data']);
             $this->_expires = $row['expires'];
             $this->_block = $row['block'];
+            $this->_loaded = true;
             if(time() < $this->_expires){
                 $this->_status = true;
+                return true;
             }
-            $this->_loaded = true;
         }
+        return false;
     }
     
     /**
@@ -99,11 +101,13 @@ class  CacheDB{
             $this->_data = $row['data'];
             $this->_expires = $row['expires'];
             $this->_block = $row['block'];
+            $this->_loaded = true;
             if(time() < $this->_expires){
                 $this->_status = true;
             }
-            $this->_loaded = true;
+            return true;
         }
+        return false;
     }
     
     /**
