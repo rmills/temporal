@@ -9,6 +9,7 @@
        var open = false;
        var state = 'closed';
        var closeonly = false;
+       var orginal_content = false;
 
         this.update = function()
         {
@@ -52,9 +53,11 @@
                 cache: false
             }).done(function( responce ) {
                 for (x in responce){
+                    var d = new Date(0);
+                    d.setUTCSeconds(responce[x].z_date);
                     $('#editor-history_'+responce[x].z_parent).append($("<option/>", { 
-                        value: responce[x].zid,
-                        text : responce[x].z_creation 
+                        value: responce[x].z_id,
+                        text : d.getMonth()+"/"+d.getDate()+"/"+d.getFullYear()+" "+d.getHours()+":"+d.getMinutes()+" "+responce[x].username
                     }));
                 }
             });
@@ -63,8 +66,9 @@
         
         this.fetch_history = function(zid)
         {
+            console.log(zid);
             var post_data = {
-                zid: zid
+                z_id: zid
             };
             var post_url = "http://"+$(location).attr('hostname')+"/zone_history_data/"
             jQuery.ajax({
@@ -75,6 +79,7 @@
                 cache: false
             }).done(function( responce ) {
                 var editor = new Editor();
+                console.log("#edit-"+responce[0].z_parent);
                 $("#edit-"+responce[0].z_parent).html(editor.decode_data(responce[0].z_data));
             });
         };
@@ -118,9 +123,18 @@
             $('#editor-edit-button').html("Enable Rich Editor");
         }
         
+        this.revert = function(){
+            console.log("#edit-"+this.zone);
+            $("#edit-"+this.zone).html( this.orginal_content );
+        }
+        
         this.attach = function(){
-            console.log('editeropen');
             this.state = 'open';
+            
+            if($("#"+this.zone).html() == ''){
+                $("#"+this.zone).html('This zone is blank.');
+            }
+            
             var data = {
                 Zone: this.zone,
                 ZoneData: $("#"+this.zone).html()
@@ -140,8 +154,11 @@
             }catch(e){
                 //ignore, ckfinder is not installed
             }
-             $("#zoneupdate_"+this.zone).click({zone: this.zone},function(e) {
+            $("#zoneupdate_"+this.zone).click({zone: this.zone},function(e) {
                 $('#'+e.data.zone).data('editor').update();
+            });
+            $("#zonerevert_"+this.zone).click({zone: this.zone},function(e) {
+                $('#'+e.data.zone).data('editor').revert();
             });
             $('#editor-edit-button').html("Disable Rich Editor");
             
@@ -158,6 +175,7 @@
                 element.data('editor', editor);
                 editor.pid = pid;
                 editor.zone = $(this).attr('id');
+                editor.orginal_content = element.html();
            }
            
            switch(action){

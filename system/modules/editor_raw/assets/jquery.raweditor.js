@@ -52,9 +52,11 @@
                 cache: false
             }).done(function( responce ) {
                 for (x in responce){
+                    var d = new Date(0);
+                    d.setUTCSeconds(responce[x].z_date);
                     $('#editor-raw-history_'+responce[x].z_parent).append($("<option/>", { 
-                        value: responce[x].zid,
-                        text : responce[x].z_creation 
+                        value: responce[x].z_id,
+                        text : d.getMonth()+"/"+d.getDate()+"/"+d.getFullYear()+" "+d.getHours()+":"+d.getMinutes()+" "+responce[x].username
                     }));
                 }
             });
@@ -64,7 +66,7 @@
         this.fetch_history = function(zid)
         {
             var post_data = {
-                zid: zid
+                z_id: zid
             };
             var post_url = "http://"+$(location).attr('hostname')+"/zone_history_data/"
             jQuery.ajax({
@@ -119,7 +121,6 @@
         }
         
         this.attach = function(){
-            console.log('rawopen');
             this.state = 'open';
             var content = $("#"+this.zone).html();
             var data = {
