@@ -38,6 +38,7 @@ require 'system/core/user.class.php';
 require 'system/core/usermod.class.php';
 require 'system/core/image.class.php';
 require 'system/core/cache.db.class.php';
+require 'system/core/parser.class.php';
 
 if(ENABLE_MAIL){
     require_once('system/core/phpmail/class.phpmailer.php');

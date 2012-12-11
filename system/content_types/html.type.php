@@ -52,6 +52,9 @@ class Html {
     public static function __registar_callback() {
         CMS::callstack_add('parse', DEFAULT_CALLBACK_PARSE + 1);
         CMS::callstack_add('finalize', DEFAULT_CALLBACK_OUTPUT - 1);
+        if(ENABLE_PARSER){
+            CMS::callstack_add('smart_parse', DEFAULT_CALLBACK_OUTPUT);
+        }
         CMS::callstack_add('output', DEFAULT_CALLBACK_OUTPUT + 1);
     }
 
@@ -133,6 +136,12 @@ class Html {
         /** init tag stacks so we dont enter dup content * */
         self::$_tags_key = array();
         self::$_tags_value = array();
+    }
+    
+    public static function smart_parse(){
+        \Parser::body(self::$_body);
+        \Parser::parse();
+        self::$_body = \Parser::body();
     }
 
     /**

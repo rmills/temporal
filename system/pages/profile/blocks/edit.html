@@ -8,6 +8,12 @@
         margin-top: 10px;
         font-size: 80%;
     }
+    #profile {
+        width: 500px;
+        margin: 0 auto;
+        border: 1px #F5F5F5 solid;
+        padding: 15px;
+    }
 </style>
 <div id="profile">
 <form class="form-horizontal" id="editprofile" action="{root_doc}profile/edit/submit" method="post" enctype="multipart/form-data">
@@ -15,6 +21,7 @@
     <div class="control-group">
         <label for="email">Email: </label>
         <input class="input required email" size="20" type="text" id="email" name="email" placeholder="Email Address" value="{setemail}">
+        <p>&nbsp;</p>
         <div class="well">*this will be your login</div>
     </div>
     <div class="control-group">
