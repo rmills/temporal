@@ -62,6 +62,7 @@ class Zpage extends Page {
             \CMS::callstack_add('parse', DEFAULT_CALLBACK_PARSE);
         }
         \CMS::callstack_add('output', DEFAULT_CALLBACK_OUTPUT);
+        \CMS::callstack_add('reg_page_list', DEFAULT_CALLBACK_CREATE);
     }
 
     public static function create() {
@@ -133,6 +134,17 @@ class Zpage extends Page {
         if (is_array($response)) {
             foreach ($response as $item) {
                 return $item;
+            }
+        }
+    }
+    
+    public static function reg_page_list() {
+        $pages = array();
+        $sql = 'SELECT `url` FROM `pages`';
+        $response = \DB::q($sql);
+        if (is_array($response)) {
+            foreach ($response as $item) {
+                \Page\Sitemap::register(DEFAULT_PROTOCOL.DOMAIN.'/'.$item['url']);
             }
         }
     }
