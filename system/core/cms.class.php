@@ -60,6 +60,13 @@ class CMS {
     static public $_usermod = array();
     
     /**
+     * Used to store a stack of currently loaded appserve pages
+     * This should never be changed outside of the CMS class.
+     * @var array 
+     */
+    static public $__appserve = array();
+    
+    /**
      * User Object. Loads the User() object for the loaded users. Will
      * default to the guest user when a user is not logged in.
      * @var \User() 
@@ -114,10 +121,16 @@ class CMS {
         self::init_pages();
         self::init_modules();
         self::init_usermod();
+        self::init_appserve();
         self::init_user();
         self::init_modules_callbacks();
         self::init_page_callbacks();
-        self::init_active_page();
+        self::init_appserve_callbacks();
+        if(self::$_vars[0] == 'appserve'){
+            self::init_active_appserve();
+        }else{
+            self::init_active_page();
+        }
     }
     
     /**
@@ -262,6 +275,61 @@ class CMS {
     }
     
     /**
+     * Used to load modules and add them to the callstack
+     */
+    public static function init_appserve() {
+        self::log('CMS', 'CMS::init_appserve() searching: ' . PATH_APPSERVE_ROOT);
+        self::$__appserve = array();
+
+        $folders = array();
+        $modules = scandir(PATH_APPSERVE_ROOT);
+        foreach ($modules as $v) {
+            if ($v != '.' && $v != '..') {
+                $folders[] = $v;
+            }
+        }
+        
+        if (is_dir(PATH_APPSERVE_ROOT_ADDON)) {
+            $folders_addon = array();
+            $modules = scandir(PATH_APPSERVE_ROOT_ADDON);
+            foreach ($modules as $v) {
+                if ($v != '.' && $v != '..') {
+                    $folders_addon[] = $v;
+                }
+            }
+        }
+
+        foreach ($folders as $v) {
+            $folder = dir(PATH_APPSERVE_ROOT . $v);
+            while (false !== ($entry = $folder->read())) {
+                if (strpos($entry, '.appserve.') !== false) {
+                    $path = PATH_APPSERVE_ROOT . $v . '/' . $entry;
+                    $__pages[] = strtolower($v);
+                    self::log('CMS', 'CMS::init_appserve() found: ' . $path);
+                    self::$__appserve[] = array($path, $v);
+                }
+            }
+            $folder->close();
+        }
+        
+        if (is_dir(PATH_APPSERVE_ROOT_ADDON)) {
+            foreach ($folders_addon as $v) {
+                $folder = dir(PATH_APPSERVE_ROOT_ADDON . $v);
+                while (false !== ($entry = $folder->read())) {
+                    if (strpos($entry, '.appserve.') !== false) {
+                        $path = PATH_APPSERVE_ROOT_ADDON . $v . '/' . $entry;
+                        $__pages[] = strtolower($v);
+                        self::log('CMS', 'CMS::init_appserve() found: ' . $path);
+                        self::$__appserve[] = array($path, $v);
+                    }
+                }
+                $folder->close();
+            }
+        }
+        
+    }
+    
+    /**
      * Call all modules __registar_callback() method
      * 
      * In the future this will be repaced with reg system similar to usermods.
@@ -271,6 +339,20 @@ class CMS {
             include($v[0]);
             $module = ucwords($v[1]);
             $name = '\Module\\'.$module;
+            $try = call_user_func(array($name, '__registar_callback'));
+        }
+    }
+    
+    /**
+     * Call all modules __registar_callback() method
+     * 
+     * In the future this will be repaced with reg system similar to usermods.
+     */
+    public static function init_appserve_callbacks() {
+        foreach (self::$__appserve as $v) {
+            include($v[0]);
+            $module = ucwords($v[1]);
+            $name = '\Appserve\\'.$module;
             $try = call_user_func(array($name, '__registar_callback'));
         }
     }
@@ -401,6 +483,16 @@ class CMS {
             }
         } else {
             call_user_func(array('\Page\\'.ucfirst(DEFAULT_PAGE_GUEST), 'active'));
+        }
+    }
+    
+    public static function init_active_appserve() {
+        if(method_exists('\Appserve\\'.ucfirst(self::$_vars[1]), 'active')){
+            if (!call_user_func(array('\Appserve\\'.ucfirst(self::$_vars[1]), 'active'))) {
+                
+            }
+        }else{
+            die( json_encode( array('status'=>'fail') ) );
         }
     }
     
