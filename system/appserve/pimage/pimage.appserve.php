@@ -22,14 +22,35 @@ class Pimage extends Appserve{
     }
     
     private static function set($zone, $image_id){
-        $sql = '
-            INSERT INTO pimage (
-                `zone`,
-                `image`
-            ) VALUES (
-                \'' . \DB::clean($zone) . '\',
-                \'' . \DB::clean($image_id) . '\'
-            )';
-        \DB::q($sql);
+        $sql = 'SELECT * FROM `pimage` WHERE `zone` = '.\DB::clean($zone).' LIMIT 1';
+        $found = false;
+        $list = \DB::q($sql);
+        if (is_array($list)) {
+            foreach ($list as $v) {
+                if($v['zone'] == $zone){
+                    $found = true;
+                }
+            }
+        }
+        if($found){
+            $sql = '
+                UPDATE `pimage` SET 
+                        `image` = \'' . \DB::clean($image_id) . '\'
+                WHERE 
+                        `zone` = \'' . \DB::clean($zone) . '\' 
+                LIMIT 1
+            ';
+            \DB::q($sql);
+        }else{
+           $sql = '
+                INSERT INTO pimage (
+                    `zone`,
+                    `image`
+                ) VALUES (
+                    \'' . \DB::clean($zone) . '\',
+                    \'' . \DB::clean($image_id) . '\'
+                )';
+        \DB::q($sql); 
+        }
     }
 }
