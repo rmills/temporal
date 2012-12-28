@@ -35,7 +35,11 @@ class Profile extends Page {
         $html = array();
         switch(self::$_type){
             case'private':
-                \Html::set('{content}', self::build_private());
+                if(\CMS::$_user->_uid == DEFAULT_USER){
+                    \CMS::redirect('login');
+                }else{
+                    \Html::set('{content}', self::build_private());
+                }
                 break;
             case'public':
                 \Html::set('{content}', self::build_public());

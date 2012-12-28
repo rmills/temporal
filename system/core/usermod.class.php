@@ -20,7 +20,7 @@ class UserMod{
     /**
      * @var mixed content stored in database serialized
      */
-    protected $_data = false;
+    public $_data = false;
     
     /**
      * @var object class

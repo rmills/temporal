@@ -27,6 +27,7 @@ class User_quickaccess extends Module {
     }
 
     public static function build_guest() {
+        /*
         \Html::set("{user_quickaccess}", '
             <div class="btn-group">
             <a class="btn-mini dropdown-toggle" data-toggle="dropdown" href="#">
@@ -39,6 +40,19 @@ class User_quickaccess extends Module {
             </ul>
             </div>
         ');
+         * */
+        \Html::set("{user_quickaccess}", '
+                <div class="btn-group">
+    <button class="btn btn-info">' . \CMS::$_user->_data['name'] . '</button>
+    <button class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+    <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+    <li><a href="{root_doc}login">login</a></li>
+            <li><a href="{root_doc}register">register</a></li>
+    </ul>
+    </div>');
+           
     }
 
     public static function build_loggedin() {

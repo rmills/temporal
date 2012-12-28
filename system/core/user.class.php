@@ -40,7 +40,7 @@ class User {
      * @var array stack of UserMod() loaded
      */
     public $_modules = array();
-
+    
     /**
      * Load a user
      * @param int $id
@@ -103,7 +103,7 @@ class User {
         foreach(CMS::$_usermod as $classname){
             $name = '\UserMod\\'.$classname;
             if (class_exists($name)) {
-                $this->_modules[] = new $name($this->_uid);
+                $this->_modules[$classname] = new $name($this->_uid);
             }
         }
     }
