@@ -62,18 +62,23 @@ class Image {
      */
     public function create($file, $name = false) {
         $orginal = IMAGE_ORGINAL_PATH . $file;
-        $ext = pathinfo($orginal);
+        $ext = pathinfo($orginal, PATHINFO_EXTENSION);
+        
+        $newname = $this->random_filename($ext);
+        $new = IMAGE_ORGINAL_PATH . $newname;
+        copy($orginal, $new);
         $sql = '
             INSERT INTO images (
                 `file`,
                 `orginal`,
-                `name`,
+                `name`
             ) VALUES (
-                \'' . \DB::clean($this->random_filename($ext['extension'])) . '\',
-                \'' . \DB::clean($file) . '\',
+                \'' . \DB::clean($newname) . '\',
+                \'' . \DB::clean($orginal) . '\',
                 \'' . \DB::clean(urlencode($name)) . '\'
             )';
         \DB::q($sql);
+        return \DB::$_lastid;
     }
     
     /**
@@ -109,12 +114,10 @@ class Image {
     public function check_folders() {
 
         if (!is_dir(CACHE_PATH)) {
-            echo CACHE_PATH;
             mkdir(CACHE_PATH);
         }
 
         if (!is_dir(IMAGE_CACHE_PATH)) {
-            echo IMAGE_CACHE_PATH;
             mkdir(IMAGE_CACHE_PATH);
         }
 
@@ -240,7 +243,8 @@ class Image {
         for ($p = 0; $p < $len; $p++) {
             $result .= $charPool[mt_rand(0, strlen($charPool) - 1)];
         }
-        $sql = 'SELECT * FROM `images` WHERE `file` = \'' . \DB::clean($result . '.' . $ext) . '\' LIMIT 1';
+        $result = $result . '.' . $ext;
+        $sql = 'SELECT * FROM `images` WHERE `file` = \'' . \DB::clean($result) . '\' LIMIT 1';
         $list = \DB::q($sql);
         if (is_array($list)) {
             foreach ($list as $item) {
@@ -257,7 +261,7 @@ class Image {
      * @param bool $resize_by_height force resize by height, recomended
      * @return boolean
      */
-    public static function resize($imagepath, $size, $resize_by_height = true) {
+    protected static function resize($imagepath, $size, $resize_by_height = true) {
 
         if (!is_file($imagepath)) {
             return false;
@@ -341,7 +345,7 @@ class Image {
      * @param <type> $resize_by_height resize by height
      * @return <bool> false if the image is not found
      */
-    public static function resize_square($imagepath, $size) {
+    protected static function resize_square($imagepath, $size) {
         if (!is_file($imagepath)) {
             return false;
         }

@@ -37,6 +37,7 @@ require 'system/core/page.class.php';
 require 'system/core/user.class.php';
 require 'system/core/usermod.class.php';
 require 'system/core/image.class.php';
+require 'system/core/appserve.class.php';
 require 'system/core/cache.db.class.php';
 require 'system/core/parser.class.php';
 

@@ -26,8 +26,8 @@ class Json{
     /**
      * Future use
      */
-    public static function parse(){
-
+    public static function body($array){
+        self::$_body = json_encode( $array );
     }
     
     /**
