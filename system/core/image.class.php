@@ -254,14 +254,14 @@ class Image {
         if (!is_dir($path1)) {
             $try = mkdir($path1);
             if(!$try){
-                echo 'enable to create static path 1';
+                echo 'unable to create static path 1: '.$path1.':';
             }
         }
 
         if (!is_dir($path2)) {
             $try = mkdir($path2);
             if(!$try){
-                echo 'enable to create static path 2';
+                echo 'unable to create static path 2: '.$path2.':';
             }
         }
         
