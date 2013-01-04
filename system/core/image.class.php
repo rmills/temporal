@@ -252,11 +252,17 @@ class Image {
         $path1 = $_SERVER['DOCUMENT_ROOT'].IMAGE_CACHE_PATH . 'strict/';
         $path2 = $path1  .$w.'_'.$h. '/';
         if (!is_dir($path1)) {
-            mkdir($path1);
+            $try = mkdir($path1);
+            if(!$try){
+                echo 'enable to create static path 1';
+            }
         }
 
         if (!is_dir($path2)) {
-            mkdir($path2);
+            $try = mkdir($path2);
+            if(!$try){
+                echo 'enable to create static path 2';
+            }
         }
         
         if (!is_file($path2 . $file)) {
