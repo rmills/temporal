@@ -249,7 +249,7 @@ class Image {
      * @param int $square image is square
      */
     private function check_strict_cache($file, $w, $h) {
-        $path1 = IMAGE_CACHE_PATH . 'strict/';
+        $path1 = $_SERVER['DOCUMENT_ROOT'].IMAGE_CACHE_PATH . 'strict/';
         $path2 = $path1  .$w.'_'.$h. '/';
         if (!is_dir($path1)) {
             $try = mkdir($path1);
@@ -278,7 +278,7 @@ class Image {
      * @param string $file filename
      */
     private function create_cache_file($size, $square, $path, $file) {
-        $path = IMAGE_CACHE_PATH . $square . '/' . $size . '/';
+        $path = $_SERVER['DOCUMENT_ROOT'].IMAGE_CACHE_PATH . $square . '/' . $size . '/';
         copy(IMAGE_ORGINAL_PATH . $file, $path . $file);
         if ($square) {
             Image::resize_square($path . $file, $size);
