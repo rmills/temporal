@@ -121,16 +121,16 @@ class Image {
      */
     public function check_folders() {
 
-        if (!is_dir(CACHE_PATH)) {
-            mkdir(CACHE_PATH);
+        if (!is_dir($_SERVER['DOCUMENT_ROOT'].CACHE_PATH)) {
+            mkdir($_SERVER['DOCUMENT_ROOT'].CACHE_PATH);
         }
 
-        if (!is_dir(IMAGE_CACHE_PATH)) {
-            mkdir(IMAGE_CACHE_PATH);
+        if (!is_dir($_SERVER['DOCUMENT_ROOT'].IMAGE_CACHE_PATH)) {
+            mkdir($_SERVER['DOCUMENT_ROOT'].IMAGE_CACHE_PATH);
         }
 
-        if (!is_dir(IMAGE_ORGINAL_PATH)) {
-            mkdir(IMAGE_ORGINAL_PATH);
+        if (!is_dir($_SERVER['DOCUMENT_ROOT'].IMAGE_ORGINAL_PATH)) {
+            mkdir($_SERVER['DOCUMENT_ROOT'].IMAGE_ORGINAL_PATH);
         }
     }
     
