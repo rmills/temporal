@@ -226,7 +226,7 @@ class Image {
      * @param int $square image is square
      */
     private function check_cache($file, $size, $square) {
-        $path1 = IMAGE_CACHE_PATH . $square . '/';
+        $path1 = $_SERVER['DOCUMENT_ROOT'].IMAGE_CACHE_PATH . $square . '/';
         $path2 = $path1 . $size . '/';
         if (!is_dir($path1)) {
             mkdir($path1);
@@ -279,7 +279,7 @@ class Image {
      */
     private function create_cache_file($size, $square, $path, $file) {
         $path = $_SERVER['DOCUMENT_ROOT'].IMAGE_CACHE_PATH . $square . '/' . $size . '/';
-        copy(IMAGE_ORGINAL_PATH . $file, $path . $file);
+        copy($_SERVER['DOCUMENT_ROOT'].IMAGE_ORGINAL_PATH . $file, $path . $file);
         if ($square) {
             Image::resize_square($path . $file, $size);
         } else {
@@ -295,9 +295,9 @@ class Image {
      * @param string $file filename
      */
     private function create_strict_cache_file($w, $h, $file) {
-        $path1 = IMAGE_CACHE_PATH . 'strict/';
+        $path1 = $_SERVER['DOCUMENT_ROOT'].IMAGE_CACHE_PATH . 'strict/';
         $path2 = $path1  .$w.'_'.$h. '/';
-        copy(IMAGE_ORGINAL_PATH . $file, $path2 . $file);
+        copy($_SERVER['DOCUMENT_ROOT'].IMAGE_ORGINAL_PATH . $file, $path2 . $file);
         Image::resize_strict($path2 . $file, $w, $h);
     }
     
@@ -498,7 +498,7 @@ class Image {
         if (!is_file($imagepath)) {
             return false;
         }
-        $path = $_SERVER['DOCUMENT_ROOT'].$imagepath;
+        $path = $imagepath;
         $image = new \Imagick($path);
         $image->cropThumbnailImage($w,$h);
         $image->setImagePage(0, 0, 0, 0);
