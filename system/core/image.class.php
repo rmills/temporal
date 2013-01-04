@@ -228,6 +228,7 @@ class Image {
     private function check_cache($file, $size, $square) {
         $path1 = $_SERVER['DOCUMENT_ROOT'].IMAGE_CACHE_PATH . $square . '/';
         $path2 = $path1 . $size . '/';
+        echo $path2;
         if (!is_dir($path1)) {
             mkdir($path1);
         }
