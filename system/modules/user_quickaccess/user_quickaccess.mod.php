@@ -10,7 +10,7 @@ class User_quickaccess extends Module {
 
     public static function parse() {
         if (USER_TYPE == 'community') {
-            if (\Html::find('{user_quickaccess}')) {
+            if (\Html::find('{user-quickaccess}')) {
                 if (isset($_SESSION['user'])) {
                     if ($_SESSION['user'] == DEFAULT_USER || $_SESSION['user'] == 0) {
                         self::build_guest();
@@ -22,53 +22,22 @@ class User_quickaccess extends Module {
                 }
             }
         } else {
-            \Html::set('{user_quickaccess}');
+            \Html::set('{user-quickaccess}');
         }
     }
 
     public static function build_guest() {
-        /*
-        \Html::set("{user_quickaccess}", '
-            <div class="btn-group">
-            <a class="btn-mini dropdown-toggle" data-toggle="dropdown" href="#">
-            ' . \CMS::$_user->_data['name'] . '
-            <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-            <li><a href="{root_doc}login">login</a></li>
-            <li><a href="{root_doc}register">register</a></li>
-            </ul>
-            </div>
-        ');
-         * */
-        \Html::set("{user_quickaccess}", '
-                <div class="btn-group">
-    <button class="btn btn-info">' . \CMS::$_user->_data['name'] . '</button>
-    <button class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-    <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu">
-    <li><a href="{root_doc}login">login</a></li>
-            <li><a href="{root_doc}register">register</a></li>
-    </ul>
-    </div>');
-           
+        \Html::set("{user-quickaccess}", self::block('login.html'));
+        \Html::set("{footer}", self::block('js.html'));
     }
 
     public static function build_loggedin() {
-        \Html::set("{user_quickaccess}", '
-            <div class="btn-group">
-            <a class="btn-mini dropdown-toggle" data-toggle="dropdown" href="#">
-            ' . \CMS::$_user->_data['name'] . '
-            <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-            <li><a href="{root_doc}profile">view profile</a></li>
-            <li><a href="{root_doc}profile/edit">edit profile</a></li>
-            <li><a href="{root_doc}logout">logout</a></li>
-            </ul>
-            </div>
-        ');
+        \Html::set("{user-quickaccess}", self::block('loggedin.html'));
+        \Html::set("{footer}", self::block('js.html'));
+        $id = \CMS::$_user->_modules['Avatar']->_data;
+        $image = new \Image($id);
+        \Html::set("{user-image}", '<div id="quickaccess-image">'.$image->thumbnail(THUMBNAIL_TINY, true).'</div>');
+        \Html::set("{user-name}", \CMS::$_user->_data['name']);
     }
 
 }

@@ -16,6 +16,14 @@ if (!defined('IMAGE_DEFAULT_SQUARE')) {
     define('IMAGE_DEFAULT_SQUARE', 1);
 }
 
+if (!defined('IMAGE_DEFAULT_THUMBNAIL_STRICT_W')) {
+    define('IMAGE_DEFAULT_THUMBNAIL_STRICT_W', 125);
+}
+
+if (!defined('IMAGE_DEFAULT_THUMBNAIL_STRICT_H')) {
+    define('IMAGE_DEFAULT_THUMBNAIL_STRICT_H', 300);
+}
+
 class Image {
     /**
      * @var string filename 
@@ -192,6 +200,26 @@ class Image {
     }
     
     /**
+     * Returns html tag for thumbnail
+     * @param int $size
+     * @param bool $square is square
+     * @return html <img> tag
+     */
+    public function thumbnail_strict($w = IMAGE_DEFAULT_THUMBNAIL_STRICT_W, $h = IMAGE_DEFAULT_THUMBNAIL_STRICT_H) {
+        $this->check_strict_cache($this->_file, $w, $h);
+        
+        $path = PATH_BASE.IMAGE_CACHE_PATH . 'strict/'.$w.'_'.$h. '/'.$this->_file;
+        /*
+        if (!is_file($path)) {
+            $this->create_strict_cache_file($w, $h, $this->_file);
+        }
+         * */
+        return '<img src="' . $path. '" title="' . $this->_name . '" alt="' . $this->_name . '">';
+    }
+    
+    
+    
+    /**
      * Check if image has cached resize created
      * @param string $file filename
      * @param int $size height of image
@@ -215,6 +243,28 @@ class Image {
     }
     
     /**
+     * Check if image has cached resize created
+     * @param string $file filename
+     * @param int $size height of image
+     * @param int $square image is square
+     */
+    private function check_strict_cache($file, $w, $h) {
+        $path1 = $_SERVER['DOCUMENT_ROOT'].IMAGE_CACHE_PATH . 'strict/';
+        $path2 = $path1  .$w.'_'.$h. '/';
+        if (!is_dir($path1)) {
+            mkdir($path1);
+        }
+
+        if (!is_dir($path2)) {
+            mkdir($path2);
+        }
+        
+        if (!is_file($path2 . $file)) {
+            $this->create_strict_cache_file($w, $h, $file);
+        }
+    }
+    
+    /**
      * Create a cache version of Image
      * @param int $size height of cache image
      * @param type $square new image is square
@@ -229,6 +279,20 @@ class Image {
         } else {
             Image::resize($path . $file, $size);
         }
+    }
+    
+    /**
+     * Create a cache version of Image
+     * @param int $size height of cache image
+     * @param type $square new image is square
+     * @param string $path to image (not used, legacy)
+     * @param string $file filename
+     */
+    private function create_strict_cache_file($w, $h, $file) {
+        $path1 = IMAGE_CACHE_PATH . 'strict/';
+        $path2 = $path1  .$w.'_'.$h. '/';
+        copy(IMAGE_ORGINAL_PATH . $file, $path2 . $file);
+        Image::resize_strict($path2 . $file, $w, $h);
     }
     
     /**
@@ -322,7 +386,7 @@ class Image {
                 break;
 
             case 'png':
-                imagepng($new_image, $imagepath, $q);
+                imagepng($new_image, $imagepath, 9);
                 break;
             
             case 'bmp':
@@ -337,6 +401,8 @@ class Image {
         imagedestroy($new_image);
         return true;
     }
+    
+    
 
     /**
      * Resize an image to square
@@ -413,6 +479,87 @@ class Image {
         imagedestroy($new_image);
         return true;
     }
+    
+    
+    /**
+     * Resize an image to square
+     * @param <type> $imagepath path to src
+     * @param <type> $size max size
+     * @param <type> $resize_by_height resize by height
+     * @return <bool> false if the image is not found
+     */
+    protected static function resize_strict($imagepath, $w, $h) {
+        if (!is_file($imagepath)) {
+            return false;
+        }
+        $path = $_SERVER['DOCUMENT_ROOT'].$imagepath;
+        $image = new \Imagick($path);
+        $image->cropThumbnailImage($w,$h);
+        $image->setImagePage(0, 0, 0, 0);
+        $image->writeImage( $path );
+        return true;
+    }
+    
+    private static function thumbnail_box($img, $box_w, $box_h) {
+        //create the image, of the required size
+        $new = imagecreatetruecolor($box_w, $box_h);
+        if($new === false) {
+            //creation failed -- probably not enough memory
+            return null;
+        }
+
+
+        //Fill the image with a light grey color
+        //(this will be visible in the padding around the image,
+        //if the aspect ratios of the image and the thumbnail do not match)
+        //Replace this with any color you want, or comment it out for black.
+        //I used grey for testing =)
+        $fill = imagecolorallocate($new, 200, 200, 205);
+        imagefill($new, 0, 0, $fill);
+
+        //compute resize ratio
+        $hratio = $box_h / imagesy($img);
+        $wratio = $box_w / imagesx($img);
+        $ratio = min($hratio, $wratio);
+
+        //if the source is smaller than the thumbnail size, 
+        //don't resize -- add a margin instead
+        //(that is, dont magnify images)
+        /*
+        if($ratio > 1.0)
+            $ratio = 1.0;
+            */
+        //compute sizes
+        $sy = floor(imagesy($img) * $ratio);
+        $sx = floor(imagesx($img) * $ratio);
+
+        //compute margins
+        //Using these margins centers the image in the thumbnail.
+        //If you always want the image to the top left, 
+        //set both of these to 0
+        $m_y = floor(($box_h - $sy) / 2);
+        $m_x = floor(($box_w - $sx) / 2);
+
+        //Copy the image data, and resample
+        //
+        //If you want a fast and ugly thumbnail,
+        //replace imagecopyresampled with imagecopyresized
+        if(!imagecopyresampled($new, $img,
+            $m_x, $m_y, //dest x, y (margins)
+            0, 0, //src x, y (0,0 means top left)
+            $sx, $sy,//dest w, h (resample to this size (computed above)
+            imagesx($img), imagesy($img)) //src w, h (the full size of the original)
+        ) {
+            //copy failed
+            imagedestroy($new);
+            return null;
+        }
+        //copy successful
+        return $new;
+    }
+    
+    
+    
     
     public static function imagecreatefrombmp($filename)
     {
