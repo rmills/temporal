@@ -166,6 +166,7 @@ class Image {
     public function thumbnail($size = IMAGE_DEFAULT_THUMBNAIL_SIZE, $square = IMAGE_DEFAULT_SQUARE) {
         $this->check_cache($this->_file, $size, $square);
         $path = PATH_BASE.IMAGE_CACHE_PATH . $square . '/' . $size . '/';
+        $path = str_replace('//', '/', $path); //temp path fix
         if (!is_file($path)) {
             $this->create_cache_file($size, $square, $path, $this->_file);
         }
@@ -196,6 +197,7 @@ class Image {
     public function thumbnail_display_link($display_size, $size = IMAGE_DEFAULT_THUMBNAIL_SIZE, $square = IMAGE_DEFAULT_SQUARE, $class = false) {
         $this->check_cache($this->_file, $display_size, 0);
         $href = PATH_BASE.IMAGE_CACHE_PATH .'0'.'/' . $display_size . '/'.$this->_file;
+        $href = str_replace('//', '/', $href); //temp path fix
         return '<a id="'.$this->_id.'" class="'.$class.'" title="' . $this->_name . '" href="' . $href . '">' . $this->thumbnail($size, $square) . '</a>';
     }
     
@@ -209,6 +211,7 @@ class Image {
         $this->check_strict_cache($this->_file, $w, $h);
         
         $path = PATH_BASE.IMAGE_CACHE_PATH . 'strict/'.$w.'_'.$h. '/'.$this->_file;
+        $path = str_replace('//', '/', $path); //temp path fix
         /*
         if (!is_file($path)) {
             $this->create_strict_cache_file($w, $h, $this->_file);
@@ -228,7 +231,6 @@ class Image {
     private function check_cache($file, $size, $square) {
         $path1 = $_SERVER['DOCUMENT_ROOT'].IMAGE_CACHE_PATH . $square . '/';
         $path2 = $path1 . $size . '/';
-        echo $path2;
         if (!is_dir($path1)) {
             mkdir($path1);
         }
