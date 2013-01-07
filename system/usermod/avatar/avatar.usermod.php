@@ -76,7 +76,6 @@ class Avatar extends \UserMod implements \iUserMod{
                         $check = true;
                     }
                 }
-                echo $new_image;
                 $sql = '
                 INSERT INTO images (
                     `file`,
