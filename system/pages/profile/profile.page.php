@@ -74,7 +74,7 @@ class Profile extends Page {
         foreach($content as $v){
             $html[] = $v;
         }
-        $html[] = '</div>';
+        $html[] = '<p style="clear:both">&nbsp;</p></div>';
         return implode(PHP_EOL, $html);
         
     }
@@ -100,7 +100,7 @@ class Profile extends Page {
         foreach($content as $v){
             $html[] = $v;
         }
-        $html[] = '</div>';
+        $html[] = '<p style="clear:both">&nbsp;</p></div>';
         return implode(PHP_EOL, $html);
     }
     

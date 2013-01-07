@@ -2,7 +2,9 @@
 namespace Appserve;
 class Pimage extends Appserve{
     public static function __registar_callback() {
-        Appserve::register('Pimage');
+        if(\CMS::allowed()){
+            Appserve::register('Pimage');
+        }
     }
     
     public static function call(){

@@ -250,12 +250,7 @@ class Admin_user extends Module {
             $name = str_replace('"', '&quot;', $user->_data['name']);
             \Html::set('{setname}', $name);
             \Html::set('{uid}', $uid);
-            if(is_string($user->_data['groups'])){
-                $list = explode(',', $user->_data['groups']);
-            }else{
-                $list = array();
-            }
-            \Html::set('{groups}', self::build_groups_list($list));
+            \Html::set('{groups}', self::build_groups_list($user->_data['groups']));
             if ($user->_data['super_user'] == 'yes') {
                 \Html::set('{setsuperuser}', 'checked="checked"');
             } else {

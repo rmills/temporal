@@ -2,6 +2,9 @@
 namespace Module;
 class Parser{
     
+    public static $_isrestricted = false;
+
+
     public static function __registar_callback() {
         \CMS::callstack_add('reg', DEFAULT_CALLBACK_CREATE);
     }

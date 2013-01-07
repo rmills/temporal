@@ -99,12 +99,21 @@ class Admin_permissions extends Module{
                 \Html::set('{modules}', '<label class="checkbox"><input type="checkbox" name="'.self::format_name($v).'" value="add">'.self::format_name($v).'</label>');
             }
         }
+        
         foreach(\CMS::$__pages as $v){
             $classname = '\Page\\'.ucfirst($v[1]);
             if($classname::$_isrestricted){
                 \Html::set('{modules}', '<label class="checkbox"><input type="checkbox" name="'.self::format_name($v).'" value="add">'.self::format_name($v).'</label>');
             }
         }
+        
+        foreach(\CMS::$__appserve as $v){
+            $classname = '\Appserve\\'.ucfirst($v[1]);
+            if($classname::$_isrestricted){
+                \Html::set('{modules}', '<label class="checkbox"><input type="checkbox" name="'.self::format_name($v).'" value="add">'.self::format_name($v).'</label>');
+            }
+        }
+        
         \Html::set('{modules}');
         \Html::set('{setname}');
     }
@@ -137,6 +146,20 @@ class Admin_permissions extends Module{
             foreach(\CMS::$__pages as $v){
                 $check = false;
                 $classname = '\Page\\'.ucfirst($v[1]);
+                if($classname::$_isrestricted){
+                    foreach($items as $v2){
+                        $name = self::format_name($v);
+                        if($v2 == $name){
+                             $check = 'checked="yes"';
+                        }
+                    }
+                    \Html::set('{modules}', '<label class="checkbox"><input type="checkbox" name="'.$name.'" value="add" '.$check.' >'.$name.'</label>');
+                }
+            }
+            
+            foreach(\CMS::$__appserve as $v){
+                $check = false;
+                $classname = '\Appserve\\'.ucfirst($v[1]);
                 if($classname::$_isrestricted){
                     foreach($items as $v2){
                         $name = self::format_name($v);
