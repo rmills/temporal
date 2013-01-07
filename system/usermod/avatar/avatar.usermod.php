@@ -70,7 +70,7 @@ class Avatar extends \UserMod implements \iUserMod{
                 $check = false;
                 while(!$check){
                     $new_name = \Crypto::random_filename().'.'.strtolower($ext);
-                    $new_image = LOCAL_PATH.IMAGE_ORGINAL_PATH.$new_name;
+                    $path = LOCAL_PATH.IMAGE_ORGINAL_PATH.$new_name;
                     $new_image = str_replace('//', '/', $path); //temp path fix
                     if(!is_file($new_image)){
                         $check = true;

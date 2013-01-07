@@ -120,7 +120,7 @@ class Image {
      * Make sure all folders for cache are created
      */
     public function check_folders() {
-
+        echo LOCAL_PATH.CACHE_PATH;
         if (!is_dir(LOCAL_PATH.CACHE_PATH)) {
             mkdir(LOCAL_PATH.CACHE_PATH);
         }
@@ -281,8 +281,8 @@ class Image {
      * @param string $file filename
      */
     private function create_cache_file($size, $square, $path, $file) {
-        $path = $_SERVER['DOCUMENT_ROOT'].IMAGE_CACHE_PATH . $square . '/' . $size . '/';
-        copy($_SERVER['DOCUMENT_ROOT'].IMAGE_ORGINAL_PATH . $file, $path . $file);
+        $path = LOCAL_PATH.IMAGE_CACHE_PATH . $square . '/' . $size . '/';
+        copy(LOCAL_PATH.IMAGE_ORGINAL_PATH . $file, $path . $file);
         if ($square) {
             Image::resize_square($path . $file, $size);
         } else {
@@ -298,9 +298,9 @@ class Image {
      * @param string $file filename
      */
     private function create_strict_cache_file($w, $h, $file) {
-        $path1 = $_SERVER['DOCUMENT_ROOT'].IMAGE_CACHE_PATH . 'strict/';
+        $path1 = LOCAL_PATH.IMAGE_CACHE_PATH . 'strict/';
         $path2 = $path1  .$w.'_'.$h. '/';
-        copy($_SERVER['DOCUMENT_ROOT'].IMAGE_ORGINAL_PATH . $file, $path2 . $file);
+        copy(LOCAL_PATH.IMAGE_ORGINAL_PATH . $file, $path2 . $file);
         Image::resize_strict($path2 . $file, $w, $h);
     }
     
