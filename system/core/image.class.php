@@ -120,7 +120,6 @@ class Image {
      * Make sure all folders for cache are created
      */
     public function check_folders() {
-        echo LOCAL_PATH.CACHE_PATH;
         if (!is_dir(LOCAL_PATH.CACHE_PATH)) {
             mkdir(LOCAL_PATH.CACHE_PATH);
         }
