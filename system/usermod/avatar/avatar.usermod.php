@@ -75,6 +75,7 @@ class Avatar extends \UserMod implements \iUserMod{
                         $check = true;
                     }
                 }
+                echo $new_image;
                 $sql = '
                 INSERT INTO images (
                     `file`,
@@ -86,12 +87,8 @@ class Avatar extends \UserMod implements \iUserMod{
                     \'' . \DB::clean(\CMS::$_user->_data['name']) . '\'
                 )';
                 \DB::q($sql);
-                echo \DB::$_lasterror;
                 $init_image = new \Image();
                 $try = move_uploaded_file($_FILES["avatar"]["tmp_name"], $new_image );
-                if($try){
-                    echo 'moved';
-                }
                 $this->_data = \DB::$_lastid;
                 $this->save();
                 \Page\Profile::$_status[] = \Module\Notice::info('Avatar Updated');
