@@ -73,7 +73,7 @@ class Image {
         $ext = pathinfo($orginal, PATHINFO_EXTENSION);
         
         $newname = $this->random_filename($ext);
-        $new = IMAGE_ORGINAL_PATH . $newname;
+        $new = LOCAL_PATH.IMAGE_ORGINAL_PATH . $newname;
         copy($orginal, $new);
         $sql = '
             INSERT INTO images (
@@ -121,16 +121,16 @@ class Image {
      */
     public function check_folders() {
 
-        if (!is_dir($_SERVER['DOCUMENT_ROOT'].CACHE_PATH)) {
-            mkdir($_SERVER['DOCUMENT_ROOT'].CACHE_PATH);
+        if (!is_dir(LOCAL_PATH.CACHE_PATH)) {
+            mkdir(LOCAL_PATH.CACHE_PATH);
         }
 
-        if (!is_dir($_SERVER['DOCUMENT_ROOT'].IMAGE_CACHE_PATH)) {
-            mkdir($_SERVER['DOCUMENT_ROOT'].IMAGE_CACHE_PATH);
+        if (!is_dir(LOCAL_PATH.IMAGE_CACHE_PATH)) {
+            mkdir(LOCAL_PATH.IMAGE_CACHE_PATH);
         }
 
-        if (!is_dir($_SERVER['DOCUMENT_ROOT'].IMAGE_ORGINAL_PATH)) {
-            mkdir($_SERVER['DOCUMENT_ROOT'].IMAGE_ORGINAL_PATH);
+        if (!is_dir(LOCAL_PATH.IMAGE_ORGINAL_PATH)) {
+            mkdir(LOCAL_PATH.IMAGE_ORGINAL_PATH);
         }
     }
     

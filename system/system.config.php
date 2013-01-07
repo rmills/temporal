@@ -66,6 +66,10 @@ if(!defined('PATH_BASE')){
     define('PATH_BASE', '/');
 }
 
+if(!defined('LOCAL_PATH')){
+    define('LOCAL_PATH', $_SERVER['DOCUMENT_ROOT'] );
+}
+
 if(!defined('PATH_LAYOUT_ROOT_DEFAULT')){
     #Path to layout folder
     define('PATH_LAYOUT_ROOT_DEFAULT', 'system/layout/default/');
