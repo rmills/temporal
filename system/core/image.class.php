@@ -229,7 +229,7 @@ class Image {
      * @param int $square image is square
      */
     private function check_cache($file, $size, $square) {
-        $path1 = $_SERVER['DOCUMENT_ROOT'].IMAGE_CACHE_PATH . $square . '/';
+        $path1 = LOCAL_PATH.IMAGE_CACHE_PATH . $square . '/';
         $path2 = $path1 . $size . '/';
         if (!is_dir($path1)) {
             mkdir($path1);
