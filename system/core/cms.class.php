@@ -734,7 +734,7 @@ class CMS {
      * @return float
      */
     public static function get_build_time(){
-        return round(microtime() - BUILD_TIME, 3);
+        return round(microtime(true) - BUILD_TIME, 3);
     }
 
 }

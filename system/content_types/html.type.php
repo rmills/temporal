@@ -170,11 +170,7 @@ class Html {
                     }
                 }
                 
-                if(\CMS::$_user->_super_user){
-                    self::$_body = str_replace('{buildtime}', "Build Time: ".\CMS::get_build_time(), self::$_body);
-                }else{
-                    self::$_body = str_replace('{buildtime}', '', self::$_body);
-                }
+                self::$_body = str_replace('{buildtime}', "Build Time: ".\CMS::get_build_time(), self::$_body);
                 echo self::$_body;
             }
         }

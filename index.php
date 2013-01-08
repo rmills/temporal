@@ -3,7 +3,7 @@
  * @author Ryan Mills <ryan@ryanmills.net> (Primary)
  * 
  */
-define('BUILD_TIME', microtime());
+define('BUILD_TIME', microtime(true));
 session_start();
 
 /* Local Config */
