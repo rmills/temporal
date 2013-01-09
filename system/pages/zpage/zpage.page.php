@@ -104,7 +104,7 @@ class Zpage extends Page {
     }
 
     public static function output() {
-        if (!\Html::$_hascontent && \CMS::$_content_type == 'html' && $_page_type == 'zpage') {
+        if (!\Html::$_hascontent && \CMS::$_content_type == 'html' && \CMS::$_page_type == 'zpage') {
             self::display_404();
         }
     }
