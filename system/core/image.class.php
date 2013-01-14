@@ -127,14 +127,16 @@ class Image {
         if (!is_dir(LOCAL_PATH.CACHE_PATH)) {
             mkdir(LOCAL_PATH.CACHE_PATH);
         }
+        echo LOCAL_PATH.CACHE_PATH.':';
 
         if (!is_dir(LOCAL_PATH.IMAGE_CACHE_PATH)) {
             mkdir(LOCAL_PATH.IMAGE_CACHE_PATH);
         }
-
+        echo LOCAL_PATH.IMAGE_CACHE_PATH.':';
         if (!is_dir(LOCAL_PATH.IMAGE_ORGINAL_PATH)) {
             mkdir(LOCAL_PATH.IMAGE_ORGINAL_PATH);
         }
+        echo LOCAL_PATH.IMAGE_ORGINAL_PATH.':';
     }
     
     /**
