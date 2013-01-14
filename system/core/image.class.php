@@ -176,6 +176,16 @@ class Image {
         return '<img src="' . $path . $this->_file . '" title="' . $this->_name . '" alt="' . $this->_name . '">';
     }
     
+    public function thumbnail_width($size = IMAGE_DEFAULT_THUMBNAIL_SIZE) {
+        $this->check_cache_width($this->_file, $size);
+        $path = PATH_BASE.IMAGE_CACHE_PATH . 'width/' . $size . '/';
+        $path = str_replace('//', '/', $path); //temp path fix
+        if (!is_file($path)) {
+            $this->create_cache_file_width($size, $path, $this->_file);
+        }
+        return '<img src="' . $path . $this->_file . '" title="' . $this->_name . '" alt="' . $this->_name . '">';
+    }
+    
     /**
      * Wraps thumbnail() to create a link
      * @param string $href path for link
@@ -254,6 +264,29 @@ class Image {
      * @param int $size height of image
      * @param int $square image is square
      */
+    private function check_cache_width($file, $size) {
+        $path1 = LOCAL_PATH.IMAGE_CACHE_PATH . 'width/';
+        $path2 = $path1 . $size . '/';
+        if (!is_dir($path1)) {
+            mkdir($path1);
+        }
+
+        if (!is_dir($path2)) {
+            mkdir($path2);
+        }
+
+
+        if (!is_file($path2 . $file)) {
+            $this->create_cache_file_width($size, $path2, $file);
+        }
+    }
+    
+    /**
+     * Check if image has cached resize created
+     * @param string $file filename
+     * @param int $size height of image
+     * @param int $square image is square
+     */
     private function check_strict_cache($file, $w, $h) {
         $path1 = LOCAL_PATH.IMAGE_CACHE_PATH . 'strict/';
         $path2 = $path1  .$w.'_'.$h. '/';
@@ -292,6 +325,21 @@ class Image {
             } else {
                 Image::resize($path . $file, $size);
             }
+        }
+    }
+    
+    /**
+     * Create a cache version of Image
+     * @param int $size height of cache image
+     * @param type $square new image is square
+     * @param string $path to image (not used, legacy)
+     * @param string $file filename
+     */
+    private function create_cache_file_width($size, $path, $file) {
+        $path = LOCAL_PATH.IMAGE_CACHE_PATH . 'width/' . $size . '/';
+        if(is_file(LOCAL_PATH.IMAGE_ORGINAL_PATH . $file)){
+            copy(LOCAL_PATH.IMAGE_ORGINAL_PATH . $file, $path . $file);
+            Image::resize($path . $file, $size, false);
         }
     }
     
