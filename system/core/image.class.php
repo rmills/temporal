@@ -53,13 +53,28 @@ class Image {
     public $_error = false;
     
     /**
+     * @var bool interal check
+     */
+    public $_status = true;
+    
+    /**
      * Try to load an image
      * @param int $id
      */
     public function __construct($id = false) {
         $this->check_folders();
         if (is_numeric($id)) {
-            $this->load($id);
+            $try = $this->load($id);
+            if($try){
+                return true;
+            }else{
+                $this->_status = false;
+                return false;
+            }
+        }else{
+            $this->_status = false;
+            
+            return false;
         }
     }
     
@@ -120,10 +135,10 @@ class Image {
      * Make sure all folders for cache are created
      */
     public function check_folders() {
-        if (!is_dir(PATH_MEDIA)) {
+		if (!is_dir(PATH_MEDIA)) {
             mkdir(PATH_MEDIA);
         }
-        
+	
         if (!is_dir(LOCAL_PATH.CACHE_PATH)) {
             mkdir(LOCAL_PATH.CACHE_PATH);
         }
@@ -167,6 +182,10 @@ class Image {
      * @return html <img> tag
      */
     public function thumbnail($size = IMAGE_DEFAULT_THUMBNAIL_SIZE, $square = IMAGE_DEFAULT_SQUARE) {
+        if(!$this->_status){
+            return '<p>missing/blank image</p>';
+        }
+        
         $this->check_cache($this->_file, $size, $square);
         $path = PATH_BASE.IMAGE_CACHE_PATH . $square . '/' . $size . '/';
         $path = str_replace('//', '/', $path); //temp path fix
@@ -175,7 +194,7 @@ class Image {
         }
         return '<img src="' . $path . $this->_file . '" title="' . $this->_name . '" alt="' . $this->_name . '">';
     }
-    
+    /*
     public function thumbnail_width($size = IMAGE_DEFAULT_THUMBNAIL_SIZE) {
         $this->check_cache_width($this->_file, $size);
         $path = PATH_BASE.IMAGE_CACHE_PATH . 'width/' . $size . '/';
@@ -185,7 +204,7 @@ class Image {
         }
         return '<img src="' . $path . $this->_file . '" title="' . $this->_name . '" alt="' . $this->_name . '">';
     }
-    
+    */
     /**
      * Wraps thumbnail() to create a link
      * @param string $href path for link
@@ -195,6 +214,9 @@ class Image {
      * @return html
      */
     public function thumbnail_link($href, $size = IMAGE_DEFAULT_THUMBNAIL_SIZE, $square = IMAGE_DEFAULT_SQUARE, $class = false) {
+        if(!$this->_status){
+            return '<p>missing/blank image</p>';
+        }
         $this->check_cache($this->_file, $size, $square);
         return '<a id="'.$this->_id.'" class="'.$class.'" title="' . $this->_name . '" href="' . $href . '">' . $this->thumbnail($size, $square) . '</a>';
     }
@@ -208,6 +230,9 @@ class Image {
      * @return type
      */
     public function thumbnail_display_link($display_size, $size = IMAGE_DEFAULT_THUMBNAIL_SIZE, $square = IMAGE_DEFAULT_SQUARE, $class = false) {
+        if(!$this->_status){
+            return '<p>missing/blank image</p>';
+        }
         $this->check_cache($this->_file, $display_size, 0);
         $href = PATH_BASE.IMAGE_CACHE_PATH .'0'.'/' . $display_size . '/'.$this->_file;
         $href = str_replace('//', '/', $href); //temp path fix
@@ -221,6 +246,9 @@ class Image {
      * @return html <img> tag
      */
     public function thumbnail_strict($w = IMAGE_DEFAULT_THUMBNAIL_STRICT_W, $h = IMAGE_DEFAULT_THUMBNAIL_STRICT_H) {
+        if(!$this->_status){
+            return '<p>missing</p>';
+        }
         $this->check_strict_cache($this->_file, $w, $h);
         
         $path = PATH_BASE.IMAGE_CACHE_PATH . 'strict/'.$w.'_'.$h. '/'.$this->_file;
@@ -231,6 +259,32 @@ class Image {
         }
          * */
         return '<img src="' . $path. '" title="' . $this->_name . '" alt="' . $this->_name . '">';
+    }
+    
+    public function thumbnail_width($w = IMAGE_DEFAULT_THUMBNAIL_STRICT_W, $class = false) {
+        if(!$this->_status){
+            return '<p>missing</p>';
+        }
+        $this->check_width_cache($this->_file, $w);
+        
+        $path = PATH_BASE.IMAGE_CACHE_PATH . 'width/'.$w.'/'.$this->_file;
+        $path = str_replace('//', '/', $path); //temp path fix
+        /*
+        if (!is_file($path)) {
+            $this->create_strict_cache_file($w, $h, $this->_file);
+        }
+         * */
+        return '<img class="'.$class.'" src="' . $path. '" title="' . $this->_name . '" alt="' . $this->_name . '">';
+    }
+    
+    public function thumbnail_width_link($display_size, $size = IMAGE_DEFAULT_THUMBNAIL_SIZE, $class = false) {
+        if(!$this->_status){
+            return '<p>missing/blank image</p>';
+        }
+        $this->check_cache($this->_file, $display_size, 0);
+        $href = PATH_BASE.IMAGE_CACHE_PATH .'0'.'/' . $display_size . '/'.$this->_file;
+        $href = str_replace('//', '/', $href); //temp path fix
+        return '<a id="'.$this->_id.'" class="'.$class.'" title="' . $this->_name . '" href="' . $href . '">' . $this->thumbnail_width($size) . '</a>';
     }
     
     
@@ -303,9 +357,43 @@ class Image {
                 echo 'unable to create static path 2: '.$path2.':';
             }
         }
-        
-        if (!is_file($path2 . $file)) {
-            $this->create_strict_cache_file($w, $h, $file);
+        if($this->_status){
+            if (!is_file($path2 . $file)) {
+                $this->create_strict_cache_file($w, $h, $file);
+            }
+        }else{
+            return false;
+        }
+    }
+    
+    /**
+     * Check if image has cached resize created
+     * @param string $file filename
+     * @param int $size height of image
+     * @param int $square image is square
+     */
+    private function check_width_cache($file, $w) {
+        $path1 = LOCAL_PATH.IMAGE_CACHE_PATH . 'width/';
+        $path2 = $path1  .$w. '/';
+        if (!is_dir($path1)) {
+            $try = mkdir($path1);
+            if(!$try){
+                echo 'unable to create static path 1: '.$path1.':';
+            }
+        }
+
+        if (!is_dir($path2)) {
+            $try = mkdir($path2);
+            if(!$try){
+                echo 'unable to create static path 2: '.$path2.':';
+            }
+        }
+        if($this->_status){
+            if (!is_file($path2 . $file)) {
+                $this->create_width_cache_file($w, $file);
+            }
+        }else{
+            return false;
         }
     }
     
@@ -319,7 +407,7 @@ class Image {
     private function create_cache_file($size, $square, $path, $file) {
         $path = LOCAL_PATH.IMAGE_CACHE_PATH . $square . '/' . $size . '/';
         if(is_file(LOCAL_PATH.IMAGE_ORGINAL_PATH . $file)){
-        copy(LOCAL_PATH.IMAGE_ORGINAL_PATH . $file, $path . $file);
+			copy(LOCAL_PATH.IMAGE_ORGINAL_PATH . $file, $path . $file);
             if ($square) {
                 Image::resize_square($path . $file, $size);
             } else {
@@ -355,6 +443,20 @@ class Image {
         $path2 = $path1  .$w.'_'.$h. '/';
         copy(LOCAL_PATH.IMAGE_ORGINAL_PATH . $file, $path2 . $file);
         Image::resize_strict($path2 . $file, $w, $h);
+    }
+    
+    /**
+     * Create a cache version of Image
+     * @param int $size height of cache image
+     * @param type $square new image is square
+     * @param string $path to image (not used, legacy)
+     * @param string $file filename
+     */
+    private function create_width_cache_file($w, $file) {
+        $path1 = LOCAL_PATH.IMAGE_CACHE_PATH . 'width/';
+        $path2 = $path1  .$w. '/';
+        copy(LOCAL_PATH.IMAGE_ORGINAL_PATH . $file, $path2 . $file);
+        Image::resize($path2 . $file, $w, false);
     }
     
     /**
