@@ -39,7 +39,7 @@ class User_quickaccess extends Module {
             $image = new \Image($id);
             \Html::set("{user-image}", '<div id="quickaccess-image">'.$image->thumbnail(THUMBNAIL_TINY, true).'</div>');
         }else{
-            \Html::set("{user-image}", '<div id="quickaccess-image"><img src="{doc_root}system/modules/user_quickaccess/assets/User.jpg" alt="site user" title="site user"></div>');
+            \Html::set("{user-image}", '<div id="quickaccess-image"><img src="{root_doc}system/modules/user_quickaccess/assets/User.jpg" alt="site user" title="site user"></div>');
         }
         \Html::set("{user-name}", \CMS::$_user->_data['name']);
     }
