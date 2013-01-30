@@ -68,7 +68,7 @@ class Login extends Page {
                     \CMS::$_user = new \User($response[0]['uid']);
                     return true;
                 } elseif ($response[0]['status'] == 'new') {
-                    self::$_error = 'You have not actived your account. Please check your email address';
+                    self::$_error = 'You have not actived your account. Please check your email and click the link.';
                 }
             } else {
                 \CMS::log('User', 'password does not match email');
