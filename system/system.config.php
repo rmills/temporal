@@ -217,7 +217,7 @@ if(!defined('ENABLE_CACHE')){
 }
 
 if(!defined('CACHE_TIME')){
-    define('CACHE_TIME', "+1 hour"); // this is wrapped into strtotime();
+    define('CACHE_TIME', "+8 hour"); // this is wrapped into strtotime();
 }
 
 if(!defined('ZPAGE_HISTORY_LIMIT')){
