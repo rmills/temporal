@@ -38,6 +38,12 @@ class Login extends Page {
             \Html::set('{content}', self::block('community.html'));
         }
         \Html::set('{login_error}');
+        
+        if(isset($_SESSION['login_message'])){
+            \Html::set('{login_error}', \Module\Notice::info($_SESSION['login_message']));
+            $_SESSION['login_message'] = null;
+        }
+        
         if (isset($_POST['do_login'])) {
             if (!self::auth($_POST['email'], $_POST['pass'])) {
                 if (self::$_error) {
