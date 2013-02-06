@@ -429,6 +429,7 @@ class Admin_page extends Module {
         $users = array();
         $sql = 'SELECT * FROM `pages`';
         $list = \DB::q($sql);
+        $pages = array();
         foreach ($list as $v) {
 
             if ($v['status'] != 'active') {

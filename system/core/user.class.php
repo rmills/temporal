@@ -90,6 +90,7 @@ class User {
             }
             $this->_permissions = array_unique($this->_permissions);
         }else{
+            $this->_data['groups'] = array();
             $_SESSION['super_user'] = 'yes';
             $_SESSION['user_allow_ext'] = 'ok';
         }
