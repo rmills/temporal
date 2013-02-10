@@ -554,7 +554,7 @@ class Image {
                 break;
             
             case 'jpeg':
-                $temp_image = imagecreatefromjpeg($imagepath);
+                imagejpeg($new_image, $imagepath, $q);
                 break;
 
             case 'png':
@@ -640,7 +640,7 @@ class Image {
                 break;
             
             case 'jpeg':
-                $temp_image = imagecreatefromjpeg($imagepath);
+                imagejpeg($new_image, $imagepath, $q);
                 break;
 
             case 'bmp':
