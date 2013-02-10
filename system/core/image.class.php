@@ -505,6 +505,10 @@ class Image {
             case 'jpg':
                 $temp_image = imagecreatefromjpeg($imagepath);
                 break;
+            
+            case 'jpeg':
+                $temp_image = imagecreatefromjpeg($imagepath);
+                break;
 
             case 'png':
                 $temp_image = imagecreatefrompng($imagepath);
@@ -547,6 +551,10 @@ class Image {
         switch ($type) {
             case 'jpg':
                 imagejpeg($new_image, $imagepath, $q);
+                break;
+            
+            case 'jpeg':
+                $temp_image = imagecreatefromjpeg($imagepath);
                 break;
 
             case 'png':
@@ -591,7 +599,11 @@ class Image {
             case 'jpg':
                 $temp_image = imagecreatefromjpeg($imagepath);
                 break;
-
+            
+            case 'jpeg':
+                $temp_image = imagecreatefromjpeg($imagepath);
+                break;
+            
             case 'bmp':
                 $temp_image = self::imagecreatefrombmp($imagepath);
                 break;
@@ -625,6 +637,10 @@ class Image {
         switch ($type) {
             case 'jpg':
                 imagejpeg($new_image, $imagepath, $q);
+                break;
+            
+            case 'jpeg':
+                $temp_image = imagecreatefromjpeg($imagepath);
                 break;
 
             case 'bmp':
