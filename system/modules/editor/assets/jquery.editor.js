@@ -66,7 +66,7 @@
         
         this.fetch_history = function(zid)
         {
-            console.log(zid);
+            //console.log(zid);
             var post_data = {
                 z_id: zid
             };
