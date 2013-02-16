@@ -175,22 +175,6 @@ class CMS {
             }
         }
         
-        foreach ($folders as $v) {
-            $folder = dir(PATH_MODULE_ROOT . $v);
-            while (false !== ($entry = $folder->read())) {
-                if (strpos($entry, '.mod.') !== false) {
-                    $path = PATH_MODULE_ROOT . $v . '/' . $entry;
-                    if (!is_file(PATH_MODULE_ROOT . $v . '/ignore.txt')) {
-                        self::log('CMS', 'CMS::init_modules() found: ' . $path);
-                        self::$__modules[] = array($path, $v);
-                    } else {
-                        self::log('CMS', 'CMS::init_modules() ignoring: ' . $path);
-                    }
-                }
-            }
-            $folder->close();
-        }
-
         if (is_dir(PATH_MODULE_ROOT_ADDON)) {
             foreach ($folders_addon as $v) {
                 $folder = dir(PATH_MODULE_ROOT_ADDON . $v);
@@ -208,6 +192,34 @@ class CMS {
                 $folder->close();
             }
         }
+        
+        foreach ($folders as $v) {
+            $folder = dir(PATH_MODULE_ROOT . $v);
+            while (false !== ($entry = $folder->read())) {
+                $found = false;
+                if (strpos($entry, '.mod.') !== false) {
+                    $path = PATH_MODULE_ROOT . $v . '/' . $entry;
+                    if (!is_file(PATH_MODULE_ROOT . $v . '/ignore.txt')) {
+                        foreach(self::$__modules as $name){
+                            if($name[1] == $v){
+                                $found = true;
+                            }
+                        }
+                        if(!$found){
+                            self::log('CMS', 'CMS::init_modules() found: ' . $path);
+                            self::$__modules[] = array($path, $v);
+                        }else{
+                            self::log('CMS', 'CMS::init_modules() override: ' . $path);
+                        }
+                    } else {
+                        self::log('CMS', 'CMS::init_modules() ignoring: ' . $path);
+                    }
+                }
+            }
+            $folder->close();
+        }
+
+        
         
         
     }
@@ -437,24 +449,12 @@ class CMS {
                 }
             }
         }
-
-        foreach ($folders as $v) {
-            $folder = dir(PATH_PAGE_ROOT . $v);
-            while (false !== ($entry = $folder->read())) {
-                if (strpos($entry, '.page.') !== false) {
-                    $path = PATH_PAGE_ROOT . $v . '/' . $entry;
-                    $__pages[] = strtolower($v);
-                    self::log('CMS', 'CMS::init_pages() found: ' . $path);
-                    self::$__pages[] = array($path, $v);
-                }
-            }
-            $folder->close();
-        }
         
         if (is_dir(PATH_PAGE_ROOT_ADDON)) {
             foreach ($folders_addon as $v) {
                 $folder = dir(PATH_PAGE_ROOT_ADDON . $v);
                 while (false !== ($entry = $folder->read())) {
+                    $found = false;
                     if (strpos($entry, '.page.') !== false) {
                         $path = PATH_PAGE_ROOT_ADDON . $v . '/' . $entry;
                         $__pages[] = strtolower($v);
@@ -465,6 +465,31 @@ class CMS {
                 $folder->close();
             }
         }
+
+        foreach ($folders as $v) {
+            $folder = dir(PATH_PAGE_ROOT . $v);
+            while (false !== ($entry = $folder->read())) {
+                $found = false;
+                if (strpos($entry, '.page.') !== false) {
+                    $path = PATH_PAGE_ROOT . $v . '/' . $entry;
+                    foreach(self::$__pages as $name){
+                        if($name[1] == $v){
+                            $found = true;
+                        }
+                    }
+                    if(!$found){
+                        $__pages[] = strtolower($v);
+                        self::log('CMS', 'CMS::init_pages() found: ' . $path);
+                        self::$__pages[] = array($path, $v);
+                    }else{
+                        self::log('CMS', 'CMS::init_pages() override: ' . $path);
+                    }
+                }
+            }
+            $folder->close();
+        }
+        
+        
     }
     
     /**
