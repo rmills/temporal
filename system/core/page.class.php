@@ -19,11 +19,11 @@ class Page {
     protected static function block($filename) {
         $trace = debug_backtrace();
         $class = explode('\\', $trace[1]['class']);
-        $file = PATH_PAGE_ROOT . strtolower($class[1]) . '/blocks/' . $filename;
+        $file = PATH_PAGE_ROOT_ADDON . strtolower($class[1]) . '/blocks/' . $filename;
         if (is_file($file)) {
             return file_get_contents($file);
         } else {
-            $file = PATH_PAGE_ROOT_ADDON . strtolower($class[1]) . '/blocks/' . $filename;
+            $file = PATH_PAGE_ROOT . strtolower($class[1]) . '/blocks/' . $filename;
             if (is_file($file)) {
                 return file_get_contents($file);
             } else {
