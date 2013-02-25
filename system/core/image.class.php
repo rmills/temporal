@@ -194,6 +194,22 @@ class Image {
         }
         return '<img src="' . $path . $this->_file . '" title="' . $this->_name . '" alt="' . $this->_name . '">';
     }
+    
+    public function thumbnail_url($size = IMAGE_DEFAULT_THUMBNAIL_SIZE, $square = IMAGE_DEFAULT_SQUARE) {
+        if(!$this->_status){
+            return '<p>missing/blank image</p>';
+        }
+        
+        $this->check_cache($this->_file, $size, $square);
+        $path = PATH_BASE.IMAGE_CACHE_PATH . $square . '/' . $size . '/';
+        $path = str_replace('//', '/', $path); //temp path fix
+        if (!is_file($path)) {
+            $this->create_cache_file($size, $square, $path, $this->_file);
+        }
+        return  $path . $this->_file;
+    }
+    
+    
     /*
     public function thumbnail_width($size = IMAGE_DEFAULT_THUMBNAIL_SIZE) {
         $this->check_cache_width($this->_file, $size);
