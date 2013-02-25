@@ -84,7 +84,7 @@ class Profile extends Page {
         $html = array();
         $html[] = '<div id="profile"><h2>'.$user->_data['name'].'</h2>';
         $content = array();
-        foreach(\CMS::$_user->_modules as $usermod){
+        foreach($user->_modules as $usermod){
             $data = $usermod->profile('public');
             $check = false;
             $i = $data[1];
