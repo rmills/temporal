@@ -81,6 +81,9 @@ class Profile extends Page {
     
     private static function build_public(){
         $user = new \User(self::$_userid);
+        if($user->_error){
+            return '<div id="profile"><h2>User Not Found</h2></div>';
+        }
         $html = array();
         $html[] = '<div id="profile"><h2>'.$user->_data['name'].'</h2>';
         $content = array();
