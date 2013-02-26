@@ -36,7 +36,43 @@
             <p>&nbsp;</p>
             <h4>DB Status: {db_status}</h4>
             <div>{notice}</div>
-            {content}
+            <h5>Create first user for install:</h5>
+            <form class="form-inline" id="formcontrol" action="/install" method="post">
+                <div class="control-group">
+                    <label for="email">Email:</label> 
+                    <div class="input-prepend">
+                        <span class="add-on">@</span><input class="input required" maxchar="80" size="20" type="text" id="email" name="email">
+                    </div>
+                    <div class="well">Must be valid, this will be your super user account.</div>
+                </div>
+                <div class="control-group"> 
+                    <label for="user">User Name:</label> 
+                    <div class="input-prepend">
+                        <span class="add-on"><i class="icon-globe"></i></span><input class="input required" maxchar="40" size="20" type="text" id="username" name="user">
+                    </div>
+                    <div class="well">Name that will be shown in your profile.</div>
+                </div>
+                <div class="control-group">
+                    <label for="password">Password:</label> 
+                    <div class="input-prepend">
+                        <span class="add-on"><i class="icon-lock"></i></span><input class="input required" maxchar="40" size="20" type="password" id="password" name="password"> 
+                    </div>
+                </div>
+                <p>&nbsp;</p>
+                <div class="form-actions">
+                    <input class="btn btn-info" type="submit" value="&nbsp;&nbsp;Install Temporal Database&nbsp;&nbsp;"> <br />
+                </div>
+            </form>
+            <p>&nbsp;</p>
+            <div id="help">
+                <h1>I cant connect to my database.</h1>
+                <p></p>
+                <h1>What kind of databases are supported</h1>
+                <p>At this time only MySQL databases are supported. There are no plans to support others.</p>
+                <h1>What kind of table should I create?</h1>
+                <p>Its recommended and tested to use an InnoDB (standard with MySQL) with the charset "utf8" and collation "utf8_bin". You may run into errors using something different.
+            </div>
+                
         </div>
     </body>
 </html>
