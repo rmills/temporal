@@ -17,6 +17,19 @@ if(is_file('site/config.inc.php')){
 
 include 'system/system.config.php';
 
+if(ALLOW_INSTALL){
+    if(isset($_GET['uvar1'])){
+        if($_GET['uvar1'] == 'install'){
+            include 'system/install/install.php';
+            exit;
+        }else{
+            exit('Allow auto install enabled, <a href="/install">click here</a> to install. You must disable this in your /site/config.inc.php before you can use your site.');
+        }
+    }else{
+        exit('Allow auto install enabled, <a href="/install">click here</a> to install. You must disable this in your /site/config.inc.php before you can use your site.');
+    }
+}
+
 
 /*
  * Set Debug Options

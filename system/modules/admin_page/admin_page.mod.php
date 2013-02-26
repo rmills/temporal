@@ -292,7 +292,7 @@ class Admin_page extends Module {
         $pid = \CMS::$_vars[3];
         $zdata = \Page\Zpage::fetch_by_id($pid);
 
-        $html = '<h4>Confirm Delete</h4><hr /><p>Are you sure you want to delete the page titled "' . $zdata['title'] . '"?<div class="form-actions"><a class="btn btn-danger" href="{root_doc}admin/page/delete/' . $pid . '">Delete</a> <a class="btn btn-info" href="{root_doc}admin/page/edit/' . $pid . '">Cancel</a></div>';
+        $html = '<h4>Confirm Delete</h4><hr /><p>Are you sure you want to delete the page titled "' . $zdata['title'] . '"?<div class="form-actions"><a class="btn btn-danger" href="{root_doc}admin/page/delete/' . $pid . '">Delete</a> <a class="btn btn-info" href="{root_doc}admin/page/list">Cancel</a></div>';
         \Html::set('{admin_content}', $html);
         \Html::set('{admin_title}', 'Page Options');
     }
@@ -300,7 +300,7 @@ class Admin_page extends Module {
     public static function confirmpdelete_page() {
         $pid = \CMS::$_vars[3];
         $zdata = \Page\Zpage::fetch_by_id($pid, true);
-        $html = '<h4>Confirm Permanently Remove</h4><hr /><p>Are you sure you want to permanently delete the page titled "' . $zdata['title'] . '"?<div class="form-actions"><a class="btn btn-danger" href="{root_doc}admin/page/pdelete/' . $pid . '">Delete</a> <a class="btn btn-info" href="{root_doc}admin/page/edit/' . $pid . '">Cancel</a></div>';
+        $html = '<h4>Confirm Permanently Remove</h4><hr /><p>Are you sure you want to permanently delete the page titled "' . $zdata['title'] . '"?<div class="form-actions"><a class="btn btn-danger" href="{root_doc}admin/page/pdelete/' . $pid . '">Delete</a> <a class="btn btn-info" href="{root_doc}admin/page/list">Cancel</a></div>';
         \Html::set('{admin_content}', $html);
     }
 

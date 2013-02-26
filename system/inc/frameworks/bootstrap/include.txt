@@ -1,0 +1,9 @@
+Just a quick reference page for copy/paste into templates.
+
+<link href="/system/inc/frameworks/bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet">
+<link href="/system/inc/frameworks/bootstrap/css/bootstrap-responsive.css" type="text/css" rel="stylesheet">
+<script src="/system/inc/frameworks/bootstrap/js/bootstrap.min.js" type="text/javascript" ></script>
+
+
+<link href="/system/inc/frameworks/bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet">
+<script src="/system/inc/frameworks/bootstrap/js/bootstrap.min.js" type="text/javascript" ></script>

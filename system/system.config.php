@@ -5,6 +5,10 @@
  * 
  */
 
+if(!defined('ALLOW_INSTALL')){
+    define('ALLOW_INSTALL', false);
+}
+
 if(!defined('ENABLE_DEBUG')){
     define('ENABLE_DEBUG', false);
 }
