@@ -34,7 +34,7 @@ class Image {
      *
      * @var string name used for title
      */
-    private $_name = false;
+    public $_name = false;
     
     /**
      *
@@ -45,7 +45,7 @@ class Image {
     /**
      * @var int id of Image() 
      */
-    private $_id = 0;
+    public $_id = 0;
     
     /**
      * @var bool load error check
