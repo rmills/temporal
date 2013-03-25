@@ -151,6 +151,10 @@ if(!defined('DEFAULT_PAGE_GUEST')){
     define('DEFAULT_PAGE_GUEST', 'Zpage');
 }
 
+if(!defined('REGISTER_DEFAULT_GROUPS')){
+    define('REGISTER_DEFAULT_GROUPS', '1');
+}
+
 /**
  * Only "admin" and "community" are supported
  */

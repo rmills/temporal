@@ -1,52 +1,14 @@
-/*
-SQLyog Ultimate - MySQL GUI v8.2 
-MySQL - 5.5.24-log : Database - temporal_v7
-*********************************************************************
-*/
-
-/*!40101 SET NAMES utf8 */;
-
-/*!40101 SET SQL_MODE=''*/;
-
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-/*Table structure for table `cache` */
-
 DROP TABLE IF EXISTS `cache`;
-
-CREATE TABLE `cache` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `block` tinyint(1) DEFAULT '0',
-  `path` varchar(80) COLLATE utf8_bin DEFAULT NULL,
-  `data` longtext COLLATE utf8_bin,
-  `expires` int(9) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
-/*Data for the table `cache` */
-
-/*Table structure for table `groups` */
-
+CREATE TABLE `cache` ( `id` int(11) NOT NULL AUTO_INCREMENT, `block` tinyint(1) DEFAULT '0', `path` varchar(80) COLLATE utf8_bin DEFAULT NULL, `data` longtext COLLATE utf8_bin, `expires` int(9) DEFAULT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 DROP TABLE IF EXISTS `groups`;
-
 CREATE TABLE `groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `modules` text,
   `name` varchar(60) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
-
-/*Data for the table `groups` */
-
-insert  into `groups`(`id`,`modules`,`name`) values (1,'module\\editor,page\\login,page\\register,page\\zpage,page\\resetpass','public');
-insert  into `groups`(`id`,`modules`,`name`) values (2,'page\\login,page\\profile,page\\zpage','loggedin');
-
-/*Table structure for table `images` */
-
+insert  into `groups`(`id`,`modules`,`name`) values (1,'module\\editor,page\\login,page\\register,page\\zpage,page\\resetpass','public'),(2,'page\\login,page\\profile,page\\zpage','loggedin');
 DROP TABLE IF EXISTS `images`;
-
 CREATE TABLE `images` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `file` varchar(20) COLLATE utf8_bin DEFAULT NULL,
@@ -55,13 +17,7 @@ CREATE TABLE `images` (
   `folder` varchar(60) COLLATE utf8_bin DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
-/*Data for the table `images` */
-
-/*Table structure for table `pages` */
-
 DROP TABLE IF EXISTS `pages`;
-
 CREATE TABLE `pages` (
   `pid` int(11) NOT NULL AUTO_INCREMENT,
   `menu_title` varchar(200) COLLATE utf8_bin DEFAULT NULL,
@@ -96,43 +52,21 @@ CREATE TABLE `pages` (
   `status` varchar(10) COLLATE utf8_bin DEFAULT 'active',
   PRIMARY KEY (`pid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
-/*Data for the table `pages` */
-
-insert  into `pages`(`pid`,`menu_title`,`title`,`parent`,`weight`,`published`,`meta_description`,`meta_keywords`,`url`,`template`,`z1`,`z2`,`z3`,`z4`,`z5`,`z6`,`z7`,`z8`,`z9`,`z10`,`z11`,`z12`,`z13`,`z14`,`z15`,`z16`,`z17`,`z18`,`z19`,`z20`,`status`) values (1,'Home','Home',0,1,'no','This is the meta description. It helps google.','sample, temporal default, anything you want','home','home.html',1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,'active');
-insert  into `pages`(`pid`,`menu_title`,`title`,`parent`,`weight`,`published`,`meta_description`,`meta_keywords`,`url`,`template`,`z1`,`z2`,`z3`,`z4`,`z5`,`z6`,`z7`,`z8`,`z9`,`z10`,`z11`,`z12`,`z13`,`z14`,`z15`,`z16`,`z17`,`z18`,`z19`,`z20`,`status`) values (23,'Inside Example','Inside Example',0,100,'no',NULL,NULL,'inside','inside.html',7,8,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'active');
-
-/*Table structure for table `pimage` */
-
+insert  into `pages`(`pid`,`menu_title`,`title`,`parent`,`weight`,`published`,`meta_description`,`meta_keywords`,`url`,`template`,`z1`,`z2`,`z3`,`z4`,`z5`,`z6`,`z7`,`z8`,`z9`,`z10`,`z11`,`z12`,`z13`,`z14`,`z15`,`z16`,`z17`,`z18`,`z19`,`z20`,`status`) values (1,'Home','Home',0,1,'no','This is the meta description. It helps google.','sample, temporal default, anything you want','home','home.html',1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,'active'),(23,'Inside Example','Inside Example',0,100,'no',NULL,NULL,'inside','inside.html',7,8,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'active');
 DROP TABLE IF EXISTS `pimage`;
-
 CREATE TABLE `pimage` (
   `zone` int(11) NOT NULL,
   `image` int(11) DEFAULT NULL,
   PRIMARY KEY (`zone`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
-/*Data for the table `pimage` */
-
-/*Table structure for table `usermod` */
-
 DROP TABLE IF EXISTS `usermod`;
-
 CREATE TABLE `usermod` (
   `mid` varchar(50) COLLATE utf8_bin DEFAULT NULL,
   `uid` int(11) DEFAULT NULL,
   `data` text COLLATE utf8_bin
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
-/*Data for the table `usermod` */
-
-insert  into `usermod`(`mid`,`uid`,`data`) values ('Usermod-Avatar',6,'b:0;');
-insert  into `usermod`(`mid`,`uid`,`data`) values ('Usermod-Website',6,'b:0;');
-
-/*Table structure for table `users` */
-
+insert  into `usermod`(`mid`,`uid`,`data`) values ('Usermod-Avatar',6,'b:0;'),('Usermod-Website',6,'b:0;'),('Usermod-Avatar',1,'b:0;'),('Usermod-Website',1,'b:0;');
 DROP TABLE IF EXISTS `users`;
-
 CREATE TABLE `users` (
   `uid` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(255) COLLATE utf8_bin DEFAULT NULL,
@@ -149,16 +83,9 @@ CREATE TABLE `users` (
   `reset_request_ip` varchar(12) COLLATE utf8_bin DEFAULT NULL,
   `reset_request_time` int(8) DEFAULT NULL,
   PRIMARY KEY (`uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
-/*Data for the table `users` */
-
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 insert  into `users`(`uid`,`email`,`name`,`password`,`groups`,`super_user`,`status`,`salt`,`activation_code`,`date_create`,`last_ip`,`reset_key`,`reset_request_ip`,`reset_request_time`) values (1,'guest@domain.com','guest',NULL,'1','no','active',NULL,'0',NULL,NULL,NULL,NULL,NULL);
-
-/*Table structure for table `zones` */
-
 DROP TABLE IF EXISTS `zones`;
-
 CREATE TABLE `zones` (
   `z_id` int(11) NOT NULL AUTO_INCREMENT,
   `z_data` text COLLATE utf8_bin,
@@ -169,20 +96,4 @@ CREATE TABLE `zones` (
   `z_user` int(11) DEFAULT NULL,
   PRIMARY KEY (`z_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
-/*Data for the table `zones` */
-
-insert  into `zones`(`z_id`,`z_data`,`z_date`,`z_pid`,`z_parent`,`z_type`,`z_user`) values (1,'%3Cp%3EThis+zone+is+blank.%3C%2Fp%3E',1361828335,1,'z1','new',6);
-insert  into `zones`(`z_id`,`z_data`,`z_date`,`z_pid`,`z_parent`,`z_type`,`z_user`) values (2,'%3Cp%3EThis+zone+is+blank.%3C%2Fp%3E',1361828337,1,'z2','new',6);
-insert  into `zones`(`z_id`,`z_data`,`z_date`,`z_pid`,`z_parent`,`z_type`,`z_user`) values (3,'%3Cp%3EThis+zone+is+blank.%3C%2Fp%3E',1361828341,1,'z3','new',6);
-insert  into `zones`(`z_id`,`z_data`,`z_date`,`z_pid`,`z_parent`,`z_type`,`z_user`) values (4,'%3Cp%3EThis+zone+is+blank.%3C%2Fp%3E',1361828347,22,'z1','new',6);
-insert  into `zones`(`z_id`,`z_data`,`z_date`,`z_pid`,`z_parent`,`z_type`,`z_user`) values (5,'%3Cp%3EThis+zone+is+blank.%3C%2Fp%3E',1361828355,22,'z3','new',6);
-insert  into `zones`(`z_id`,`z_data`,`z_date`,`z_pid`,`z_parent`,`z_type`,`z_user`) values (6,'%3Cp%3EThis+zone+is+blank.%3C%2Fp%3E',1361828358,22,'z2','new',6);
-insert  into `zones`(`z_id`,`z_data`,`z_date`,`z_pid`,`z_parent`,`z_type`,`z_user`) values (7,'%3Cp%3EThis+is+a+blank+zone.%3C%2Fp%3E',1361828453,23,'z1','new',6);
-insert  into `zones`(`z_id`,`z_data`,`z_date`,`z_pid`,`z_parent`,`z_type`,`z_user`) values (8,'%3Cp%3EThis+is+a+blank+zone.%3C%2Fp%3E',1361828454,23,'z2','new',6);
-insert  into `zones`(`z_id`,`z_data`,`z_date`,`z_pid`,`z_parent`,`z_type`,`z_user`) values (9,'%3Cp%3EThis+is+a+blank+zone.%3C%2Fp%3E',1361828457,23,'z3','new',6);
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+insert  into `zones`(`z_id`,`z_data`,`z_date`,`z_pid`,`z_parent`,`z_type`,`z_user`) values (1,'%3Cp%3EThis+zone+is+blank.%3C%2Fp%3E',1361828335,1,'z1','new',6),(2,'%3Cp%3EThis+zone+is+blank.%3C%2Fp%3E',1361828337,1,'z2','new',6),(3,'%3Cp%3EThis+zone+is+blank.%3C%2Fp%3E',1361828341,1,'z3','new',6),(4,'%3Cp%3EThis+zone+is+blank.%3C%2Fp%3E',1361828347,22,'z1','new',6),(5,'%3Cp%3EThis+zone+is+blank.%3C%2Fp%3E',1361828355,22,'z3','new',6),(6,'%3Cp%3EThis+zone+is+blank.%3C%2Fp%3E',1361828358,22,'z2','new',6),(7,'%3Cp%3EThis+is+a+blank+zone.%3C%2Fp%3E',1361828453,23,'z1','new',6),(8,'%3Cp%3EThis+is+a+blank+zone.%3C%2Fp%3E',1361828454,23,'z2','new',6),(9,'%3Cp%3EThis+is+a+blank+zone.%3C%2Fp%3E',1361828457,23,'z3','new',6);

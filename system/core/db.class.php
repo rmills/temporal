@@ -1,5 +1,4 @@
 <?php
-
 class DB {
 
     private static $__connection = false;

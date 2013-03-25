@@ -5,7 +5,7 @@ class Installer{
     public static $page_errors = array();
     
     public static function checkdb() {
-        self::$db = new mysqli(
+        self::$db = @new mysqli(
             DATABASE_HOST,
             DATABASE_USER,
             DATABASE_PASSWORD,
@@ -13,7 +13,7 @@ class Installer{
         );
 
         if (mysqli_connect_errno()) {
-            self::$db_error = mysqli_error(self::$db);
+            self::$db_error = @mysqli_connect_error(self::$db);
             return false;
         }else{
             return true;
@@ -21,12 +21,18 @@ class Installer{
     }
     
     public static function init_db($sql){
-        $result = mysqli_query(self::$db, $sql);
-        if (self::$db_error  = mysqli_error(self::$db)){
-            return false;
+        
+        if(DATABASE_PASSWORD == ''){
+            $pass = "";
         }else{
-            return true;
+            $pass = ' -p'.DATABASE_PASSWORD;
         }
+        
+        $command = 'mysql -v -u '.DATABASE_USER.$pass.' -h '.
+                DATABASE_HOST.' -D '.DATABASE_TABLE.' < '. $sql;
+        $check = shell_exec($command);
+        self::$db_error = $check;
+        return $check;
     }
     
     public static function init_user($name, $email, $password){
@@ -34,8 +40,8 @@ class Installer{
         $name = trim($name);
         $salt = self::hash();
         $password = md5($salt . trim($password) . $salt);
-
-
+        
+        
         $sql = '
             INSERT INTO users (
                 `email`,
@@ -58,7 +64,8 @@ class Installer{
                 \'' . date("Ymd") . '\',
                 \'' . $_SERVER['REMOTE_ADDR'] . '\'
             )';
-        \DB::q($sql);
+        @mysqli_query(self::$db, $sql);
+        return mysqli_error(self::$db);
     }
     
     public static function hash($length = 20) {

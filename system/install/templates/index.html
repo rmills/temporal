@@ -3,8 +3,9 @@
     <head>
         <title>Temporal Installer</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="/system/inc/frameworks/bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet">
+        <script src="/system/inc/js/jquery.js" type="text/javascript" ></script>
         <script src="/system/inc/frameworks/bootstrap/js/bootstrap.min.js" type="text/javascript" ></script>
+        <link href="/system/inc/frameworks/bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet">
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,400italic,300italic,300' rel='stylesheet' type='text/css'>
         <style>
             body{
@@ -25,52 +26,126 @@
                 font-weight: bold;
                 padding-right: 4px;
             }
+            h1{
+                font-size: 2em;
+                line-height: 1em;
+                margin-bottom: 15px;
+            }
+            h2{
+                font-size: 1.5em;
+                line-height: 1em;
+            }
+            table{
+                width: 100%;
+            }
+            th{
+                width: 50%;
+                text-align: right;
+            }
+            td{
+                width: 50%;
+                padding-left: 10px;
+                text-align: left;
+            }
+            h3, h4{
+                padding: 0;
+                margin: 30px 0; 
+                text-align: center;
+            }
+            
+            #db-table-wrapper{
+                background-color: #f1f1e3;
+                padding: 30px;
+                padding-left: 10px;
+            }
+            
+            #dbout{
+                width: 460px; 
+                margin: 20px auto; 
+                padding: 20px;
+                background-color: #f1f1e3;
+                overflow: scroll;
+            }
+            #help{
+                font-size: 80%;
+            }
+            #showdb:hover{
+                cursor: pointer;
+            }
         </style>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#showdb').click(function (){
+                    console.log('do');
+                    $('#dbout').toggle();
+                });
+            });
+        </script>
     </head>
     <body>
         <div id="wrapper">
             <h1>Temporal Installer</h1>
-            <p>&nbsp;</p>
+            <p>If this is your first time installing please read the: <a target="_blank" href="https://github.com/rmills/temporal/wiki/Getting-Started-Guide">Temporal Started Guide</a></p>
             <p>This installer will create your initial database. You must create your first user below before it can be installed. Once you have created your database be sure to change ALLOW_INSTALL to false in /site/config.inc.php</p>
             <p>&nbsp;</p>
+            <div id="db-table-wrapper">
+                <h4>Database Information</h4>
+                <table>
+                    <tr>
+                        <th>
+                          Host:  
+                        </th>
+                        <td>
+                          {dbhost}  
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                          User:  
+                        </th>
+                        <td>
+                          {dbuser}  
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                          Pass:  
+                        </th>
+                        <td>
+                          {dbpass}  
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                          DB Table:  
+                        </th>
+                        <td>
+                          {dbtable}  
+                        </td>
+                    </tr>
+                </table>
+                {db_status}
+            </div>
             <p>&nbsp;</p>
-            <h4>DB Status: {db_status}</h4>
             <div>{notice}</div>
-            <h5>Create first user for install:</h5>
-            <form class="form-inline" id="formcontrol" action="/install" method="post">
-                <div class="control-group">
-                    <label for="email">Email:</label> 
-                    <div class="input-prepend">
-                        <span class="add-on">@</span><input class="input required" maxchar="80" size="20" type="text" id="email" name="email">
-                    </div>
-                    <div class="well">Must be valid, this will be your super user account.</div>
-                </div>
-                <div class="control-group"> 
-                    <label for="user">User Name:</label> 
-                    <div class="input-prepend">
-                        <span class="add-on"><i class="icon-globe"></i></span><input class="input required" maxchar="40" size="20" type="text" id="username" name="user">
-                    </div>
-                    <div class="well">Name that will be shown in your profile.</div>
-                </div>
-                <div class="control-group">
-                    <label for="password">Password:</label> 
-                    <div class="input-prepend">
-                        <span class="add-on"><i class="icon-lock"></i></span><input class="input required" maxchar="40" size="20" type="password" id="password" name="password"> 
-                    </div>
-                </div>
-                <p>&nbsp;</p>
-                <div class="form-actions">
-                    <input class="btn btn-info" type="submit" value="&nbsp;&nbsp;Install Temporal Database&nbsp;&nbsp;"> <br />
-                </div>
-            </form>
+            {content}
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
             <p>&nbsp;</p>
             <div id="help">
-                <h1>I cant connect to my database.</h1>
-                <p></p>
-                <h1>What kind of databases are supported</h1>
+                <h1>Install Help</h1>
+                <h2>I cant connect to my database.</h2>
+                <p>Make sure the connection information in your /site/config.inc.php is correct.</p>
+                <p>&nbsp;</p>
+                <h2>What kind of databases are supported</h2>
                 <p>At this time only MySQL databases are supported. There are no plans to support others.</p>
-                <h1>What kind of table should I create?</h1>
+                <p>&nbsp;</p>
+                <h2>What kind of table should I create?</h2>
                 <p>Its recommended and tested to use an InnoDB (standard with MySQL) with the charset "utf8" and collation "utf8_bin". You may run into errors using something different.
+                    <p>&nbsp;</p>
             </div>
                 
         </div>
