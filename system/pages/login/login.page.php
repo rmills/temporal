@@ -25,7 +25,7 @@ class Login extends Page {
     }
 
     public static function setup() {
-
+        \Html::set('{title}', 'Login');
         \CMS::$_page_type = 'login';
         \CMS::$_content_type = 'html';
     }
