@@ -65,6 +65,8 @@ class Sitemap extends Page{
             $body[] = '</url>';
         }
         $body[] = '</urlset>';
+        
+        file_put_contents('sitemap.xml', implode(PHP_EOL, $body));
         \XML::$_body = implode(PHP_EOL, $body);
     }
 }
