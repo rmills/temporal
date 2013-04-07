@@ -24,7 +24,7 @@ class Register extends Page {
     public static function setup() {
         \CMS::$_page_type = 'register';
         \CMS::$_content_type = 'html';
-
+        \Html::set('{title}', 'Register');
         \Html::load();
 
         if (\CMS::$_vars[1] == 'submit') {
