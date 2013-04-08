@@ -193,8 +193,6 @@ class  CacheDB{
     public static function clearpath($path, $block){
         
         $sql = 'DELETE FROM `cache` WHERE `path` = \'' . \DB::clean($path) . '\' AND `block` = \''.$block.'\'';
-        echo $sql;
         \DB::q($sql);
-        echo \DB::$_lasterror;
     }
 }
