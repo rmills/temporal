@@ -195,5 +195,6 @@ class  CacheDB{
         $sql = 'DELETE FROM `cache` WHERE `path` = \'' . \DB::clean($path) . '\' AND `block` = \''.$block.'\'';
         echo $sql;
         \DB::q($sql);
+        echo \DB::$_lasterror;
     }
 }
