@@ -191,6 +191,7 @@ class  CacheDB{
      * @param type $block true if content is a block and not a whole page
      */
     public static function clearpath($path, $block){
+        
         $sql = 'DELETE FROM `cache` WHERE `path` = \'' . \DB::clean($path) . '\' AND `block` = \''.$block.'\'';
         \DB::q($sql);
     }
