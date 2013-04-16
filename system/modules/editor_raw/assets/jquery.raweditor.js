@@ -129,8 +129,8 @@
             };
             this.history();
             $( "#"+this.zone ).html($.tmpl( raweditorTemplate, data ));
-            $("#editor-"+this.zone).width( $("#"+this.zone).parent().width() );
-            $("#editor-"+this.zone).height( 400 );
+            //$("#editor-"+this.zone).width( $("#"+this.zone).parent().width() );
+            //$("#editor-"+this.zone).height( 400 );
 
             $("#zoneupdate_"+this.zone).click({zone: this.zone},function(e) {
                 $('#'+e.data.zone).data('raweditor').update();
