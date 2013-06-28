@@ -221,8 +221,10 @@ class Zpage extends Page {
                     $temp[$k] = $v;
                 }
                 $user = new \User($item['z_user']);
-                $temp['username'] = $user->_data['name'];
-                $stack[] = $temp;
+                if(!$user->_error){
+                    $temp['username'] = $user->_data['name'];
+                    $stack[] = $temp;
+                }
             }
         }
         
