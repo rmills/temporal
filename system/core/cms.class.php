@@ -157,7 +157,7 @@ class CMS {
             foreach ($folder as $v) {
                 if ($v != '.' && $v != '..') {
                     if(is_file(PATH_CLASSES_ROOT_ADDON.$v)){
-                        @include_once PATH_CLASSES_ROOT_ADDON.$v;
+                        include_once PATH_CLASSES_ROOT_ADDON.$v;
                     }
                 }
             }
