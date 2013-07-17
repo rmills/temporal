@@ -118,6 +118,7 @@ class CMS {
         self::$_config = $config;
         self::init_vars();
         self::init_content_types();
+        self::init_addon_classes();
         self::init_pages();
         self::init_modules();
         self::init_usermod();
@@ -145,6 +146,20 @@ class CMS {
                 self::$_vars[$key] = strtolower($_GET[$v]);
             } elseif (isset($_POST[$v])) {
                 self::$_vars[$key] = strtolower($_POST[$v]);
+            }
+        }
+    }
+    
+    public static function init_addon_classes(){
+        if (is_dir(PATH_CLASSES_ROOT_ADDON)) {
+            self::log('CMS', 'CMS::init_addon_classes() searching: ' . PATH_CLASSES_ROOT_ADDON);
+            $folder = scandir(PATH_CLASSES_ROOT_ADDON);
+            foreach ($folder as $v) {
+                if ($v != '.' && $v != '..') {
+                    if(is_file(PATH_CLASSES_ROOT_ADDON.$v)){
+                        @include_once PATH_CLASSES_ROOT_ADDON.$v;
+                    }
+                }
             }
         }
     }

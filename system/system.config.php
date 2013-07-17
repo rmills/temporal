@@ -94,6 +94,11 @@ if(!defined('PATH_MODULE_ROOT')){
     define('PATH_MODULE_ROOT', 'system/modules/');
 }
 
+if(!defined('PATH_CLASSES_ROOT_ADDON')){
+    #Path to module folder
+    define('PATH_CLASSES_ROOT_ADDON', 'site/classes/');
+}
+
 if(!defined('PATH_MODULE_ROOT_ADDON')){
     #Path to module folder addon
     define('PATH_MODULE_ROOT_ADDON', 'site/modules/');
