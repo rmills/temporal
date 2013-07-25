@@ -1,6 +1,5 @@
 <?php
 namespace Appserve;
-static $_isrestricted = true;
 class Upload extends Appserve{
     public static $fail =  array('status'=>'fail', 'reason'=>'Bad/missing handler or type:');
     static $_isrestricted = true;
@@ -13,13 +12,14 @@ class Upload extends Appserve{
     public static function active(){
         \CMS::$_page_type = 'upload';
         \CMS::$_content_type = 'json';
-        if( isset($_POST['handler']) ){
-            if( array_key_exists($_POST['handler'], Appserve::$_apps) ){
-                $callback = '\Appserve\\'.$_POST['handler'];
+        if( isset(\CMS::$_vars['2']) ){
+            $handler = (strtolower(\CMS::$_vars['2']));
+            if( array_key_exists($handler, Appserve::$_apps) ){
+                $callback = '\Appserve\\'.ucfirst($handler);
                 $data = $callback::call();
                 \Json::body($data);
             }else{
-                \Json::body(array('status'=>'fail', 'reason'=>'bad handler "'.$_POST['handler'].'"'));
+                \Json::body(array('status'=>'fail', 'reason'=>'bad handler :'.$handler.':'));
             }
         }else{
             \Json::body(array('status'=>'fail', 'reason'=>'Bad/missing handler or type'));
@@ -27,16 +27,19 @@ class Upload extends Appserve{
     }
     
     public static function setup(){
-        \Html::set('{footer}', '<script type="text/javascript" src="{root_doc}system/appserve/upload/assets/js/header.js"></script>');
-        \Html::set('{footer}', '<script type="text/javascript" src="{root_doc}system/appserve/upload/assets/js/util.js"></script>');
-        \Html::set('{footer}', '<script type="text/javascript" src="{root_doc}system/appserve/upload/assets/js/button.js"></script>');
-        \Html::set('{footer}', '<script type="text/javascript" src="{root_doc}system/appserve/upload/assets/js/handler.base.js"></script>');
-        \Html::set('{footer}', '<script type="text/javascript" src="{root_doc}system/appserve/upload/assets/js/handler.form.js"></script>');
-        \Html::set('{footer}', '<script type="text/javascript" src="{root_doc}system/appserve/upload/assets/js/handler.xhr.js"></script>');
-        \Html::set('{footer}', '<script type="text/javascript" src="{root_doc}system/appserve/upload/assets/js/uploader.basic.js"></script>');
-        \Html::set('{footer}', '<script type="text/javascript" src="{root_doc}system/appserve/upload/assets/js/dnd.js"></script>');
-        \Html::set('{footer}', '<script type="text/javascript" src="{root_doc}system/appserve/upload/assets/js/uploader.js"></script>');
-        \Html::set('{footer}', '<script type="text/javascript" src="{root_doc}system/appserve/upload/assets/js/jquery-plugin.js"></script>');
-        \Html::set('{css}', '<link rel="stylesheet" href="{root_doc}system/appserve/upload/assets/fineuploader.css" type="text/css" media="screen, projection">');
+       /* 
+        \Html::set('{footer}', '<script type="text/javascript" src="http://blueimp.github.io/JavaScript-Load-Image/js/load-image.min.js"></script>');
+        \Html::set('{footer}', '<script type="text/javascript" src="http://blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>');
+        
+        \Html::set('{footer}', '<script type="text/javascript" src="{root_doc}system/inc/js/vendor/jquery.ui.widget.js"></script>');
+        \Html::set('{footer}', '<script type="text/javascript" src="{root_doc}system/inc/js/jquery.iframe-transport.js"></script>');
+        \Html::set('{footer}', '<script type="text/javascript" src="{root_doc}system/inc/js/jquery.fileupload.js"></script>');
+        \Html::set('{footer}', '<script type="text/javascript" src="{root_doc}system/inc/js/jquery.fileupload-process.js"></script>');
+        \Html::set('{footer}', '<script type="text/javascript" src="{root_doc}system/inc/js/jquery.fileupload-image.js"></script>');
+        \Html::set('{footer}', '<script type="text/javascript" src="{root_doc}system/inc/js/jquery.fileupload-audio.js"></script>');
+        \Html::set('{footer}', '<script type="text/javascript" src="{root_doc}system/inc/js/jquery.fileupload-video.js"></script>');
+        \Html::set('{footer}', '<script type="text/javascript" src="{root_doc}system/inc/js/jquery.fileupload-validate.js"></script>');
+        
+        */
     }
 }

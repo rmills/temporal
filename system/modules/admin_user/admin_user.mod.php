@@ -188,6 +188,65 @@ class Admin_user extends Module {
         \Html::set('{admin_content}', $html);
         self::$_action_complete = true;
     }
+    
+    /**
+     * Used for pages and modules to add users
+     * 
+     * If a password is not set an outside class (fb, etc) must set the login 
+     * since the password will not be useable
+     * 
+     * @param type $email
+     * @param type $name
+     * @param type $groups
+     * @param type $password
+     * @param type $super_user
+     * @return boolean
+     */
+    public static function remote_adduser($email, $name, $groups = '1,2', $auth_provider = 'site', $auth_id = 0, $password = false, $super_user = false) {
+        $email = trim(strtolower($email));
+        $name = trim($name);
+        if($password){
+            $salt = \Crypto::random_key();
+            $password = md5($salt . trim($password) . $salt);
+        }else{
+            $salt = \Crypto::random_key();
+            $password = \Crypto::random_key().\Crypto::random_key();
+        }
+        
+        $check = self::dup_email_check($email);
+        if ($check) {
+            return false;
+        }
+
+        if ($super_user) {
+            $super_user = 'yes';
+        } else {
+            $super_user = 'no';
+        }
+        
+        $sql = '
+            INSERT INTO users (
+                `email`,
+                `name`,
+                `password`,
+                `salt`,
+                `super_user`,
+                `groups`,
+                `auth_provider`,
+                `auth_id`
+            ) VALUES (
+                \'' . \DB::clean($email) . '\',
+                \'' . \DB::clean($name) . '\',
+                \'' . \DB::clean($password) . '\',
+                \'' . \DB::clean($salt) . '\',
+                \'' . $super_user . '\',
+                \''.\DB::clean($groups).'\',
+                \''.\DB::clean($auth_provider).'\',
+                \''.\DB::clean($auth_id).'\'
+            )';
+        \DB::q($sql);
+        return \DB::$_lastid;
+    }
 
     public static function edit_list() {
         $html = self::block('editlist.html');

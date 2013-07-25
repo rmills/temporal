@@ -15,6 +15,8 @@ class Json{
      */
     public static $_body;
     
+    public static $_bypass_encode = false;
+    
     /**
      * Standard Callback
      */
@@ -27,7 +29,11 @@ class Json{
      * Future use
      */
     public static function body($array){
-        self::$_body = json_encode( $array );
+        if(self::$_bypass_encode){
+            self::$_body = $array;
+        }else{
+            self::$_body = json_encode( $array );
+        }
     }
     
     /**

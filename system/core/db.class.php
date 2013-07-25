@@ -58,6 +58,22 @@ class DB {
 
         self::$_lastid = mysqli_insert_id(self::$__connection);
         self::$_lasterror = mysqli_error(self::$__connection);
+        
+        if(ALLOW_DB_DEBUG){
+            if(self::$_lasterror){
+                echo '<br><h2>SQL DEBUG</h2><p>'.$sql.'</p><p>'.self::$_lasterror.'</p>';
+                $trace = debug_backtrace();
+                echo '<p><strong>Line:</strong> '.$trace[0]['line'].'&nbsp;&nbsp;&nbsp;<strong>File:</strong> '.$trace[0]['file'].'</p>';
+                if(isset($trace[1]['line'])){
+                    echo '<p><strong>Line:</strong> '.$trace[1]['line'].'&nbsp;&nbsp;&nbsp;<strong>File:</strong> '.$trace[1]['file'].'</p>';
+                }
+                if(isset($trace[2]['line'])){
+                    echo '<p><strong>Line:</strong> '.$trace[2]['line'].'&nbsp;&nbsp;&nbsp;<strong>File:</strong> '.$trace[2]['file'].'</p>';
+                }
+                echo '</p><br><br>';
+            }
+        }
+        
         if ($free_result) {
             mysqli_free_result($result);
         }

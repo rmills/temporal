@@ -118,12 +118,12 @@ class CMS {
         self::$_config = $config;
         self::init_vars();
         self::init_content_types();
-        self::init_addon_classes();
         self::init_pages();
         self::init_modules();
         self::init_usermod();
         self::init_appserve();
         self::init_user();
+        self::init_addon_classes();
         self::init_modules_callbacks();
         self::init_page_callbacks();
         self::init_appserve_callbacks();
@@ -233,9 +233,11 @@ class CMS {
             }
             $folder->close();
         }
-
         
         
+        foreach (self::$__modules as $v) {
+            include($v[0]);
+        }
         
     }
     
@@ -354,6 +356,10 @@ class CMS {
             }
         }
         
+        foreach (self::$__appserve as $v) {
+            include($v[0]);
+        }
+        
     }
     
     /**
@@ -363,7 +369,6 @@ class CMS {
      */
     public static function init_modules_callbacks() {
         foreach (self::$__modules as $v) {
-            include($v[0]);
             $module = ucwords($v[1]);
             $name = '\Module\\'.$module;
             $try = call_user_func(array($name, '__registar_callback'));
@@ -377,7 +382,6 @@ class CMS {
      */
     public static function init_appserve_callbacks() {
         foreach (self::$__appserve as $v) {
-            include($v[0]);
             $module = ucwords($v[1]);
             $name = '\Appserve\\'.$module;
             $try = call_user_func(array($name, '__registar_callback'));
@@ -504,6 +508,10 @@ class CMS {
             $folder->close();
         }
         
+        foreach (self::$__pages as $v) {
+            include($v[0]);
+        }
+        
         
     }
     
@@ -562,7 +570,6 @@ class CMS {
      */
     public static function init_page_callbacks() {
         foreach (self::$__pages as $v) {
-            include($v[0]);
             $page = ucwords($v[1]);
             $name = '\Page\\'.$page;
             $try = call_user_func(array($name, '__registar_callback'));

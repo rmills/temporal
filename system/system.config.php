@@ -21,6 +21,10 @@ if(!defined('ENABLE_DEBUG_TRACE')){
     define('ENABLE_DEBUG_TRACE', false);
 }
 
+if(!defined('ALLOW_DB_DEBUG')){
+    define('ALLOW_DB_DEBUG', false);
+}
+
 if(!defined('SITE_NAME')){
     define('SITE_NAME', 'Temporal'); // Name of your site
 }

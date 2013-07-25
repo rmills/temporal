@@ -195,6 +195,7 @@ class Html {
         self::set('{debug}');
 
         self::set('{domain}', DOMAIN);
+        self::set('{default_protocol}', DEFAULT_PROTOCOL);
         self::set('{root_doc}', PATH_BASE);
         self::set('{root_css}', PATH_BASE . CMS::$_config['path_layout'] . 'css/');
         self::set('{root_js}', PATH_BASE . CMS::$_config['path_layout'] . 'js/');
