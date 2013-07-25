@@ -32,6 +32,11 @@ class User {
     public $_super_user = false;
     
     /**
+     * @var bool super user flag
+     */
+    public $_mod_user = false;
+    
+    /**
      * @var array permissions stack
      */
     public $_permissions = array();
@@ -76,6 +81,7 @@ class User {
         }
         
         $this->_super_user = $this->_data['super_user'];
+        $this->_mod_user = $this->_data['mod_user'];
 
         if($this->_data['super_user'] != 'yes'){
             $_SESSION['user_allow_ext'] = 'no';
