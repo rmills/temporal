@@ -7,7 +7,7 @@ class User {
     public $_uid = 0;
     
     /**
-     * @var array all data from db row for user
+     * @var array Legacy, use normal class vars
      */
     public $_data = array();
     
@@ -46,6 +46,27 @@ class User {
      */
     public $_modules = array();
     
+    public $uid;
+    public $email;
+    public $name;
+    public $password;
+    public $groups;
+    public $mod_user;
+    public $super_user;
+    public $status;
+    public $salt;
+    public $activation_code;
+    public $date_create;
+    public $last_ip;
+    public $reset_key;
+    public $reset_request_ip;
+    public $reset_request_time;
+    public $auth_provider;
+    public $auth_id;
+    
+    
+    
+    
     /**
      * Load a user
      * @param int $id
@@ -57,10 +78,6 @@ class User {
                 $this->build($response[0]);
         }else{
             $this->_error = true;
-        }
-        if($this->_internal){
-            CMS::log('User', 'User Loaded:'.$id);
-            CMS::log('User', '<pre>User:'.print_r($_SESSION['user'], true).'</pre>');
         }
     }
     
@@ -78,27 +95,28 @@ class User {
         
         foreach($array as $key=>$value){
             $this->_data[$key] = $value;
+            $this->{$key} = $value;
         }
         
         $this->_super_user = $this->_data['super_user'];
         $this->_mod_user = $this->_data['mod_user'];
 
         if($this->_data['super_user'] != 'yes'){
-            $_SESSION['user_allow_ext'] = 'no';
             $permission_groups = explode(',',$this->_data['groups']); 
             $this->_data['groups'] = $permission_groups;
+            $this->groups = $permission_groups;
             foreach($permission_groups as $group){
                 $sql = 'SELECT modules FROM `groups` WHERE `id` = "'.DB::clean($group).'" LIMIT 1';
                 $response = DB::q($sql);
                 if(count($response)){
                     $this->_permissions = array_merge($this->_permissions, explode(',',$response[0]['modules']) );
+                    $this->permissions = array_merge($this->_permissions, explode(',',$response[0]['modules']) );
                 }
             }
             $this->_permissions = array_unique($this->_permissions);
+            $this->permissions = array_unique($this->_permissions);
         }else{
             $this->_data['groups'] = array();
-            $_SESSION['super_user'] = 'yes';
-            $_SESSION['user_allow_ext'] = 'ok';
         }
         $this->init_usermod();
     }

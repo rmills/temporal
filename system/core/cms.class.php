@@ -550,14 +550,35 @@ class CMS {
     public static function init_user() {
         if (!isset($_SESSION['user'])) {
             self::$_user = new User(DEFAULT_USER);
+            $_SESSION['user'] = DEFAULT_USER;
+            $_SESSION['super_user'] = 'no';
+            $_SESSION['user_allow_ext'] = false;
+            
         } else {
             if (is_numeric($_SESSION['user']) && $_SESSION['user'] > 0) {
                 self::$_user = new User($_SESSION['user']);
+                if(self::$_user->mod_user == 'yes'){
+                    $_SESSION['mod_user'] = 'yes';
+                }else{
+                    $_SESSION['mod_user'] = 'no';
+                }
+                if(self::$_user->super_user == 'yes'){
+                    $_SESSION['super_user'] = 'yes';
+                }else{
+                    $_SESSION['super_user'] = 'no';
+                }
+                
                 if(self::$_user->_error){
                     self::$_user = new User(DEFAULT_USER);
+                    $_SESSION['user'] = DEFAULT_USER;
+                    $_SESSION['super_user'] = 'no';
+                    $_SESSION['user_allow_ext'] = false;
                 }
             } else {
                 self::$_user = new User(DEFAULT_USER);
+                $_SESSION['user'] = DEFAULT_USER;
+                $_SESSION['super_user'] = 'no';
+                $_SESSION['user_allow_ext'] = false;
             }
         }
     }

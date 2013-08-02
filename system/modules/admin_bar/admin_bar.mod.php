@@ -5,7 +5,7 @@ namespace Module;
 class Admin_bar extends Module {
     public static $_isrestricted = true;
     public static function __registar_callback() {
-        if (\CMS::allowed()) {
+        if (\CMS::allowed() || \CMS::$_user->mod_user == 'yes') {
             \CMS::callstack_add('set_tags', DEFAULT_CALLBACK_PARSE + 1);
         } else {
             \Html::set('{adminbar}');
