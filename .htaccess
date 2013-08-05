@@ -43,6 +43,7 @@ RewriteRule  ^([a-zA-Z0-9\-\_]+)/?$    /?uvar1=$1 [L,QSA]
   </FilesMatch>
 </IfModule>
 
+<IfModule mod_expires.c>
 	#Cache 
 	ExpiresActive On
 	ExpiresDefault A0
@@ -58,3 +59,4 @@ RewriteRule  ^([a-zA-Z0-9\-\_]+)/?$    /?uvar1=$1 [L,QSA]
 	<FilesMatch "\.(txt|xml|js|css)$">
 	ExpiresDefault A1209600"
 	</FilesMatch>
+</IfModule>
