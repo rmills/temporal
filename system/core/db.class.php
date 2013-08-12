@@ -72,6 +72,12 @@ class DB {
                 }
                 echo '</p><br><br>';
             }
+        }else{
+            try{
+                \SiteDebug::log( 'SQL DEBUG: '.$sql.' :: Last Error: '.self::$_lasterror);
+            }catch (Exception $e)  {
+                //ignore, not loaded yet
+            }
         }
         
         if ($free_result) {
