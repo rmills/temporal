@@ -1,7 +1,11 @@
 <?php
 class SiteDebug{
     public static function log($msg){
+        try{
         $trace = debug_backtrace();
+        }catch (Exception $e) {
+            return false;
+        }
         
         $bug_details = array();
         $bug_details['stacktrace1'] = 'Line: '.\DB::clean($trace[0]['line']).' - '.\DB::clean($trace[0]['file']);
