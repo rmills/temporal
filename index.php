@@ -42,6 +42,8 @@ if(ENABLE_DEBUG){
 
 
 /* Secondary Includes */
+require 'system/core/sitedebug.class.php';
+require 'system/core/autodb.class.php';
 require 'system/core/crypto.class.php';
 require 'system/core/db.class.php';
 require 'system/core/cms.class.php';
