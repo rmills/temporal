@@ -2,7 +2,7 @@
 class SiteDebug{
     public static function log($msg){
         try{
-        $trace = debug_backtrace();
+            $trace = debug_backtrace();
         }catch (Exception $e) {
             return false;
         }
