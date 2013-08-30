@@ -1,4 +1,7 @@
 <?php
+if(!defined('ALLOW_DB_DEBUG')){
+    define('ALLOW_DB_DEBUG', false);
+}
 class DB {
 
     private static $__connection = false;
