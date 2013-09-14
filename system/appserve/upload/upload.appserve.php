@@ -27,19 +27,18 @@ class Upload extends Appserve{
     }
     
     public static function setup(){
-       /* 
-        \Html::set('{footer}', '<script type="text/javascript" src="http://blueimp.github.io/JavaScript-Load-Image/js/load-image.min.js"></script>');
-        \Html::set('{footer}', '<script type="text/javascript" src="http://blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>');
+        /*
+        \Html::set('{scripts}', '<script type="text/javascript" src="http://blueimp.github.io/JavaScript-Load-Image/js/load-image.min.js"></script>');
+        \Html::set('{scripts}', '<script type="text/javascript" src="http://blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>');
         
-        \Html::set('{footer}', '<script type="text/javascript" src="{root_doc}system/inc/js/vendor/jquery.ui.widget.js"></script>');
-        \Html::set('{footer}', '<script type="text/javascript" src="{root_doc}system/inc/js/jquery.iframe-transport.js"></script>');
-        \Html::set('{footer}', '<script type="text/javascript" src="{root_doc}system/inc/js/jquery.fileupload.js"></script>');
-        \Html::set('{footer}', '<script type="text/javascript" src="{root_doc}system/inc/js/jquery.fileupload-process.js"></script>');
-        \Html::set('{footer}', '<script type="text/javascript" src="{root_doc}system/inc/js/jquery.fileupload-image.js"></script>');
-        \Html::set('{footer}', '<script type="text/javascript" src="{root_doc}system/inc/js/jquery.fileupload-audio.js"></script>');
-        \Html::set('{footer}', '<script type="text/javascript" src="{root_doc}system/inc/js/jquery.fileupload-video.js"></script>');
-        \Html::set('{footer}', '<script type="text/javascript" src="{root_doc}system/inc/js/jquery.fileupload-validate.js"></script>');
-        
+        \Html::set('{scripts}', '<script type="text/javascript" src="{root_doc}system/inc/js/vendor/jquery.ui.widget.js"></script>');
+        \Html::set('{scripts}', '<script type="text/javascript" src="{root_doc}system/inc/js/jquery.iframe-transport.js"></script>');
+        \Html::set('{scripts}', '<script type="text/javascript" src="{root_doc}system/inc/js/jquery.fileupload.js"></script>');
+        \Html::set('{scripts}', '<script type="text/javascript" src="{root_doc}system/inc/js/jquery.fileupload-process.js"></script>');
+        \Html::set('{scripts}', '<script type="text/javascript" src="{root_doc}system/inc/js/jquery.fileupload-image.js"></script>');
+        \Html::set('{scripts}', '<script type="text/javascript" src="{root_doc}system/inc/js/jquery.fileupload-audio.js"></script>');
+        \Html::set('{scripts}', '<script type="text/javascript" src="{root_doc}system/inc/js/jquery.fileupload-video.js"></script>');
+        \Html::set('{scripts}', '<script type="text/javascript" src="{root_doc}system/inc/js/jquery.fileupload-validate.js"></script>');
         */
     }
 }
