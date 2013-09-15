@@ -25,6 +25,8 @@ class Admin_bar extends Module {
             }
             $html = str_replace('{adminlinks}', '', $html);
             \Html::set('{adminbar}', $html);
+        }else{
+            \Html::set('{adminbar}');
         }
     }
 
