@@ -56,6 +56,9 @@ require 'system/core/appserve.class.php';
 require 'system/core/cache.db.class.php';
 require 'system/core/parser.class.php';
 
+/* Vendor Tools */
+include 'system/inc/php/mobile_detect/Mobile_Detect.php';
+
 if(ENABLE_MAIL){
     require_once('system/core/phpmail/class.phpmailer.php');
 }

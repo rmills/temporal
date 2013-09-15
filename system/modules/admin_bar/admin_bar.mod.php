@@ -13,8 +13,8 @@ class Admin_bar extends Module {
     }
 
     public static function set_tags() {
-        if($mobile_check = new \Mobile_Detect();
-            if(!$mobile_check->isMobile()){)
+        $mobile_check = new \Mobile_Detect();
+        if(!$mobile_check->isMobile()){
             $html = self::build_admin_bar();
             ksort(\Page\Admin::$_quicklinks);
             $i = 0;
