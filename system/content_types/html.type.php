@@ -190,6 +190,7 @@ class Html {
             self::set('{scripts}', $v);
         }
         
+        self::set('{meta}');
         self::set('{scripts}');
         self::set('{footer}');
         self::set('{debug}');
