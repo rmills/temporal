@@ -69,6 +69,9 @@ if(!isset($_COOKIE["_tx"])){
     $_COOKIE["_tx"] = $key;
 }
 
+if(!isset($_SESSION["_txs"])){
+    $_SESSION["_txs"] = \Crypto::random_key();
+}
 
 \DB::init();
 
