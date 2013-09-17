@@ -12,7 +12,7 @@ class Editor extends Module {
 
     public static function add_links() {
         if (\CMS::$_page_type == 'zpage') {
-            \Html::set('{scripts}', '<script src="{root_doc}system/inc/js/jquery.tmpl.min.js" type="text/javascript"></script>');
+            //\Html::set('{scripts}', '<script src="{root_doc}system/inc/js/jquery.tmpl.min.js" type="text/javascript"></script>');
             \Html::set('{scripts}', '<script src="{root_doc}system/modules/editor/assets/ckeditor.js" type="text/javascript"></script>');
             \Html::set('{scripts}', '<script src="{root_doc}system/modules/editor/assets/config.js" type="text/javascript"></script>');
             //\Html::set('{scripts}', '<script src="{root_doc}system/modules/media/assets/ckfinder.js" type="text/javascript"></script>');

@@ -63,6 +63,13 @@ if(ENABLE_MAIL){
     require_once('system/core/phpmail/class.phpmailer.php');
 }
 
+if(!isset($_COOKIE["_tx"])){
+    $key = \Crypto::random_key();
+    setcookie('_tx', $key, time() + (10 * 365 * 24 * 60 * 60));
+    $_COOKIE["_tx"] = $key;
+}
+
+
 \DB::init();
 
 if(ENABLE_CACHE){

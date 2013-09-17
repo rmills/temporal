@@ -81,7 +81,7 @@ class AutoDB{
      * @param array $array init item
      * @return boolean id on true, false on fail
      */
-    public function init($array){
+    public function init($array = array()){
         if(is_array($array)){
             $keys = array();
             $values = array();
