@@ -53,10 +53,16 @@ RewriteRule  ^([a-zA-Z0-9\-\_]+)/?$    /?uvar1=$1 [L,QSA]
 	</FilesMatch>
 
 	<FilesMatch "\.(jpg|jpeg|png|gif|swf)$">
-	ExpiresDefault A29030400
+	ExpiresDefault A604800
 	</FilesMatch>
 
 	<FilesMatch "\.(txt|xml|js|css)$">
-	ExpiresDefault A1209600"
+	ExpiresDefault A604800"
+	</FilesMatch>
+	
+	<FilesMatch "\.(php|cgi|pl|htm)$">
+	ExpiresActive Off
+	Header set Cache-Control "private, no-cache, no-store, proxy-revalidate, no-transform"
+	Header set Pragma "no-cache"
 	</FilesMatch>
 </IfModule>
