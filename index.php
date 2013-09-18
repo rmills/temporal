@@ -64,13 +64,13 @@ if(ENABLE_MAIL){
 }
 
 if(!isset($_COOKIE["_tx"])){
-    $key = \Crypto::random_key();
+    $key = \Crypto::random_filename(20);
     setcookie('_tx', $key, time() + (10 * 365 * 24 * 60 * 60));
     $_COOKIE["_tx"] = $key;
 }
 
 if(!isset($_SESSION["_txs"])){
-    $_SESSION["_txs"] = \Crypto::random_key();
+    $_SESSION["_txs"] = \Crypto::random_filename(20);
 }
 
 \DB::init();
