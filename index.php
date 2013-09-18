@@ -5,7 +5,7 @@
  */
 define('BUILD_TIME', microtime(true));
 try{
-    session_start();
+    @session_start();
 } catch (Exception $e) {
     //ignore, rare case
 }
