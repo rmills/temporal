@@ -4,7 +4,11 @@
  * 
  */
 define('BUILD_TIME', microtime(true));
-session_start();
+try{
+    session_start();
+} catch (Exception $e) {
+    //ignore, rare case
+}
 
 /* Local Config */
 date_default_timezone_set('America/Los_Angeles');
