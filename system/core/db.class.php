@@ -78,7 +78,7 @@ class DB {
         }else{
             if(self::$_lasterror){
                 try{
-                    \SiteDebug::log( 'SQL DEBUG: '.$sql.' :: Last Error: '.self::$_lasterror);
+                    //\SiteDebug::log( 'SQL DEBUG: '.$sql.' :: Last Error: '.self::$_lasterror);
                 }catch (Exception $e)  {
                     //ignore, not loaded yet
                 }
