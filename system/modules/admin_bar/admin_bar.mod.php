@@ -1,7 +1,6 @@
 <?php
 
 namespace Module;
-
 class Admin_bar extends Module {
     public static $_isrestricted = true;
     public static function __registar_callback() {
@@ -13,26 +12,20 @@ class Admin_bar extends Module {
     }
 
     public static function set_tags() {
-        $mobile_check = new \Mobile_Detect();
-        if(!$mobile_check->isMobile()){
-            $html = self::build_admin_bar();
-            ksort(\Page\Admin::$_quicklinks);
-            $i = 0;
-            foreach (\Page\Admin::$_quicklinks as $v) {
-                $break = '<li class="divider-vertical"></li>';
-                $html = str_replace('{adminlinks}', $v . $break . '{adminlinks}', $html);
-                $i++;
-            }
-            $html = str_replace('{adminlinks}', '', $html);
-            \Html::set('{adminbar}', $html);
-        }else{
-            \Html::set('{adminbar}');
+        $html = self::build_admin_bar();
+        ksort(\Page\Admin::$_quicklinks);
+        $i = 0;
+        foreach (\Page\Admin::$_quicklinks as $v) {
+            $break = '<li class="divider-vertical"></li>';
+            $html = str_replace('{adminlinks}', $v . $break . '{adminlinks}', $html);
+            $i++;
         }
+        $html = str_replace('{adminlinks}', '', $html);
+        \Html::set('{adminbar}', $html);
     }
 
     public static function build_admin_bar() {
         $html = self::block('adminbar.html');
         return $html;
     }
-
 }

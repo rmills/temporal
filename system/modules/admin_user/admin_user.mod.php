@@ -184,7 +184,7 @@ class Admin_user extends Module {
 		)';
         \DB::q($sql);
         echo \DB::$_lasterror;
-        $html = '<h4>Success</h4><hr /><p>User "' . $email . '" created.</p><div class="form-actions"> <a class="btn btn-info" href="{root_doc}admin/user/">Return</a></div>';
+        $html = '<h1>Success</h1><hr /><p>User "' . $email . '" created.</p><div class="form-controls"> <a class="btn btn-info" href="{root_doc}admin/user/">Return</a></div>';
         \Html::set('{admin_content}', $html);
         self::$_action_complete = true;
     }
@@ -272,16 +272,23 @@ class Admin_user extends Module {
                     <td>' . $super . '</td>
                     <td>' . $status . '</td>
                     <td>';
-            $users[] = '<a class="btn btn-success" href="{root_doc}admin/user/edit/' . $v['uid'] . '"><i class="icon-edit icon-white"></i> edit</a> ';
+            $users[] = '<div class="btn-group">
+                <button type="button" class="btn btn-primary">Options</button>
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                <li><a href="{root_doc}admin/user/edit/' . $v['uid'] . '"><i class="icon-edit icon-white"></i> edit</a></li> ';
 
             if ($v['status'] == 'active') {
-                $users[] = '<a class="btn btn-warning" href="{root_doc}admin/user/suspend/' . $v['uid'] . '"><i class="icon-lock icon-white"></i> suspend</a> ';
+                $users[] = '<li><a href="{root_doc}admin/user/suspend/' . $v['uid'] . '"><i class="icon-lock icon-white"></i> suspend</a></li> ';
             } else {
-                $users[] = '<a class="btn btn-info" href="{root_doc}admin/user/restore/' . $v['uid'] . '"><i class="icon-white icon-share-alt"></i> restore</a> ';
+                $users[] = '<li><a href="{root_doc}admin/user/restore/' . $v['uid'] . '"><i class="icon-white icon-share-alt"></i> restore</a></li> ';
             }
 
-            $users[] = '<a class="btn btn-danger" href="{root_doc}admin/user/confirmdelete/' . $v['uid'] . '"><i class="icon-white icon-remove"></i> delete</a> 
-                    </td>
+            $users[] = '<li><a href="{root_doc}admin/user/confirmdelete/' . $v['uid'] . '"><i class="icon-white icon-remove"></i> delete</a></li> 
+                    </ul></div></td>
                 </tr>
             ';
         }
@@ -367,7 +374,7 @@ class Admin_user extends Module {
         }
 
         \DB::q($sql);
-        $html = '<h4>Success</h4><hr /><p>User "' . $email . '" updated.</p><div class="form-actions"><a class="btn btn-info" href="{root_doc}admin/user/editlist/">Return</a></div>';
+        $html = '<h1>Success</h1><hr><p>User "' . $email . '" updated.</p><div class="form-controls"><a class="btn btn-info" href="{root_doc}admin/user/editlist/">Return</a></div>';
         \Html::set('{admin_content}', $html);
         self::$_action_complete = true;
     }
@@ -376,7 +383,7 @@ class Admin_user extends Module {
         $uid = \CMS::$_vars[3];
         $user = new \User($uid );
 
-        $html = '<h4>Confirm Delete</h4><hr /><p>Are you sure you want to delete the user: "' . $user->_data['email'] . '"?</p><div class="form-actions"><a class="btn btn-warning" href="{root_doc}admin/user/delete/' . $uid . '">Delete</a> <a class="btn btn-info" href="{root_doc}admin/user/editlist/">Cancel</a></div>';
+        $html = '<h1>Confirm Delete</h1><hr><p>Are you sure you want to delete the user: "' . $user->_data['email'] . '"?</p><div class="form-controls"><a class="btn btn-warning" href="{root_doc}admin/user/delete/' . $uid . '">Delete</a> <a class="btn btn-info" href="{root_doc}admin/user/editlist/">Cancel</a></div>';
         \Html::set('{admin_content}', $html);
     }
 
@@ -386,10 +393,10 @@ class Admin_user extends Module {
             $sql = 'DELETE FROM `users` WHERE `uid` = \'' . \DB::clean($uid) . '\' LIMIT 1';
             \DB::q($sql);
 
-            $html = '<h4>User Deleted</h4><hr /><p>User removed.</p><div class="form-actions"><a class="btn btn-info" href="{root_doc}admin/user/editlist/">Return</a></div>';
+            $html = '<h1>User Deleted</h1><hr><p>User removed.</p><div class="form-controls"><a class="btn btn-info" href="{root_doc}admin/user/editlist/">Return</a></div>';
             \Html::set('{admin_content}', $html);
         } else {
-            $html = '<h4>Failed</h4><hr /><p>Guest user can not be removed.</p><div class="form-actions"><a class="btn btn-info" href="{root_doc}admin/user/editlist/">Return</a></div>';
+            $html = '<h1>Failed</h1><hr><p>Guest user can not be removed.</p><div class="form-controls"><a class="btn btn-info" href="{root_doc}admin/user/editlist/">Return</a></div>';
             \Html::set('{admin_content}', $html);
         }
     }
@@ -399,20 +406,19 @@ class Admin_user extends Module {
         $user = new \User($uid);
         if ($uid !== '1') {
             if ($uid == \CMS::$_user->_data['uid']) {
-                $html = '<h4>Failed</h4><hr /><p>You can not suspend yourself.</p><div class="form-actions"><a class="btn btn-info" href="{root_doc}admin/user/editlist/">Return</a></div>';
-
+                $html = '<h1>Failed</h1><hr><p>You can not suspend yourself.</p><div class="form-controls"><a class="btn btn-info" href="{root_doc}admin/user/editlist/">Return</a></div>';
                 \Html::set('{admin_content}', $html);
                 return false;
             } else {
                 $sql = 'UPDATE `users` SET `status` = \'suspended\' WHERE `uid` = \'' . \DB::clean($uid) . '\' LIMIT 1';
                 \DB::q($sql);
-                $html = '<h4>Success</h4><hr /><p>User ' . $user->_data['email'] . ' suspended.</p><div class="form-actions"><a class="btn btn-info" href="{root_doc}admin/user/editlist/">Return</a></div>';
+                $html = '<h1>Success</h1><hr /><p>User ' . $user->_data['email'] . ' suspended.</p><div class="form-controls"><a class="btn btn-info" href="{root_doc}admin/user/editlist/">Return</a></div>';
 
                 \Html::set('{admin_content}', $html);
                 return true;
             }
         } else {
-            $html = '<h4>Failed</h4><hr /><p>Guest user can not be suspended.</p><div class="form-actions"><a class="btn btn-info" href="{root_doc}admin/user/editlist/">Return</a></div>';
+            $html = '<h1>Failed</h1><hr /><p>Guest user can not be suspended.</p><div class="form-controls"><a class="btn btn-info" href="{root_doc}admin/user/editlist/">Return</a></div>';
             \Html::set('{admin_content}', $html);
             return false;
         }
@@ -423,7 +429,7 @@ class Admin_user extends Module {
         $user = new \User($uid);
         $sql = 'UPDATE `users` SET `status` = \'active\' WHERE `uid` = \'' . \DB::clean($uid) . '\' LIMIT 1';
         \DB::q($sql);
-        $html = '<h4>Success</h4><hr /><p>User ' . $user->_data['email'] . ' access restored.</p><div class="form-actions"><a class="btn btn-info" href="{root_doc}admin/user/editlist/">Return</a></div>';
+        $html = '<h1>Success</h1><hr><p>User ' . $user->_data['email'] . ' access restored.</p><div class="form-controls"><a class="btn btn-info" href="{root_doc}admin/user/editlist/">Return</a></div>';
 
         \Html::set('{admin_content}', $html);
         return true;

@@ -452,18 +452,26 @@ class Admin_page extends Module {
                     <td>' . $status . '</td>
                     <td>';
             $pages[] = '
-                <a class="btn btn-info" href="{root_doc}' . $v['url'] . '">view</a> 
-                <a class="btn btn-success" href="{root_doc}admin/page/edit/' . $v['pid'] . '"><i class="icon-edit icon-white"></i> edit</a> 
+                <div class="btn-group">
+                <button type="button" class="btn btn-primary">Options</button>
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="{root_doc}' . $v['url'] . '">view</a></li>
+                     <li><a href="{root_doc}admin/page/edit/' . $v['pid'] . '"><i class="icon-edit icon-white"></i> edit</a></li>
             ';
 
             if ($v['status'] == 'active') {
-                $pages[] = '<a class="btn btn-danger" href="{root_doc}admin/page/confirmdelete/' . $v['pid'] . '"><i class="icon-white icon-ban-circle"></i> delete</a> ';
+                $pages[] = '     <li><a href="{root_doc}admin/page/confirmdelete/' . $v['pid'] . '"><i class="icon-white icon-ban-circle"></i> delete</a></li>';
             } else {
-                $pages[] = '<a class="btn btn-info" href="{root_doc}admin/page/restore/' . $v['pid'] . '"><i class="icon-white icon-share-alt"></i> restore</a> ';
+                $pages[] = '     <li><a href="{root_doc}admin/page/restore/' . $v['pid'] . '"><i class="icon-white icon-share-alt"></i> restore</a></li>';
             }
 
-            $pages[] = '<a class="btn btn-danger" href="{root_doc}admin/page/confirmpdelete/' . $v['pid'] . '"><i class="icon-white icon-remove"></i> remove</a> 
-                    </td>
+            $pages[] = '     <li><a href="{root_doc}admin/page/confirmpdelete/' . $v['pid'] . '"><i class="icon-white icon-remove"></i> remove</a></li> 
+                    </ul></td>
+                    </div>
                 </tr>
             ';
         }

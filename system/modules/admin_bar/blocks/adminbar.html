@@ -1,14 +1,35 @@
 <style>
-    .admin-footerbar{
-        font-family: 'Open Sans', sans-serif;
+    #wrapper{
+        margin-bottom: 50px;
     }
-    body{
-        padding-bottom: 40px;
+    .admin-footer.navbar{
+        margin: 0;
+    }
+    
+    .admin-footer.navbar a{
+        font-family: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
+    }
+    #temporal-footer-nav-wrapper .navbar-brand,
+    #bs-example-navbar-collapse-1 a{
+        font-family: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
     }
 </style>
-<div class="navbar navbar-fixed-bottom navbar-inverse">
-    <div class="navbar-inner admin-footerbar">
-        <ul class="nav">{adminlinks}</ul>
+<div id="temporal-footer-nav-wrapper" class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+    <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        </button>
+      <a class="navbar-brand" href="#">Temporal</a>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+            {adminlinks}
+        </ul>
     </div>
 </div>
 

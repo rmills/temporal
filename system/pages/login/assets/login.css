@@ -1,28 +1,13 @@
 body{
     background-color: #f7f7f7;
-    font-family: verdana;
     margin-top: 30px;
-}
-
-h1{
-    color: #555;
-    display: block;
-    margin: 0 auto 40px;
-    text-align: center;
-    font-size: 2.5em;
-    font-weight: bold;
-    background: none repeat scroll 0 0 #FFFFFF;
-    border: 1px solid #E5E5E5;
-    box-shadow: 0 2px 4px -1px rgba(200, 200, 200, 0.5);
-    padding: 15px 0 25px;
-    border-radius: 0px 0px 3px 3px;
 }
 
 
 
 #login-form{
     margin: 0 auto;
-    width: 250px;
+    max-width: 320px;
     color: #333333;
     background: none repeat scroll 0 0 #FFFFFF;
     border: 1px solid #E5E5E5;
